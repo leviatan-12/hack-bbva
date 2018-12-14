@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bio Smart</string>
+
+    <!-- Menu Scene -->
+    <string name="menu_generate_license">Generate License</string>
+
+    <!-- Menu Scene Messages -->
+    <string name="message_license_activated">License activated successfully</string>
+    <string name="message_license_not_activated">License not activated</string>
+    <string name="message_license_not_generated">License not generated from Service Provider</string>
+
+    <!-- Enrolment Scene -->
+    <string name="label_name">Name</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="label_m_last_name">Second Last Name</string>
+    <string name="label_username">Username</string>
+    <string name="label_use_contactless">Use Contactless?</string>
+    <string name="label_start_process">Start Enrolment Process</string>
+
+</resources>
