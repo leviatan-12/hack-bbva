@@ -21,8 +21,4 @@ class WelcomeWorker {
     fun generateLicense() {
 
     }
-
-    fun helloWorld(): Observable<WelcomeModels.HelloWorld.Response> {
-        return apiService.helloWorld()
-    }
 }

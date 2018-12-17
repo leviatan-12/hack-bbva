@@ -23,14 +23,9 @@ class WelcomePresenter : WelcomePresentationLogic {
         activity!!.displayGenerateLicense(viewModel)
     }
 
-    override fun presentStartEnrolment(response: WelcomeModels.StartEnrollment.Response) {
-        val viewModel = WelcomeModels.StartEnrollment.ViewModel()
-        activity!!.displayStartEnrolment(viewModel)
-    }
-
-    override fun presentHelloWorld(response: WelcomeModels.HelloWorld.Response) {
-        val viewModel = WelcomeModels.HelloWorld.ViewModel(true, response.message)
-        activity!!.displayHelloWorld(viewModel)
+    override fun presentStartProcess(response: WelcomeModels.StartEnrollment.Response) {
+        val viewModel = WelcomeModels.StartEnrollment.ViewModel(response.operation)
+        activity!!.displayStartProcess(viewModel)
     }
 }
 
@@ -43,6 +38,5 @@ class WelcomePresenter : WelcomePresentationLogic {
  */
 interface WelcomePresentationLogic {
     fun presentGenerateLicense(response: WelcomeModels.GenerateLicense.Response)
-    fun presentStartEnrolment(response: WelcomeModels.StartEnrollment.Response)
-    fun presentHelloWorld(response: WelcomeModels.HelloWorld.Response)
+    fun presentStartProcess(response: WelcomeModels.StartEnrollment.Response)
 }

@@ -2,6 +2,7 @@ package com.idemia.biosmart.scenes.welcome
 
 import android.content.Intent
 import com.idemia.biosmart.scenes.enrolment.EnrolmentActivity
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 
 import java.lang.ref.WeakReference
 
@@ -25,6 +26,20 @@ class WelcomeRouter : WelcomeRoutingLogic {
             activity!!.get()!!.startActivity(intent)
         }
     }
+
+    override fun routeToAuthenticationScene() {
+        if (activity?.get() != null) {
+            val intent = Intent( activity!!.get()!!.applicationContext, UserInfoActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
+        }
+    }
+
+    override fun routeToIdentifyScene() {
+        if (activity?.get() != null) {
+            val intent = Intent( activity!!.get()!!.applicationContext, EnrolmentActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
+        }
+    }
 }
 
 /**
@@ -38,4 +53,6 @@ interface WelcomeRoutingLogic {
      * Route to Next Scene
      */
     fun routeToEnrolmentScene()
+    fun routeToAuthenticationScene()
+    fun routeToIdentifyScene()
 }

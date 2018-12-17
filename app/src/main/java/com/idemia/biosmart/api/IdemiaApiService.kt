@@ -7,6 +7,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import com.google.gson.GsonBuilder
+import com.idemia.biosmart.scenes.user_info.UserInfoModels
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 
 /**
@@ -15,11 +19,11 @@ import com.google.gson.GsonBuilder
  */
 interface IdemiaApiService {
 
+
+    @POST("api/users/search")
+    fun search(@Body request: UserInfoModels.Search.Request): Observable<Response<UserInfoModels.Search.Response>>
+
     // Web Service endpoints
-
-    @GET("api/users/")
-    fun helloWorld(): Observable<WelcomeModels.HelloWorld.Response>
-
     companion object {
         /**
          * Create Idemia API Service

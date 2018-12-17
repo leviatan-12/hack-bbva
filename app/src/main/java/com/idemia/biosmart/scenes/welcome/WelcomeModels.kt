@@ -16,15 +16,14 @@ class WelcomeModels {
 
     // Start enrolment usecase
     class StartEnrollment {
-        class Request
-        class Response
-        class ViewModel
+        data class Request(val operation: Operation)
+        class Response(val operation: Operation)
+        class ViewModel(val operation: Operation)
     }
 
-    // Hello World use case
-    object HelloWorld {
-        class Request
-        data class Response(val success: Boolean = true, val message:String)
-        data class ViewModel(val available: Boolean, val message: String)
+    enum class Operation{
+        ENROLMENT,
+        AUTHENTICATION,
+        IDENTIFY
     }
 }

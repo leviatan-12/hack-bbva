@@ -1,8 +1,6 @@
 package com.idemia.biosmart.scenes.welcome
 
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  *  Welcome Interactor
@@ -28,24 +26,9 @@ class WelcomeInteractor : WelcomeBusinessLogic {
         presenter.presentGenerateLicense(response)
     }
 
-    override fun startEnrollment(request: WelcomeModels.StartEnrollment.Request) {
-        val response = WelcomeModels.StartEnrollment.Response()
-        presenter.presentStartEnrolment(response)
-    }
-
-    override fun helloWorld(request: WelcomeModels.HelloWorld.Request) {
-        disposable = worker.helloWorld().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe (
-                { response ->
-                    presenter.presentHelloWorld(response)
-                    disposable?.dispose()
-                },
-                { error ->
-                    presenter.presentHelloWorld(
-                        WelcomeModels.HelloWorld.Response(false, "Web Services Error connection: ${error.localizedMessage}"))
-                    disposable?.dispose()
-                })
+    override fun startProcess(request: WelcomeModels.StartEnrollment.Request) {
+        val response = WelcomeModels.StartEnrollment.Response(request.operation)
+        presenter.presentStartProcess(response)
     }
 }
 
@@ -62,6 +45,5 @@ interface WelcomeBusinessLogic {
      * @param requuest A GenerateLicense Request to send
      */
     fun generateLicense(request: WelcomeModels.GenerateLicense.Request)
-    fun startEnrollment(request: WelcomeModels.StartEnrollment.Request)
-    fun helloWorld(request: WelcomeModels.HelloWorld.Request)
+    fun startProcess(request: WelcomeModels.StartEnrollment.Request)
 }

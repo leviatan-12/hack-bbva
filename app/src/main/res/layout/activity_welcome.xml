@@ -54,14 +54,6 @@
                       android:id="@+id/text_view_license_status"
                       tools:text="License Activated Successfully"/>
 
-
-            <TextView
-                    android:text="@string/welcome_label_license_status"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
         <View android:layout_width="match_parent"
@@ -88,6 +80,7 @@
 
 
             <com.idemia.biosmart.components.MenuCardView
+                    android:id="@+id/menu_card_view_authenticate"
                     app:cardActionTitle="Start"
                     app:cardTitle="Authenticate"
                     app:cardImage="@drawable/ic_apply_96"
@@ -95,6 +88,7 @@
                     android:layout_columnWeight="1"/>
 
             <com.idemia.biosmart.components.MenuCardView
+                    android:id="@+id/menu_card_view_identify"
                     app:cardActionTitle="Start"
                     app:cardTitle="Identify"
                     app:cardImage="@drawable/ic_more_info_96"

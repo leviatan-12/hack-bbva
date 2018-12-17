@@ -40,11 +40,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun onLoadActivity() {
         setSupportActionBar(bottom_app_bar)
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-        menu_card_view_enrolment.buttonAction.setOnClickListener {
-            startProcess()
-        }
-        // Verify web Services Online
-        isWebServicesOnline()
+        menu_card_view_enrolment.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.ENROLMENT) }
+        menu_card_view_authenticate.buttonAction.setOnClickListener{ startProcess(WelcomeModels.Operation.AUTHENTICATION) }
     }
 
     //region Action Bar / Menu
@@ -82,28 +79,16 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     /**
      * Go to next view
      */
-    private fun startProcess(){
-        val request = WelcomeModels.StartEnrollment.Request()
-        interactor.startEnrollment(request)
+    private fun startProcess(operation: WelcomeModels.Operation){
+        val request = WelcomeModels.StartEnrollment.Request(operation)
+        interactor.startProcess(request)
     }
 
-    override fun displayStartEnrolment(viewModel: WelcomeModels.StartEnrollment.ViewModel) {
-        router.routeToEnrolmentScene()
-    }
-
-    /**
-     * Verify Webservices Online
-     */
-    private fun isWebServicesOnline(){
-        val request = WelcomeModels.HelloWorld.Request()
-        interactor.helloWorld(request)
-    }
-
-    override fun displayHelloWorld(viewModel: WelcomeModels.HelloWorld.ViewModel) {
-        if(viewModel.available){
-
-        }else{
-            Toast.makeText(applicationContext, viewModel.message, Toast.LENGTH_LONG).show()
+    override fun displayStartProcess(viewModel: WelcomeModels.StartEnrollment.ViewModel) {
+        when(viewModel.operation){
+            WelcomeModels.Operation.ENROLMENT -> router.routeToEnrolmentScene()
+            WelcomeModels.Operation.AUTHENTICATION -> router.routeToAuthenticationScene()
+            WelcomeModels.Operation.IDENTIFY -> router.routeToIdentifyScene()
         }
     }
     //endregion
@@ -117,6 +102,5 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
  */
 interface WelcomeDisplayLogic {
     fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel)
-    fun displayStartEnrolment(viewModel: WelcomeModels.StartEnrollment.ViewModel)
-    fun displayHelloWorld(viewModel: WelcomeModels.HelloWorld.ViewModel)
+    fun displayStartProcess(viewModel: WelcomeModels.StartEnrollment.ViewModel)
 }

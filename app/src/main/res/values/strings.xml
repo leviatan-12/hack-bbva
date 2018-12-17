@@ -9,11 +9,24 @@
     <string name="welcome_message_license_not_generated">License not generated from Service Provider</string>
 
     <!-- Enrolment Scene -->
-    <string name="label_name">Name</string>
+    <string name="label_use_contactless">Use Contactless?</string>
+    <string name="label_start_process">Start Enrolment Process</string>
+
+
+    <!-- User Info Scene -->
+    <string name="user_info_label_enrolment_duration">Enrolment Duration</string>
+    <string name="user_info_label_encoding_duration">Encoding Duration</string>
+    <string name="user_info_label_match_person_to_person_duration">Match Person to Person Duration</string>
+
+
+    <!-- General Labels -->
+    <string name="label_NA">N/A</string>
+    <string name="label_name">Name(s)</string>
     <string name="label_last_name">Last Name</string>
     <string name="label_m_last_name">Second Last Name</string>
     <string name="label_username">Username</string>
-    <string name="label_use_contactless">Use Contactless?</string>
-    <string name="label_start_process">Start Enrolment Process</string>
+    <string name="label_finish_process">Finish Process</string>
+    <string name="message_user_found">User found successfully</string>
+    <string name="message_user_not_found">User not found</string>
 
 </resources>
