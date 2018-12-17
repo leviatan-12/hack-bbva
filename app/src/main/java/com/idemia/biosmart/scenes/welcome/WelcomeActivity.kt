@@ -38,17 +38,16 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun hideNavigationBar(): Boolean = false
 
     override fun onLoadActivity() {
-        setupActionBar()
-    }
-
-    //region Action Bar / Menu
-    private fun setupActionBar(){
         setSupportActionBar(bottom_app_bar)
+        text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
         menu_card_view_enrolment.buttonAction.setOnClickListener {
             startProcess()
         }
+        // Verify web Services Online
+        isWebServicesOnline()
     }
 
+    //region Action Bar / Menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_app_bar, menu)
         return true
@@ -56,11 +55,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
-            R.id.menu_item_generate_license -> {
-                generateLicense()
-                // Just for testing
-                router.routeToEnrolmentScene()
-            }
+            R.id.menu_item_generate_license -> generateLicense()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -78,9 +73,9 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel) {
         Log.i(TAG, "displayGenerateLicense: ")
         if(viewModel.generated){
-            Toast.makeText(applicationContext, getString(R.string.message_license_activated), Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
         }else{
-            Toast.makeText(applicationContext, getString(R.string.message_license_not_generated), Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_generated), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -96,6 +91,21 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         router.routeToEnrolmentScene()
     }
 
+    /**
+     * Verify Webservices Online
+     */
+    private fun isWebServicesOnline(){
+        val request = WelcomeModels.HelloWorld.Request()
+        interactor.helloWorld(request)
+    }
+
+    override fun displayHelloWorld(viewModel: WelcomeModels.HelloWorld.ViewModel) {
+        if(viewModel.available){
+
+        }else{
+            Toast.makeText(applicationContext, viewModel.message, Toast.LENGTH_LONG).show()
+        }
+    }
     //endregion
 }
 
@@ -108,4 +118,5 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 interface WelcomeDisplayLogic {
     fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel)
     fun displayStartEnrolment(viewModel: WelcomeModels.StartEnrollment.ViewModel)
+    fun displayHelloWorld(viewModel: WelcomeModels.HelloWorld.ViewModel)
 }

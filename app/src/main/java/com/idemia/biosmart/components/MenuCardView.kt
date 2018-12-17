@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.idemia.biosmart.R
-import android.support.annotation.StyleableRes
 import android.support.design.button.MaterialButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,10 +13,6 @@ import android.widget.TextView
 class MenuCardView(context: Context, attrs: AttributeSet): LinearLayout(context, attrs){
 
     init { init(context,attrs) }
-
-    @StyleableRes val index0:Int = 0
-    @StyleableRes val index1:Int = 1
-    @StyleableRes val index2:Int = 2
 
     lateinit var textViewTitle: TextView
     lateinit var buttonAction: MaterialButton

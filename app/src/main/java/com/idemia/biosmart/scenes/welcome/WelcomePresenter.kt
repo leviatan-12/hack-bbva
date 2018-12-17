@@ -9,6 +9,10 @@ package com.idemia.biosmart.scenes.welcome
 class WelcomePresenter : WelcomePresentationLogic {
     private var activity: WelcomeDisplayLogic? = null
 
+    companion object {
+        private val TAG = "WelcomePresenter"
+    }
+
     fun setActivity(activity: WelcomeDisplayLogic) {
         this.activity = activity
     }
@@ -24,8 +28,9 @@ class WelcomePresenter : WelcomePresentationLogic {
         activity!!.displayStartEnrolment(viewModel)
     }
 
-    companion object {
-        private val TAG = "WelcomePresenter"
+    override fun presentHelloWorld(response: WelcomeModels.HelloWorld.Response) {
+        val viewModel = WelcomeModels.HelloWorld.ViewModel(true, response.message)
+        activity!!.displayHelloWorld(viewModel)
     }
 }
 
@@ -39,4 +44,5 @@ class WelcomePresenter : WelcomePresentationLogic {
 interface WelcomePresentationLogic {
     fun presentGenerateLicense(response: WelcomeModels.GenerateLicense.Response)
     fun presentStartEnrolment(response: WelcomeModels.StartEnrollment.Response)
+    fun presentHelloWorld(response: WelcomeModels.HelloWorld.Response)
 }
