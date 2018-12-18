@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.idemia.biosmart">
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:name=".BioSmartApplication"
@@ -12,23 +13,27 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:usesCleartextTraffic="true"
-            android:theme="@style/AppTheme">
-
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
         <activity android:name=".scenes.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
 
-                <data android:scheme="http"
-                      android:host="www.idemia.com"
-                      android:pathPrefix="/" />
+                <data
+                        android:host="www.idemia.com"
+                        android:pathPrefix="/"
+                        android:scheme="http"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".scenes.welcome.WelcomeActivity"/>
         <activity android:name=".scenes.enrolment.EnrolmentActivity"/>
         <activity android:name=".scenes.user_info.UserInfoActivity"/>
+        <activity android:name=".scenes.authenticate.AuthenticateActivity">
+        </activity>
+        <activity android:name=".scenes.identify.IdentifyActivity">
+        </activity>
     </application>
 
 </manifest>

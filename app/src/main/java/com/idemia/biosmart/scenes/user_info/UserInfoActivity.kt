@@ -29,7 +29,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     override fun onLoadActivity() {
         displayInitStatus()
-        // TODO: Call this tp search user after authenticate or identify user
+        // TODO: Call this to search user after authenticate or identify user
         search("alfredo")
     }
 
@@ -97,9 +97,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
+    //region Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
         Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
     }
+    //endregion
 
     /**
      * Initial Status View UI

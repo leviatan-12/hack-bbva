@@ -34,25 +34,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="32sp"
+                    android:textSize="40sp"
                     android:layout_marginStart="16dp"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:orientation="vertical">
+                      android:orientation="horizontal">
 
             <TextView
                     android:text="@string/welcome_label_license_status"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="match_parent"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            <TextView android:layout_width="match_parent"
+            <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
+                      android:layout_marginStart="8dp"
                       android:id="@+id/text_view_license_status"
                       tools:text="License Activated Successfully"/>
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+
+            <TextView
+                    android:text="@string/welcome_label_sdk_version"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="8dp"
+                      android:id="@+id/text_view_sdk_version"
+                      tools:text="v4.13.0"/>
 
         </LinearLayout>
 

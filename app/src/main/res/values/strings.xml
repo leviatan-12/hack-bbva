@@ -3,15 +3,33 @@
 
     <!-- Welcome Scene -->
     <string name="welcome_message_generate_license">Generate License</string>
-    <string name="welcome_label_license_status">License Status</string>
+    <string name="welcome_label_license_status">License Status:</string>
+    <string name="welcome_label_sdk_version">BioSDK Version:</string>
     <string name="welcome_message_license_activated">License activated successfully</string>
     <string name="welcome_message_license_not_activated">License not activated</string>
     <string name="welcome_message_license_not_generated">License not generated from Service Provider</string>
 
     <!-- Enrolment Scene -->
-    <string name="label_use_contactless">Use Contactless?</string>
-    <string name="label_start_process">Start Enrolment Process</string>
+    <string name="enrolment_label_start_process">Start Enrolment Process</string>
 
+    <!-- Authenticate Scene -->
+    <string name="authenticate_label_start_process">Start Authentication Process</string>
+    <string name="authenticate_label_authenticate_person">Authenticate Person</string>
+    <string name="authenticate_label_description">
+        Authentication process will make a 1 to 1 process match operation (also know as Authentication) to find
+        a person in MBSS. You can use face, fingers or both. Username (person id) is required to perform this operation.
+    </string>
+    <string name="authenticate_label_capture_fingers">Capture Fingers</string>
+
+    <!-- Identify Scene -->
+    <string name="identify_label_start_process">Start Identification Process</string>
+    <string name="identify_label_authenticate_person">Identify Person</string>
+    <string name="identify_label_description">
+        Identification process will make a 1 to N process match operation (also know as Identification) to find
+        a person in MBSS. You can use face, fingers or both.
+    </string>
+    <string name="identify_label_capture_fingers">Capture Fingers</string>
+    <string name="identify_label_identify_person">Identify Person</string>
 
     <!-- User Info Scene -->
     <string name="user_info_label_enrolment_duration">Enrolment Duration</string>
@@ -28,5 +46,6 @@
     <string name="label_finish_process">Finish Process</string>
     <string name="message_user_found">User found successfully</string>
     <string name="message_user_not_found">User not found</string>
+    <string name="label_use_contactless">Use Contactless?</string>
 
 </resources>

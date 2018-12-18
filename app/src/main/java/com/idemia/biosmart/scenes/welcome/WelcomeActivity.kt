@@ -42,6 +42,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
         menu_card_view_enrolment.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.ENROLMENT) }
         menu_card_view_authenticate.buttonAction.setOnClickListener{ startProcess(WelcomeModels.Operation.AUTHENTICATION) }
+        menu_card_view_identify.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.IDENTIFY) }
+        text_view_sdk_version.text = "v4.13.0"
     }
 
     //region Action Bar / Menu
