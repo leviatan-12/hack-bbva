@@ -121,6 +121,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="4dp"
@@ -134,6 +135,6 @@
             android:layout_height="48dp"
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimaryDark"
-            app:fabAlignmentMode="center"/>
+            app:fabAlignmentMode="end"/>
 
 </android.support.design.widget.CoordinatorLayout>

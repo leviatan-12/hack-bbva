@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.BaseActivity
-import com.idemia.biosmart.components.MenuCardView
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 /**
@@ -43,6 +42,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         menu_card_view_enrolment.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.ENROLMENT) }
         menu_card_view_authenticate.buttonAction.setOnClickListener{ startProcess(WelcomeModels.Operation.AUTHENTICATION) }
         menu_card_view_identify.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.IDENTIFY) }
+        button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
         text_view_sdk_version.text = "v4.13.0"
     }
 
@@ -91,6 +91,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             WelcomeModels.Operation.ENROLMENT -> router.routeToEnrolmentScene()
             WelcomeModels.Operation.AUTHENTICATION -> router.routeToAuthenticationScene()
             WelcomeModels.Operation.IDENTIFY -> router.routeToIdentifyScene()
+            WelcomeModels.Operation.SETTINGS -> router.routeToSettingsScene()
         }
     }
     //endregion

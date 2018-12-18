@@ -24,6 +24,7 @@ class WelcomeModels {
     enum class Operation{
         ENROLMENT,
         AUTHENTICATION,
-        IDENTIFY
+        IDENTIFY,
+        SETTINGS
     }
 }
