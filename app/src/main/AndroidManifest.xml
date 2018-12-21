@@ -6,6 +6,20 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- Bio Smart SDK -->
+    <permission
+            android:name="com.idemia.biosmart.NEW_READ_LKMS_LICENSE_PROVIDER"
+            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+    <permission
+            android:name="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
+            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+    <permission
+            android:name="com.idemia.biosmart.NEW_READ_MPH_BIO_SDK_PROVIDER"
+            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+    <permission
+            android:name="com.idemia.biosmart.NEW_WRITE_MPH_BIO_SDK_PROVIDER"
+            android:protectionLevel="signature" />
+
     <application
             android:name=".BioSmartApplication"
             android:allowBackup="true"
@@ -14,11 +28,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:largeHeap="true"
             android:usesCleartextTraffic="true">
         <activity android:name=".scenes.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
+
                 <data
                         android:host="www.idemia.com"
                         android:pathPrefix="/"
@@ -34,8 +51,24 @@
         </activity>
         <activity
                 android:name=".scenes.settings.SettingsActivity"
-                android:label="@string/title_activity_settings">
+                android:label="@string/title_activity_settings"/>
+        <activity android:name=".scenes.mso.MsoActivity">
         </activity>
+
+        <!-- The provider needs to be defined by the implementing app so as to allow multiple apps -->
+        <provider
+                android:name="com.morpho.mph_bio_sdk.android.sdk.content_provider.BioStoreProvider"
+                android:authorities="com.idemia.biosmart.bio_store"
+                android:readPermission="com.idemia.biosmart.NEW_READ_MPH_BIO_SDK_PROVIDER"
+                android:writePermission="com.idemia.biosmart.NEW_WRITE_MPH_BIO_SDK_PROVIDER"
+                tools:replace="android:authorities, android:readPermission, android:writePermission" />
+        <provider
+                android:name="com.morpho.lkms.android.sdk.lkms_core.content_provider.LkmsStoreProvider"
+                android:authorities="com.idemia.biosmart.lkms"
+                android:readPermission="com.idemia.biosmart.NEW_READ_LKMS_LICENSE_PROVIDER"
+                android:writePermission="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
+                tools:replace="android:authorities, android:readPermission, android:writePermission" />
+
     </application>
 
 </manifest>

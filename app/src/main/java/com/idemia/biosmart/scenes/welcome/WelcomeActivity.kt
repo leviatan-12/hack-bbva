@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.BaseActivity
+import com.morpho.mph_bio_sdk.android.sdk.BioSdk
+import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 /**
@@ -18,6 +20,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     private lateinit var interactor: WelcomeBusinessLogic    // Interactor
     private lateinit var router: WelcomeRoutingLogic         // Router
 
+    companion object {
+        private val TAG = "WelcomeActivity"
+    }
+
     override fun inject() {
         val activity = this
         this.interactor = WelcomeInteractor()
@@ -26,10 +32,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         (this.interactor as WelcomeInteractor).setPresenter(presenter)
         presenter.setActivity(activity)
         (router as WelcomeRouter).setActivity(this)
-    }
-
-    companion object {
-        private val TAG = "WelcomeActivity"
     }
 
     override fun resourceLayoutId(): Int = R.layout.activity_welcome
@@ -43,7 +45,11 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         menu_card_view_authenticate.buttonAction.setOnClickListener{ startProcess(WelcomeModels.Operation.AUTHENTICATION) }
         menu_card_view_identify.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.IDENTIFY) }
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
-        text_view_sdk_version.text = "v4.13.0"
+        val sdkInfo = BioSdkInfo(applicationContext)
+        text_view_sdk_version.text = sdkInfo.version
+
+        // Validate or activate license
+        activateLkmsLicenseOnDevice()
     }
 
     //region Action Bar / Menu
@@ -60,7 +66,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
     //endregion
 
-    //region Use Cases
+    //region Generate License Usecase
     /**
      * Generate License Use Case
      */
@@ -72,12 +78,54 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel) {
         Log.i(TAG, "displayGenerateLicense: ")
         if(viewModel.generated){
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
+            text_view_license_status.text = getString(R.string.welcome_message_license_bin_file_generated)
+            createLKMSLicense(viewModel.activationData!!)
         }else{
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_generated), Toast.LENGTH_LONG).show()
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_bin_file_not_generated), Toast.LENGTH_LONG).show()
         }
     }
 
+    //endregion
+
+    //region Create LKMS License
+    fun createLKMSLicense(activationData: ByteArray){
+        val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData,
+            applicationContext,
+            "https://service-intg.dictao.com/lkms-server-app")
+        interactor.createLKMSLicense(request)
+    }
+
+    override fun displayCreateLKMSLicense(viewModel: WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel) {
+        if(viewModel.activated){
+            text_view_license_status.text = getString(R.string.welcome_message_license_activated)
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
+        }else{
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    //endregion
+
+    //region Activate Lkms License On Device
+    private fun activateLkmsLicenseOnDevice(){
+        val request = WelcomeModels.ActivateLkmsLicenseOnDevice.Request(applicationContext)
+        interactor.activateLkmsLicenseOnDevice(request)
+    }
+
+    override fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel) {
+        if(viewModel.isLicenseValid){
+            text_view_license_status.text = getString(R.string.welcome_message_license_activated)
+        }else {
+            Log.i(TAG, "License is not active or is not valid, a new one will be generated...")
+            generateLicense()
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
+        }
+    }
+    //endregion
+
+    //region Start Process
     /**
      * Go to next view
      */
@@ -105,5 +153,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
  */
 interface WelcomeDisplayLogic {
     fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel)
+    fun displayCreateLKMSLicense(viewModel: WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel)
+    fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel)
     fun displayStartProcess(viewModel: WelcomeModels.StartEnrollment.ViewModel)
 }

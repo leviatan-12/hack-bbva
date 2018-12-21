@@ -5,7 +5,6 @@ import com.idemia.biosmart.scenes.authenticate.AuthenticateActivity
 import com.idemia.biosmart.scenes.enrolment.EnrolmentActivity
 import com.idemia.biosmart.scenes.identify.IdentifyActivity
 import com.idemia.biosmart.scenes.settings.SettingsActivity
-import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 
 import java.lang.ref.WeakReference
 

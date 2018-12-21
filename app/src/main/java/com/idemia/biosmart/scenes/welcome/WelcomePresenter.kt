@@ -20,7 +20,18 @@ class WelcomePresenter : WelcomePresentationLogic {
     override fun presentGenerateLicense(response: WelcomeModels.GenerateLicense.Response) {
         val viewModel = WelcomeModels.GenerateLicense.ViewModel()
         viewModel.generated = response.generated
+        viewModel.activationData = response.activationData
         activity!!.displayGenerateLicense(viewModel)
+    }
+
+    override fun presentCreateLKMSLicense(response: WelcomeModels.ActivateBinFileLicenseToLkms.Response) {
+        val viewModel = WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel(response.activated)
+        activity!!.displayCreateLKMSLicense(viewModel)
+    }
+
+    override fun presentActivateLkmsLicenseOnDevice(response: WelcomeModels.ActivateLkmsLicenseOnDevice.Response) {
+        val viewModel = WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel(response.isLicenseValid, response.lkmsLicense)
+        activity!!.displayActivateLkmsLicenseOnDevice(viewModel)
     }
 
     override fun presentStartProcess(response: WelcomeModels.StartEnrollment.Response) {
@@ -38,5 +49,7 @@ class WelcomePresenter : WelcomePresentationLogic {
  */
 interface WelcomePresentationLogic {
     fun presentGenerateLicense(response: WelcomeModels.GenerateLicense.Response)
+    fun presentCreateLKMSLicense(response: WelcomeModels.ActivateBinFileLicenseToLkms.Response)
+    fun presentActivateLkmsLicenseOnDevice(response: WelcomeModels.ActivateLkmsLicenseOnDevice.Response)
     fun presentStartProcess(response: WelcomeModels.StartEnrollment.Response)
 }

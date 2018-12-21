@@ -7,6 +7,9 @@
     <string name="welcome_label_sdk_version">BioSDK Version:</string>
     <string name="welcome_message_license_activated">License activated successfully</string>
     <string name="welcome_message_license_not_activated">License not activated</string>
+    <string name="welcome_message_license_is_not_active">License is not active, a new one will be generated</string>
+    <string name="welcome_message_license_bin_file_not_generated">License bin file from Service Provider not generated!</string>
+    <string name="welcome_message_license_bin_file_generated">License bin file from Service Provider generated successfully!</string>
     <string name="welcome_message_license_not_generated">License not generated from Service Provider</string>
 
     <!-- Enrolment Scene -->
@@ -36,6 +39,13 @@
     <string name="user_info_label_encoding_duration">Encoding Duration</string>
     <string name="user_info_label_match_person_to_person_duration">Match Person to Person Duration</string>
 
+    <!-- MSO Scene -->
+    <string name="mso_label_thumb">Thumb</string>
+    <string name="mso_label_index">Index</string>
+    <string name="mso_label_middle">Middle</string>
+    <string name="mso_label_ring">Ring</string>
+    <string name="mso_label_little">Little</string>
+
 
     <!-- General Labels -->
     <string name="label_NA">N/A</string>
@@ -48,9 +58,11 @@
     <string name="message_user_not_found">User not found</string>
     <string name="label_use_contactless">Use Contactless?</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="label_capture_fingers">Capture Fingers</string>
 
 
-    <!-- Strings related to Settings -->
+
+    <!-- Settings Scene -->
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

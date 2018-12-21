@@ -1,17 +1,14 @@
 package com.idemia.biosmart.api
 
-import com.idemia.biosmart.scenes.welcome.WelcomeModels
 import io.reactivex.Observable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import com.google.gson.GsonBuilder
 import com.idemia.biosmart.scenes.user_info.UserInfoModels
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-
 
 /**
  * IDEMIA API Service

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".scenes.splash.SplashActivity">
+        tools:context=".scenes.welcome.WelcomeActivity">
 
     <LinearLayout
             android:orientation="vertical"
@@ -92,7 +92,7 @@
                 android:columnCount="2"
                 android:rowCount="2">
 
-            <com.idemia.biosmart.components.MenuCardView
+            <com.idemia.biosmart.scenes.welcome.views.MenuCardView
                     android:id="@+id/menu_card_view_enrolment"
                     app:cardActionTitle="Start"
                     app:cardTitle="Enrolment"
@@ -101,7 +101,7 @@
                     android:layout_columnWeight="1"/>
 
 
-            <com.idemia.biosmart.components.MenuCardView
+            <com.idemia.biosmart.scenes.welcome.views.MenuCardView
                     android:id="@+id/menu_card_view_authenticate"
                     app:cardActionTitle="Start"
                     app:cardTitle="Authenticate"
@@ -109,7 +109,7 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"/>
 
-            <com.idemia.biosmart.components.MenuCardView
+            <com.idemia.biosmart.scenes.welcome.views.MenuCardView
                     android:id="@+id/menu_card_view_identify"
                     app:cardActionTitle="Start"
                     app:cardTitle="Identify"

@@ -2,12 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-allprojects {
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
+repositories {
+    flatDir { dirs 'libs' }
+    mavenCentral()
+    maven { url "https://jitpack.io" }
 }
+
 android {
+    buildToolsVersion '28.0.3'
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.idemia.biosmart"
@@ -16,6 +18,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
     buildTypes {
         release {
@@ -26,29 +31,29 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     // Android
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-
     // Android Test
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
+    // Bio Smart SDK
+    implementation(name:"AndroidBiometricSDK-4.7.0-biometry_document", ext:"aar")
+    implementation(name:"lkms_core-1.2.5", ext:"aar")
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     // Third Party Dependencies
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
-
     // Retrofit
-    compile "com.squareup.retrofit2:retrofit:2.4.0"
-    compile "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
-    compile "com.squareup.retrofit2:converter-gson:2.4.0"
-    compile "io.reactivex.rxjava2:rxandroid:2.0.2"
-
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 }

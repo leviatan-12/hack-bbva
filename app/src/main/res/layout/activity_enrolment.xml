@@ -124,21 +124,39 @@
                 </android.support.design.widget.TextInputLayout>
 
 
-                <Switch
-                        android:id="@+id/switch_enable_contactless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/colorAccent"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:text="@string/label_use_contactless" />
+                <LinearLayout android:orientation="horizontal"
+                              android:gravity="center_vertical"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:weightSum="1">
+
+                    <Switch
+                            android:id="@+id/switch_enable_contactless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/colorAccent"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:layout_weight="0.5"
+                            android:text="@string/label_use_contactless" />
+
+                    <android.support.design.button.MaterialButton
+                            android:text="@string/label_capture_fingers"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="0.5"
+                            app:cornerRadius="128dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
                 <android.support.design.button.MaterialButton
                         android:layout_margin="8dp"
-                        app:cornerRadius="16dp"
+                        app:cornerRadius="8dp"
                         android:id="@+id/button_start_process"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
