@@ -61,15 +61,21 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         recycle_view_menu.setHasFixedSize(true)
 
         val list = arrayListOf(
-            WelcomeModels.CardMenu(getString(R.string.label_enrolment),getString(R.string.label_start_process), R.drawable.ic_user_96, View.OnClickListener {
-                startProcess(WelcomeModels.Operation.ENROLMENT)
-            }),
-            WelcomeModels.CardMenu(getString(R.string.label_authentication),getString(R.string.label_start_process), R.drawable.ic_apply_96, View.OnClickListener {
+            WelcomeModels.CardMenu(getString(R.string.label_enrolment),getString(R.string.label_start_process), R.drawable.ic_user_96,"",
+                View.OnClickListener {
+                    startProcess(WelcomeModels.Operation.ENROLMENT)
+                }
+            ),
+            WelcomeModels.CardMenu(getString(R.string.label_authentication),getString(R.string.label_start_process), R.drawable.ic_apply_96, getString(R.string.authenticate_label_description),
+                View.OnClickListener {
                 startProcess(WelcomeModels.Operation.AUTHENTICATION)
-            }),
-            WelcomeModels.CardMenu(getString(R.string.label_identify), getString(R.string.label_start_process), R.drawable.ic_more_info_96, View.OnClickListener {
+                }
+            ),
+            WelcomeModels.CardMenu(getString(R.string.label_identify), getString(R.string.label_start_process), R.drawable.ic_more_info_96, getString(R.string.identify_label_description),
+                View.OnClickListener {
                 startProcess(WelcomeModels.Operation.IDENTIFY)
-            })
+                }
+            )
         )
 
         recycle_view_menu.adapter = CardsMenuAdapter(list)

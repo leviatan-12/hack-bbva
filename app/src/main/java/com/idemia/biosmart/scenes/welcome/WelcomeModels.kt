@@ -12,7 +12,8 @@ import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
  */
 class WelcomeModels {
 
-    class CardMenu(val title: String, val actionTitle: String, val image: Int, var listener: View.OnClickListener? = null)
+    class CardMenu(val title: String, val actionTitle: String, val image: Int, val description: String = "",
+                   var listener: View.OnClickListener? = null)
 
     // Generate License use case
     class GenerateLicense {

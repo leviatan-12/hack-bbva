@@ -22,12 +22,14 @@ class CardsMenuAdapter(var list: ArrayList<WelcomeModels.CardMenu>): RecyclerVie
         menuCardHolder.title.text = list[index].title
         menuCardHolder.image.setImageResource(list[index].image)
         menuCardHolder.addOnClickListener(list[index].listener)
+        menuCardHolder.description.text = list[index].description
     }
 
     companion object {
         class MenuCardHolder(val view: View): RecyclerView.ViewHolder(view) {
             val image = view.card_view_menu_image
             val title = view.card_view_menu_title
+            val description = view.card_view_menu_description
             var actionTitle = view.card_view_menu_action_title
 
             fun addOnClickListener(action: View.OnClickListener?){

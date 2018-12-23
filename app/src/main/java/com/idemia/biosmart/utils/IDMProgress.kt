@@ -1,6 +1,7 @@
 package com.idemia.biosmart.utils
 
 import android.content.Context
+import com.idemia.biosmart.base.DisposableManager
 import com.kaopiz.kprogresshud.KProgressHUD
 
 class IDMProgress(context: Context, label: String, details: String) {
@@ -9,6 +10,9 @@ class IDMProgress(context: Context, label: String, details: String) {
 
     init {
         kProgress = create(context, label, details)
+        kProgress.setCancellable {
+            DisposableManager.dispose()
+        }
     }
 
     private fun create(context: Context, label: String, details: String): KProgressHUD{

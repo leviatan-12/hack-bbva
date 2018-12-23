@@ -115,7 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="bottom"
+            android:theme="@style/ToolBarStyle"
             android:backgroundTint="@color/colorPrimaryDark"
-            app:fabAlignmentMode="end"/>
+            app:fabAlignmentMode="center"/>
 
 </android.support.design.widget.CoordinatorLayout>
