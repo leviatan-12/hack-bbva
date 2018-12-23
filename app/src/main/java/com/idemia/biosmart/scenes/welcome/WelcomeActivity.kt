@@ -1,11 +1,18 @@
 package com.idemia.biosmart.scenes.welcome
 
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.BaseActivity
+import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
+import com.idemia.biosmart.utils.IDMProgress
+import com.kaopiz.kprogresshud.KProgressHUD
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
@@ -19,6 +26,8 @@ import kotlinx.android.synthetic.main.activity_welcome.*
 class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     private lateinit var interactor: WelcomeBusinessLogic    // Interactor
     private lateinit var router: WelcomeRoutingLogic         // Router
+
+    lateinit var loader: KProgressHUD
 
     companion object {
         private val TAG = "WelcomeActivity"
@@ -38,18 +47,41 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun hideActionBar(): Boolean = true
     override fun hideNavigationBar(): Boolean = false
 
+    //region On load activity
     override fun onLoadActivity() {
         setSupportActionBar(bottom_app_bar)
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-        menu_card_view_enrolment.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.ENROLMENT) }
-        menu_card_view_authenticate.buttonAction.setOnClickListener{ startProcess(WelcomeModels.Operation.AUTHENTICATION) }
-        menu_card_view_identify.buttonAction.setOnClickListener { startProcess(WelcomeModels.Operation.IDENTIFY) }
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
         val sdkInfo = BioSdkInfo(applicationContext)
         text_view_sdk_version.text = sdkInfo.version
 
+        // Linear Layout
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recycle_view_menu.layoutManager = layoutManager
+        recycle_view_menu.setHasFixedSize(true)
+
+        val list = arrayListOf(
+            WelcomeModels.CardMenu(getString(R.string.label_enrolment),getString(R.string.label_start_process), R.drawable.ic_user_96, View.OnClickListener {
+                startProcess(WelcomeModels.Operation.ENROLMENT)
+            }),
+            WelcomeModels.CardMenu(getString(R.string.label_authentication),getString(R.string.label_start_process), R.drawable.ic_apply_96, View.OnClickListener {
+                startProcess(WelcomeModels.Operation.AUTHENTICATION)
+            }),
+            WelcomeModels.CardMenu(getString(R.string.label_identify), getString(R.string.label_start_process), R.drawable.ic_more_info_96, View.OnClickListener {
+                startProcess(WelcomeModels.Operation.IDENTIFY)
+            })
+        )
+
+        recycle_view_menu.adapter = CardsMenuAdapter(list)
+
         // Validate or activate license
         activateLkmsLicenseOnDevice()
+    }
+    //endregion
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DisposableManager.dispose()  // Dispose all subscriptions
     }
 
     //region Action Bar / Menu
@@ -71,11 +103,14 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
      * Generate License Use Case
      */
     private fun generateLicense() {
+        loader = IDMProgress(this, "Generating License", "Please Wait...").kProgress
+        loader.show()
         val request = WelcomeModels.GenerateLicense.Request()
         interactor.generateLicense(request)
     }
 
     override fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel) {
+        loader.dismiss()
         Log.i(TAG, "displayGenerateLicense: ")
         if(viewModel.generated){
             text_view_license_status.text = getString(R.string.welcome_message_license_bin_file_generated)
@@ -90,6 +125,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //region Create LKMS License
     fun createLKMSLicense(activationData: ByteArray){
+        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
+        loader.show()
         val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData,
             applicationContext,
             "https://service-intg.dictao.com/lkms-server-app")
@@ -97,6 +134,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun displayCreateLKMSLicense(viewModel: WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel) {
+        loader.dismiss()
         if(viewModel.activated){
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
@@ -110,11 +148,14 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //region Activate Lkms License On Device
     private fun activateLkmsLicenseOnDevice(){
+        loader = IDMProgress(this, "Activating License", "Please Wait...").kProgress
+        loader.show()
         val request = WelcomeModels.ActivateLkmsLicenseOnDevice.Request(applicationContext)
         interactor.activateLkmsLicenseOnDevice(request)
     }
 
     override fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel) {
+        loader.dismiss()
         if(viewModel.isLicenseValid){
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
         }else {

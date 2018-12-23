@@ -115,7 +115,6 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         text_view_enrolment_duration.text = getString(R.string.label_NA)
         text_view_encoding_duration.text = getString(R.string.label_NA)
         text_view_match_person_to_person_duration.text = getString(R.string.label_NA)
-        loader = IDMProgress.create(this)
     }
 }
 

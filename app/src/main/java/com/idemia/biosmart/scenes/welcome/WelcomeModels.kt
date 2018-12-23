@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.welcome;
 
 import android.content.Context
+import android.view.View
 import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 
 /**
@@ -10,6 +11,9 @@ import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class WelcomeModels {
+
+    class CardMenu(val title: String, val actionTitle: String, val image: Int, var listener: View.OnClickListener? = null)
+
     // Generate License use case
     class GenerateLicense {
         class Request

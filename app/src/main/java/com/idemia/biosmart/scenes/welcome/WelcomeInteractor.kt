@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.welcome
 
 import android.util.Log
+import com.idemia.biosmart.base.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -30,13 +31,13 @@ class WelcomeInteractor : WelcomeBusinessLogic {
             val activationData = response.bytes()
             val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
             presenter.presentGenerateLicense(mResponse)
-            disposable!!.dispose()
+
         },{ throwable ->
             val response = WelcomeModels.GenerateLicense.Response(false)
             Log.e(TAG,"Error generating BIN File License due: ", throwable)
             presenter.presentGenerateLicense(response)
-            disposable!!.dispose()
         })
+        DisposableManager.add(disposable)
     }
 
     override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
@@ -46,13 +47,12 @@ class WelcomeInteractor : WelcomeBusinessLogic {
             .subscribe({ lkmsLicense ->
                 val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(true, lkmsLicense)
                 presenter.presentCreateLKMSLicense(response)
-                disposable!!.dispose()
             },{ throwable ->
                 Log.e(TAG, "License not activated due: ", throwable)
                 val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(false)
                 presenter.presentCreateLKMSLicense(response)
-                disposable!!.dispose()
             })
+        DisposableManager.add(disposable)
     }
 
     override fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request) {
@@ -86,6 +86,9 @@ interface WelcomeBusinessLogic {
      */
     fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request)
 
+    /**
+     * Activate LKMS Licese on device
+     */
     fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request)
 
     /**

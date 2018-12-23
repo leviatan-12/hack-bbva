@@ -13,8 +13,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 
-
-
 /**
  *  Welcome Worker
  *  BioSmart

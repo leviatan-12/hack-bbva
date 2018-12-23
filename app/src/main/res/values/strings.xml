@@ -59,6 +59,10 @@
     <string name="label_use_contactless">Use Contactless?</string>
     <string name="title_activity_settings">Settings</string>
     <string name="label_capture_fingers">Capture Fingers</string>
+    <string name="label_enrolment">Enrolment</string>
+    <string name="label_authentication">Authentication</string>
+    <string name="label_identify">Identify</string>
+    <string name="label_start_process">Start Process</string>
 
 
 
