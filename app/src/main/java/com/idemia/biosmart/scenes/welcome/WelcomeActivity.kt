@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.welcome
 
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.BaseActivity
 import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD

@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.user_info;
 
 import com.idemia.biosmart.api.IdemiaApiService
+import com.idemia.biosmart.base.ApiUrlManager
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -12,7 +13,8 @@ import retrofit2.Response
  */
 class UserInfoWorker {
     val apiService by lazy {
-        IdemiaApiService.create("http://200.66.76.220:8082/idemia/")
+        val apiUrl = ApiUrlManager.url()
+        IdemiaApiService.create(apiUrl)
     }
 
     fun search(request: UserInfoModels.Search.Request): Observable<Response<UserInfoModels.Search.Response>> {

@@ -6,6 +6,7 @@ import com.idemia.biosmart.base.BaseActivity
 import com.idemia.biosmart.utils.Base64
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import android.graphics.BitmapFactory
+import com.idemia.biosmart.base.DisposableManager
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD
 
@@ -33,6 +34,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         search("alfredo")
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        DisposableManager.dispose()
+    }
+
     override fun inject() {
         val activity = this
         this.interactor = UserInfoInteractor()
@@ -48,6 +54,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
      * Search User in DB
      */
     private fun search(username: String) {
+        loader = IDMProgress(this, "Getting User Info", "Please Wait...").kProgress
         loader.show()
         val request = UserInfoModels.Search.Request(username,1)
         interactor.search(request)
