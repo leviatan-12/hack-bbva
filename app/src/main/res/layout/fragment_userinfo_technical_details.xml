@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:padding="16dp"
+              tools:context=".scenes.user_info.view.fragments.UserInfoTechnicalDetailsFragment"
+              xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        app:cardElevation="4dp"
+                                        app:cardCornerRadius="4dp">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_margin="8dp"
+                      android:orientation="vertical">
+
+            <LinearLayout android:orientation="horizontal"
+                          android:weightSum="1"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+
+                <TextView android:text="@string/user_info_label_enrolment_duration"
+                          android:layout_weight="0.5"
+                          android:textSize="16sp"
+                          android:textColor="@color/colorPrimary"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"/>
+
+                <TextView android:id="@+id/text_view_enrolment_duration"
+                          android:layout_width="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_weight="0.5"
+                          android:layout_height="wrap_content"
+                          android:textSize="16sp"
+                          android:gravity="end"
+                          tools:text="350ms"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                          android:weightSum="1"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+
+                <TextView android:text="@string/user_info_label_encoding_duration"
+                          android:layout_weight="0.5"
+                          android:textSize="16sp"
+                          android:textColor="@color/colorPrimary"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"/>
+
+                <TextView android:id="@+id/text_view_encoding_duration"
+                          android:layout_width="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_weight="0.5"
+                          android:layout_height="wrap_content"
+                          android:textSize="16sp"
+                          android:gravity="end"
+                          tools:text="350ms"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                          android:weightSum="1"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+
+                <TextView android:text="@string/user_info_label_match_person_to_person_duration"
+                          android:layout_weight="0.5"
+                          android:textSize="16sp"
+                          android:textColor="@color/colorPrimary"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"/>
+
+                <TextView android:id="@+id/text_view_match_person_to_person_duration"
+                          android:layout_width="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_weight="0.5"
+                          android:layout_height="wrap_content"
+                          android:textSize="16sp"
+                          android:gravity="end"
+                          tools:text="350ms"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</ScrollView>

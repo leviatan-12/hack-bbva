@@ -84,6 +84,9 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
         // Validate or activate license
         activateLkmsLicenseOnDevice()
+
+        // TODO: Delete this line, just for testing...
+        startActivity(Intent(this@WelcomeActivity, UserInfoActivity::class.java))
     }
     //endregion
 

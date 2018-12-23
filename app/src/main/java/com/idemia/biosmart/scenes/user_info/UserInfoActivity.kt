@@ -7,6 +7,9 @@ import com.idemia.biosmart.utils.Base64
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import android.graphics.BitmapFactory
 import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.scenes.user_info.view.adapters.ViewPageUserInfoAdapter
+import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoDataFragment
+import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoTechnicalDetailsFragment
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD
 
@@ -26,10 +29,12 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
+    private val userInfoDataFragment = UserInfoDataFragment()
+    private val userInfoTechnicalDetailsFragment = UserInfoTechnicalDetailsFragment()
     lateinit var loader: KProgressHUD
 
     override fun onLoadActivity() {
-        displayInitStatus()
+        initViewPager()
         // TODO: Call this to search user after authenticate or identify user
         search("alfredo")
     }
@@ -71,57 +76,36 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     private fun displaySearchSuccess(message: String, user: UserInfoModels.User){
         Toast.makeText(applicationContext, message.toLowerCase().capitalize(), Toast.LENGTH_LONG).show()
-        bindUserInfo(user)
-        bindTechnicalDetails()
+        user.photo?.let {
+            val photo = Base64.decode(user.photo)
+            val options = BitmapFactory.Options()
+            options.inMutable = true
+            val bmp = BitmapFactory.decodeByteArray(photo, 0, photo.size, options)
+            image_view_photo.setImageBitmap(bmp)
+        }
+        userInfoDataFragment.dataBinding(user)
     }
 
     private fun displaySearchNotFound(message: String){
         Toast.makeText(applicationContext, message.toLowerCase().capitalize(), Toast.LENGTH_LONG).show()
-        bindUserInfo(null)
-        bindTechnicalDetails()
-    }
-
-    private fun bindUserInfo(user: UserInfoModels.User?){
-        user?.let {
-            user.photo?.let {
-                val photo = Base64.decode(user.photo)
-                val options = BitmapFactory.Options()
-                options.inMutable = true
-                val bmp = BitmapFactory.decodeByteArray(photo, 0, photo.size, options)
-                image_view_photo.setImageBitmap(bmp)
-            }
-            text_view_username.text = "@${it.username}"
-            text_view_name.text = it.name
-            text_view_last_name.text = it.last_name
-            text_view_m_last_name.text = it.m_last_name
-        }
-    }
-
-    private fun bindTechnicalDetails(){
-        text_view_enrolment_duration.text = getString(R.string.label_NA)
-        text_view_encoding_duration.text = getString(R.string.label_NA)
-        text_view_match_person_to_person_duration.text = getString(R.string.label_NA)
+        userInfoDataFragment.dataBinding(null)
+        loader.dismiss()
     }
     //endregion
 
     //region Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
         Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
+        loader.dismiss()
     }
     //endregion
 
-    /**
-     * Initial Status View UI
-     */
-    private fun displayInitStatus(){
-        image_view_photo.setImageDrawable(getDrawable(R.drawable.ic_user))
-        text_view_username.text = getString(R.string.label_NA)
-        text_view_name.text = getString(R.string.label_NA)
-        text_view_last_name.text = getString(R.string.label_NA)
-        text_view_m_last_name.text = getString(R.string.label_NA)
-        text_view_enrolment_duration.text = getString(R.string.label_NA)
-        text_view_encoding_duration.text = getString(R.string.label_NA)
-        text_view_match_person_to_person_duration.text = getString(R.string.label_NA)
+    private fun initViewPager(){
+        val adapter  = ViewPageUserInfoAdapter(supportFragmentManager)
+        adapter.addFragment(userInfoDataFragment, "User Info")
+        adapter.addFragment(userInfoTechnicalDetailsFragment, "Technical Details")
+        view_pager.adapter = adapter
+        tab_layout.setupWithViewPager(view_pager)
     }
 }
 
