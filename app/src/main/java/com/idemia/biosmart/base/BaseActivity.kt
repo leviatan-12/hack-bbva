@@ -1,7 +1,9 @@
 package com.idemia.biosmart.base
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -10,6 +12,9 @@ import android.view.WindowManager
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity: AppCompatActivity(){
+
+    /** Preference Manager */
+    lateinit var preferenceManager: SharedPreferences
 
     /** Layout Resource to set*/
     @LayoutRes abstract fun resourceLayoutId(): Int
@@ -35,6 +40,7 @@ abstract class BaseActivity: AppCompatActivity(){
         if(hideNavigationBar()) { hideNavigationBarFromApp() }
         setContentView(resourceLayoutId())
         inject()
+        preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
         onLoadActivity()
     }
 

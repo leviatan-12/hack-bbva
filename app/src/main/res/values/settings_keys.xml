@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="idemia_key_lkms_url" translatable="false">idemia_key_lkms_url</string>
+    <string name="idemia_key_middleware_name" translatable="false">idemia_key_middleware_name</string>
+    <string name="idemia_key_middleware_port" translatable="false">idemia_key_middleware_port</string>
+    <string name="idemia_key_middleware_ip_address" translatable="false">idemia_key_middleware_ip_address</string>
+    <string name="idemia_key_middleware_https" translatable="false">idemia_key_middleware_https</string>
+</resources>

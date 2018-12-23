@@ -65,31 +65,16 @@
     <string name="label_start_process">Start Process</string>
 
 
-
     <!-- Settings Scene -->
-
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
-        history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
+    <string name="pref_header_lkms_server">LKMS Server</string>
+    <string name="pref_title_lkms_url_server">LKMS Server URL</string>
+    <string name="pref_header_idemia_middleware">IDEMIA Middleware Settings</string>
+    <string name="pref_header_idemia_middleware_name">Middleware Endpoint Name</string>
+    <string name="pref_header_idemia_middleware_port">Port</string>
+    <string name="pref_header_idemia_middleware_ip_address">IP Address / URL</string>
+    <string name="pref_header_idemia_middlware_https">Use Https?</string>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

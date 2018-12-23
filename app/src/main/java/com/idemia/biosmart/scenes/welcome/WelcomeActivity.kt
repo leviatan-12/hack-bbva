@@ -131,11 +131,13 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //region Create LKMS License
     fun createLKMSLicense(activationData: ByteArray){
-        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
+        val lkmsUrl = getString(R.string.idemia_key_lkms_url)
+        val defaultLkmsUrl = getString(R.string.default_lkms_server_url)
+        val lkmsUrlSelected = preferenceManager.getString( lkmsUrl , defaultLkmsUrl)
+        val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData, applicationContext, lkmsUrlSelected!!)
+        Log.i(TAG, "createLKMSLicense: LKMS Server URL - $lkmsUrlSelected")
+        loader = IDMProgress(this, "Activating License on LKMS Server", "Plaase Wait...").kProgress
         loader.show()
-        val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData,
-            applicationContext,
-            "https://service-intg.dictao.com/lkms-server-app")
         interactor.createLKMSLicense(request)
     }
 
