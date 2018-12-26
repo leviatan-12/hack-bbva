@@ -1,8 +1,6 @@
-package com.idemia.biosmart.scenes.user_info;
+package com.idemia.biosmart.scenes.user_info
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
+import java.lang.ref.WeakReference
 
 /**
  *  UserInfo Router

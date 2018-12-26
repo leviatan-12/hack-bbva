@@ -1,8 +1,6 @@
-package com.idemia.biosmart.scenes.enrolment;
+package com.idemia.biosmart.scenes.enrolment
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
+import java.lang.ref.WeakReference
 
 /**
  *  Enrolment Router

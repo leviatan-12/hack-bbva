@@ -38,14 +38,12 @@ class SettingsActivity : PreferenceActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        val root = findViewById<View>(android.R.id.list).getParent().getParent().getParent() as LinearLayout
+        val root = findViewById<View>(android.R.id.list).parent.parent.parent as LinearLayout
         val bar = LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false) as Toolbar
         root.addView(bar, 0) // insert at top
-        bar.setNavigationOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                finish()
-            }
-        })
+        bar.setNavigationOnClickListener{
+            finish()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

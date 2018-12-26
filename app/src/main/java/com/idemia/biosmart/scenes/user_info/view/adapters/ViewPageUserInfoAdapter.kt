@@ -13,7 +13,7 @@ class ViewPageUserInfoAdapter(fragmentManager: FragmentManager): FragmentPagerAd
     override fun getCount(): Int = fragmentList.size
     override fun getPageTitle(position: Int): CharSequence? = titleList[position]
 
-    public fun addFragment(fragment: Fragment, title: String){
+    fun addFragment(fragment: Fragment, title: String){
         fragmentList.add(fragment)
         titleList.add(title)
     }

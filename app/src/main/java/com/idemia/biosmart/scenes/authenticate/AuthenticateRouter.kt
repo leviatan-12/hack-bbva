@@ -1,8 +1,6 @@
-package com.idemia.biosmart.scenes.authenticate;
+package com.idemia.biosmart.scenes.authenticate
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
+import java.lang.ref.WeakReference
 
 /**
  *  Authenticate Router

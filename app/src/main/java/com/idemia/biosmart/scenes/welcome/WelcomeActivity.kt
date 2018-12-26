@@ -2,7 +2,6 @@ package com.idemia.biosmart.scenes.welcome
 
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,7 +14,6 @@ import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD
-import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
 

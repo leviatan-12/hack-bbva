@@ -1,8 +1,6 @@
-package com.idemia.biosmart.scenes.identify;
+package com.idemia.biosmart.scenes.identify
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
+import java.lang.ref.WeakReference
 
 /**
  *  Identify Router
