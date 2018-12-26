@@ -42,7 +42,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
      */
     private fun doSomething() {
         val request = EnrolmentModels.DoSomething.Request()
-        interactor!!.doSomething(request)
+        interactor.doSomething(request)
     }
 
     override fun displayDoSomething(viewModel: EnrolmentModels.DoSomething.ViewModel) {

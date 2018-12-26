@@ -9,7 +9,6 @@ import android.support.design.button.MaterialButton
 import android.widget.ImageView
 import android.widget.TextView
 
-
 class MenuCardView(context: Context, attrs: AttributeSet): LinearLayout(context, attrs){
 
     init { init(context,attrs) }
@@ -19,26 +18,20 @@ class MenuCardView(context: Context, attrs: AttributeSet): LinearLayout(context,
     lateinit var buttonAction: MaterialButton
     lateinit var image: ImageView
 
-    fun init(context: Context, attrs: AttributeSet){
+    private fun init(context: Context, attrs: AttributeSet){
         View.inflate(context, R.layout.card_view_menu, this)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.MenuCardView)
-        var title: CharSequence = ""
-        var actionText: CharSequence = ""
-        var image = R.drawable.ic_questions_96
-        var description: CharSequence = ""
         try {
-            title = typedArray.getText(R.styleable.MenuCardView_cardTitle)
-            actionText = typedArray.getText(R.styleable.MenuCardView_cardActionTitle)
-            image = typedArray.getResourceId(R.styleable.MenuCardView_cardImage, R.drawable.ic_questions_96)
-            description = typedArray.getText(R.styleable.MenuCardView_cardDescription)
-        }finally {
-            typedArray.recycle()
-        }
-
-        initComponents(title, actionText, description, image)
+            val title = typedArray.getText(R.styleable.MenuCardView_cardTitle)
+            val actionText = typedArray.getText(R.styleable.MenuCardView_cardActionTitle)
+            val image = typedArray.getResourceId(R.styleable.MenuCardView_cardImage, R.drawable.ic_questions_96)
+            val description = typedArray.getText(R.styleable.MenuCardView_cardDescription)
+            initComponents(title, actionText, description, image)
+        }finally { typedArray.recycle() }
+        initComponents("", "", "", R.drawable.ic_questions_96)
     }
 
-    fun initComponents(title: CharSequence, actionTitle: CharSequence, description: CharSequence, cardImage: Int){
+    private fun initComponents(title: CharSequence, actionTitle: CharSequence, description: CharSequence, cardImage: Int){
         textViewTitle = findViewById(R.id.card_view_menu_title)
         textViewDescription = findViewById(R.id.card_view_menu_description)
         buttonAction = findViewById(R.id.card_view_menu_action_title)

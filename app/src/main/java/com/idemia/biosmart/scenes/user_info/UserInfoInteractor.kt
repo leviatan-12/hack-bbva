@@ -1,12 +1,9 @@
 package com.idemia.biosmart.scenes.user_info
 
-import android.util.Log
 import com.idemia.biosmart.base.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
-import java.lang.Error
 
 /**
  *  UserInfo Interactor
