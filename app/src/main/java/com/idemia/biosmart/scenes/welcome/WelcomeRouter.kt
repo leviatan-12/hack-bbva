@@ -16,11 +16,7 @@ import java.lang.ref.WeakReference
  */
 class WelcomeRouter : WelcomeRoutingLogic {
 
-    private var activity: WeakReference<WelcomeActivity>? = null
-
-    fun setActivity(activity: WelcomeActivity) {
-        this.activity = WeakReference(activity)
-    }
+    var activity: WeakReference<WelcomeActivity>? = null
 
     override fun routeToEnrolmentScene() {
         if (activity?.get() != null) {

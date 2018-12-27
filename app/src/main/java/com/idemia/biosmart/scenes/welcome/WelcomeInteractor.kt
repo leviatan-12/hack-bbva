@@ -5,6 +5,7 @@ import com.idemia.biosmart.base.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  *  Welcome Interactor
@@ -12,17 +13,12 @@ import io.reactivex.schedulers.Schedulers
  *  Created by alfredo on 12/11/18.
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
-class WelcomeInteractor : WelcomeBusinessLogic {
+class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLogic) : WelcomeBusinessLogic {
     private val worker = WelcomeWorker()
-    private var presenter: WelcomePresentationLogic = WelcomePresenter()
     private var disposable: Disposable? = null
 
     companion object {
         val TAG = "WelcomeInteractor"
-    }
-
-    fun setPresenter(presenter: WelcomePresentationLogic) {
-        this.presenter = presenter
     }
 
     override fun generateLicense(request: WelcomeModels.GenerateLicense.Request) {

@@ -7,15 +7,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.BaseActivity
 import com.idemia.biosmart.base.DisposableManager
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
+import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 /**
  *  Welcome Activity
@@ -24,8 +28,8 @@ import kotlinx.android.synthetic.main.activity_welcome.*
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
-    private lateinit var interactor: WelcomeBusinessLogic    // Interactor
-    private lateinit var router: WelcomeRoutingLogic         // Router
+    @Inject lateinit var interactor: WelcomeBusinessLogic    // Interactor
+    @Inject lateinit var router: WelcomeRoutingLogic         // Router
 
     lateinit var loader: KProgressHUD
 
@@ -34,13 +38,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun inject() {
-        val activity = this
-        this.interactor = WelcomeInteractor()
-        this.router = WelcomeRouter()
-        val presenter = WelcomePresenter()
-        (this.interactor as WelcomeInteractor).setPresenter(presenter)
-        presenter.setActivity(activity)
-        (router as WelcomeRouter).setActivity(this)
+        // TODO: Refactor this code
+        val app = application as BioSmartApplication
+        app.component.plus(WelcomeModule(this)).inject(this)
+        (router as WelcomeRouter).activity = WeakReference(this)
     }
 
     override fun resourceLayoutId(): Int = R.layout.activity_welcome
