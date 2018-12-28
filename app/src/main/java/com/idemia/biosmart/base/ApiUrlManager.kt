@@ -1,25 +1,22 @@
 package com.idemia.biosmart.base
 
-import com.idemia.biosmart.BioSmartApplication
-import com.idemia.biosmart.R
-
 class ApiUrlManager {
     companion object {
         fun url(): String {
             // Https
-            val useHttps = BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_https)
+            val useHttps = ""//getString(R.string.idemia_key_middleware_https)
             val middlewareHttpsValue = false//BioSmartApplication.preferenceManager?.getBoolean(useHttps, false)
 
             // IP
-            val middlewareIp = BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_ip_address)
+            val middlewareIp = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_ip_address)
             val middleareIpValue = "200.66.76.220"//BioSmartApplication.preferenceManager?.getString(middlewareIp,"")
 
             // Port
-            val middlewarePort = BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_port)
+            val middlewarePort = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_port)
             val middlearePortValue = "8082"//BioSmartApplication.preferenceManager?.getString(middlewarePort,"")
 
             // Middleware name
-            val middlewareName = BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_name)
+            val middlewareName = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_name)
             val middleareNameValue = "idemia"//BioSmartApplication.preferenceManager?.getString(middlewareName,"")
 
             val url = generateUrl(middlewareHttpsValue, middleareIpValue, middlearePortValue, middleareNameValue)

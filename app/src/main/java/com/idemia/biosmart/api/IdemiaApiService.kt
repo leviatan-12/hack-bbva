@@ -16,7 +16,6 @@ import retrofit2.http.POST
  */
 interface IdemiaApiService {
 
-
     @POST("api/users/search")
     fun search(@Body request: UserInfoModels.Search.Request): Observable<Response<UserInfoModels.Search.Response>>
 
