@@ -1,7 +1,18 @@
 package com.idemia.biosmart.base.fingers
 
-import com.idemia.biosmart.base.DisposableManager
+import android.os.Bundle
+import android.util.Log
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
+import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBiometricInfo
+import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
+import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
+import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
 import io.reactivex.disposables.Disposable
+import java.lang.Exception
 
 /**
  *  Fingers Interactor
@@ -9,10 +20,16 @@ import io.reactivex.disposables.Disposable
  *  Created by Alfredo on 28/12/2018.
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
-class FingersInteractor : FingersBusinessLogic {
+class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioCaptureResultListener {
     private val worker = FingersWorker()
     private var presenter: FingersPresentationLogic = FingersPresenter()
-    private var dispoable: Disposable? = null
+    private var disposable: Disposable? = null
+    private var captureHandler: FingerCaptureHandler? = null // Capture handler used for handling capture
+    private var matcherHandler: IBioMatcherHandler? = null   // A matcher handler used for local matching
+
+    companion object {
+        val TAG = "FingersInteractor"
+    }
 
     fun setPresenter(presenter: FingersPresentationLogic) {
         this.presenter = presenter
@@ -24,28 +41,78 @@ class FingersInteractor : FingersBusinessLogic {
     }
 
     override fun createCaptureHandler(request: FingersModels.CreateCaptureHandler.Request) {
-        dispoable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
-            val response = FingersModels.CreateCaptureHandler.Response(captureHandler)
+        disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
+            val mCaptureHandler = (captureHandler as FingerCaptureHandler)
+            this.captureHandler = mCaptureHandler
+            this.captureHandler!!.setBioCaptureResultListener(this)
+            this.captureHandler!!.setBioCaptureFeedbackListener(this)
+            val response = FingersModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
             val response = FingersModels.Error.Response(throwable)
             presenter.presentError(response)
         })
-        DisposableManager.add(dispoable)
+        DisposableManager.add(disposable)
     }
 
     override fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request) {
-        dispoable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
-            val response = FingersModels.CreateMatcherHandler.Response(matcherHandler)
+        disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
+            this.matcherHandler = matcherHandler
+            val response = FingersModels.CreateMatcherHandler.Response()
             presenter.presentCreateMatcherHandler(response)
         },{ throwable ->
             val response = FingersModels.Error.Response(throwable)
             presenter.presentError(response)
         })
-        DisposableManager.add(dispoable)
+        DisposableManager.add(disposable)
     }
 
+    override fun startCapture(request: FingersModels.StartCapture.Request) {
+        captureHandler?.let {
+            try {
+                it.startPreview()
+                it.startCapture()
+            }catch (e: Exception){
+                val response = FingersModels.Error.Request(e)
+                showError(response)
+            }
+        }
+    }
+
+    override fun stopCapture(request: FingersModels.StopCapture.Request) {
+        captureHandler?.let {
+            try {
+                it.startCapture()
+                it.startPreview()
+            }catch (e: Exception){
+                val response = FingersModels.Error.Request(e)
+                showError(response)
+            }
+        }
+    }
+
+    //region Bio Capture Feedback listener
+    override fun onCaptureInfo(bioCaptureInfo: BioCaptureInfo?, bundle: Bundle?) {
+        Log.i(TAG, "onCaptureInfo: name -> ${bioCaptureInfo?.name}")
+    }
+    //endregion
+
+    //region Bio Capture Result Listener
+    override fun onCaptureFinish() {
+        Log.i(TAG, "onCaptureFinish: Capture finished")
+    }
+
+    override fun onCaptureSuccess(morphoImages: MutableList<MorphoImage>?) {
+        Log.i(TAG, "onCaptureSuccess: Capture was successfully")
+    }
+
+    override fun onCaptureFailure(captureError: CaptureError?, biometricInfo: IBiometricInfo?, bundle: Bundle?) {
+        Log.i(TAG, "onCaptureFailure: An error was happened")
+    }
+    //endregion
+
     override fun showError(request: FingersModels.Error.Request) {
+        Log.e(TAG, "showError: An error was happened", request.exception)
         val response = FingersModels.Error.Response(Throwable(request.exception))
         presenter.presentError(response)
     }
@@ -68,5 +135,12 @@ interface FingersBusinessLogic {
     // Create Matcher Handler
     fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request)
 
+    // Start Capture
+    fun startCapture(request: FingersModels.StartCapture.Request)
+
+    // Stop Capture
+    fun stopCapture(request: FingersModels.StopCapture.Request)
+
+    // Show Error
     fun showError(request: FingersModels.Error.Request)
 }

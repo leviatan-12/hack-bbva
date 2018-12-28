@@ -1,4 +1,4 @@
-package com.idemia.biosmart.base;
+package com.idemia.biosmart.base.utils;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

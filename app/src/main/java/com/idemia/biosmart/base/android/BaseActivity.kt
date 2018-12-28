@@ -1,4 +1,4 @@
-package com.idemia.biosmart.base
+package com.idemia.biosmart.base.android
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,9 +1,8 @@
 package com.idemia.biosmart.base.fingers
 
-import com.idemia.biosmart.base.BaseActivity
-import com.idemia.biosmart.base.DisposableManager
-import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
+import android.util.Log
+import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.base.utils.DisposableManager
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
@@ -27,8 +26,6 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
 
     //region Morpho Finger Capture Variables
     private lateinit var surfaceView: MorphoSurfaceView         // Morpho surface view is "the surface" where preview displays
-    protected var captureHandler: FingerCaptureHandler? = null // Capture handler used for handling capture
-    protected var matcherHandler: IBioMatcherHandler? = null   // A matcher handler used for local matching
     protected lateinit var captureOptions: ICaptureOptions      // Used to set capture options like capture mode, timeout, etc...
     //endregion
 
@@ -65,11 +62,12 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
             val surfaceViewResource = surfaceViewLayout()
             surfaceView = findViewById(surfaceViewResource)
         }catch (e: Exception){
-
+            Log.e(TAG, "Error: ")
         }
     }
     //endregion
 
+    //region Android Lifecycle
     override fun onResume() {
         super.onResume()
         // 1.- Request for capturing Options
@@ -77,54 +75,23 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
 
         // 2.- Create Capture Handler
         createCaptureHandler()
-
-        captureHandler?.let {
-            // 3.- Create Matcher Handler
-            createMatcherHandler()
-            matcherHandler?.let {
-                // 4.- Ready for capture
-                readyForCapture()
-            }
-        }
     }
 
     override fun onPause() {
         super.onPause()
-        DisposableManager.dispose()
-        // Destroy capture handler and matcher handler
-        try {
-            if (captureHandler != null && matcherHandler != null) {
-                captureHandler!!.destroy()
-                matcherHandler!!.destroy()
-                captureHandler = null
-                matcherHandler = null
-            }
-        } catch (e: Exception) {
-            val request = FingersModels.Error.Request(e)
-            interactor.showError(request)
-        }
+        destroyHandlers()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Destroy capture handler and matcher handler
-        try {
-            if (captureHandler != null && matcherHandler != null) {
-                captureHandler!!.destroy()
-                matcherHandler!!.destroy()
-                captureHandler = null
-                matcherHandler = null
-            }
-        } catch (e: Exception) {
-            val request = FingersModels.Error.Request(e)
-            interactor.showError(request)
-        }
+        destroyHandlers()
         // Destroy surface view
         surfaceView.onDestroy()
     }
+    //endregion
 
     //region Request for capturing options
-    private fun requestForCapturingOptions(){
+    open fun requestForCapturingOptions(){
         // Request for capturing options
         // TODO: Read capturing options from settings
         val appOptions = FingersModels.AppCapturingOptions(Camera.FRONT, Torch.ON, BioCaptureMode.FINGERPRINT_LEFT_HAND, 30)
@@ -139,12 +106,13 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
 
     //region Create Capture Handler
     private fun createCaptureHandler(){
-        val request = FingersModels.CreateCaptureHandler.Request(this@FingersActivity ,captureOptions)
+        val request = FingersModels.CreateCaptureHandler.Request(this@FingersActivity , captureOptions)
         interactor.createCaptureHandler(request)
     }
 
     override fun displayCreateCaptureHandler(viewModel: FingersModels.CreateCaptureHandler.ViewModel) {
-        captureHandler = viewModel.capturehandler as FingerCaptureHandler
+        // 3.- Create Matcher Handler
+        createMatcherHandler()
     }
     //endregion
 
@@ -155,13 +123,38 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
     }
 
     override fun displayCreateMatcherHandler(viewModel: FingersModels.CreateMatcherHandler.ViewModel) {
-        matcherHandler = viewModel.matcherHandler
+        // 4.- Ready for capture
+        readyForCapture()
+    }
+    //endregion
+
+    //region Start Capture
+    /**
+     * Use this method to start a new capture
+     */
+    protected fun startCapture(){
+        val request = FingersModels.StartCapture.Request()
+        interactor.startCapture(request)
+    }
+    //endregion}
+
+    //region Stop Capture
+    /**
+     * Use this method to stop a capture
+     */
+    protected fun stopCapture(){
+        val request = FingersModels.StopCapture.Request()
+        interactor.stopCapture(request)
     }
     //endregion
 
     //region Display Error
-    override fun displayError(viewModel: FingersModels.Error.ViewModel) {
+    abstract override fun displayError(viewModel: FingersModels.Error.ViewModel)
+    //endregion
 
+    //region Destroy Handlers
+    private fun destroyHandlers(){
+        DisposableManager.dispose()
     }
     //endregion
 }

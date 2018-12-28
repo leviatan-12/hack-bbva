@@ -2,11 +2,11 @@ package com.idemia.biosmart.scenes.user_info
 
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.BaseActivity
+import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.utils.Base64
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import android.graphics.BitmapFactory
-import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoDataFragment
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoTechnicalDetailsFragment

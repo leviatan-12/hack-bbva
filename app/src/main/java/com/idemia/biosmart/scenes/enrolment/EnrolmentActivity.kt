@@ -3,7 +3,7 @@ package com.idemia.biosmart.scenes.enrolment
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.BaseActivity
+import com.idemia.biosmart.base.android.BaseActivity
 
 /**
  *  Enrolment Activity

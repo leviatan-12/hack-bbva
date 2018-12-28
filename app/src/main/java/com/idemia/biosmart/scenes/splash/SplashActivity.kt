@@ -3,7 +3,7 @@ package com.idemia.biosmart.scenes.splash
 import android.content.Intent
 import android.os.Handler
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.BaseActivity
+import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.scenes.welcome.WelcomeActivity
 
 class SplashActivity : BaseActivity() {

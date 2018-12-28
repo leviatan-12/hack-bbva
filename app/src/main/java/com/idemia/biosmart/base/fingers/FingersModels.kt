@@ -1,8 +1,6 @@
 package com.idemia.biosmart.base.fingers
 
 import android.app.Activity
-import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
@@ -29,15 +27,27 @@ class FingersModels {
     // Create Capture Handler
     class CreateCaptureHandler{
         data class Request(val activity: Activity, val captureOptions: ICaptureOptions)
-        class Response(val capturehandler: IBioCaptureHandler)
-        class ViewModel(val capturehandler: IBioCaptureHandler)
+        class Response()
+        class ViewModel()
     }
 
     // CreateMatcherHandler
     class CreateMatcherHandler{
         class Request(val activity: Activity)
-        class Response(val matcherHandler: IBioMatcherHandler)
-        class ViewModel(val matcherHandler: IBioMatcherHandler)
+        class Response
+        class ViewModel
+    }
+
+    class StartCapture{
+        class Request
+        class Response
+        class ViewModel
+    }
+
+    class StopCapture{
+        class Request
+        class Response
+        class ViewModel
     }
 
     // Error

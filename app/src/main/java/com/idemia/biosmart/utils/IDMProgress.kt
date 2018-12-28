@@ -1,7 +1,7 @@
 package com.idemia.biosmart.utils
 
 import android.content.Context
-import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.base.utils.DisposableManager
 import com.kaopiz.kprogresshud.KProgressHUD
 
 class IDMProgress(context: Context, label: String, details: String) {

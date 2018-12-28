@@ -1,7 +1,7 @@
 package com.idemia.biosmart.scenes.user_info;
 
 import com.idemia.biosmart.api.IdemiaApiService
-import com.idemia.biosmart.base.ApiUrlManager
+import com.idemia.biosmart.utils.ApiUrlManager
 import io.reactivex.Observable
 import retrofit2.Response
 

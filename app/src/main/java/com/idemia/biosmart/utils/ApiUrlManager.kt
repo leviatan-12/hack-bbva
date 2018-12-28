@@ -1,4 +1,4 @@
-package com.idemia.biosmart.base
+package com.idemia.biosmart.utils
 
 class ApiUrlManager {
     companion object {
@@ -19,7 +19,12 @@ class ApiUrlManager {
             val middlewareName = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_name)
             val middleareNameValue = "idemia"//BioSmartApplication.preferenceManager?.getString(middlewareName,"")
 
-            val url = generateUrl(middlewareHttpsValue, middleareIpValue, middlearePortValue, middleareNameValue)
+            val url = generateUrl(
+                middlewareHttpsValue,
+                middleareIpValue,
+                middlearePortValue,
+                middleareNameValue
+            )
             return url
         }
 

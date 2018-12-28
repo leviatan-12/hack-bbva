@@ -9,8 +9,9 @@ import android.view.View
 import android.widget.Toast
 import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.BaseActivity
-import com.idemia.biosmart.base.DisposableManager
+import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.scenes.capture_fingers.CaptureFingersActivity
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
@@ -85,7 +86,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         activateLkmsLicenseOnDevice()
 
         // TODO: Delete this line, just for testing...
-        startActivity(Intent(this@WelcomeActivity, UserInfoActivity::class.java))
+        startActivity(Intent(this@WelcomeActivity, CaptureFingersActivity::class.java))
     }
     //endregion
 

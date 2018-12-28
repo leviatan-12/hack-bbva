@@ -5,34 +5,36 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <!-- Bio Smart SDK -->
     <permission
             android:name="com.idemia.biosmart.NEW_READ_LKMS_LICENSE_PROVIDER"
-            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+            android:protectionLevel="signature"/> <!-- unless otherwise required, set the maximum security permission -->
     <permission
             android:name="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
-            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+            android:protectionLevel="signature"/> <!-- unless otherwise required, set the maximum security permission -->
     <permission
             android:name="com.idemia.biosmart.NEW_READ_MPH_BIO_SDK_PROVIDER"
-            android:protectionLevel="signature" /> <!-- unless otherwise required, set the maximum security permission -->
+            android:protectionLevel="signature"/> <!-- unless otherwise required, set the maximum security permission -->
     <permission
             android:name="com.idemia.biosmart.NEW_WRITE_MPH_BIO_SDK_PROVIDER"
-            android:protectionLevel="signature" />
+            android:protectionLevel="signature"/>
 
     <application
             android:name=".BioSmartApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
+            android:largeHeap="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:largeHeap="true"
             android:usesCleartextTraffic="true">
         <activity android:name=".scenes.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -55,14 +57,16 @@
                 android:authorities="com.idemia.biosmart.bio_store"
                 android:readPermission="com.idemia.biosmart.NEW_READ_MPH_BIO_SDK_PROVIDER"
                 android:writePermission="com.idemia.biosmart.NEW_WRITE_MPH_BIO_SDK_PROVIDER"
-                tools:replace="android:authorities, android:readPermission, android:writePermission" />
+                tools:replace="android:authorities, android:readPermission, android:writePermission"/>
         <provider
                 android:name="com.morpho.lkms.android.sdk.lkms_core.content_provider.LkmsStoreProvider"
                 android:authorities="com.idemia.biosmart.lkms"
                 android:readPermission="com.idemia.biosmart.NEW_READ_LKMS_LICENSE_PROVIDER"
                 android:writePermission="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
-                tools:replace="android:authorities, android:readPermission, android:writePermission" />
+                tools:replace="android:authorities, android:readPermission, android:writePermission"/>
 
+        <activity android:name=".scenes.capture_fingers.CaptureFingersActivity">
+        </activity>
     </application>
 
 </manifest>

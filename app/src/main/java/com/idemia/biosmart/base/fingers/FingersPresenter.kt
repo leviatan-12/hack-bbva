@@ -32,12 +32,12 @@ class FingersPresenter : FingersPresentationLogic {
     }
 
     override fun presentCreateCaptureHandler(response: FingersModels.CreateCaptureHandler.Response) {
-        val viewModel = FingersModels.CreateCaptureHandler.ViewModel(response.capturehandler)
+        val viewModel = FingersModels.CreateCaptureHandler.ViewModel()
         activity!!.displayCreateCaptureHandler(viewModel)
     }
 
     override fun presentCreateMatcherHandler(response: FingersModels.CreateMatcherHandler.Response) {
-        val viewModel = FingersModels.CreateMatcherHandler.ViewModel(response.matcherHandler)
+        val viewModel = FingersModels.CreateMatcherHandler.ViewModel()
         activity!!.displayCreateMatcherHandler(viewModel)
     }
 
