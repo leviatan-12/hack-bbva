@@ -35,6 +35,12 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
         this.presenter = presenter
     }
 
+    override fun readPreferences(request: FingersModels.ReadPreferences.Request) {
+        val values = worker.readPreferences(request)
+        val response = FingersModels.ReadPreferences.Response(values)
+        presenter.presentReadPreferences(response)
+    }
+
     override fun requestForCapturingOptions(request: FingersModels.RequestForCaptureOptions.Request) {
         val response = FingersModels.RequestForCaptureOptions.Response(request.options)
         presenter.presentRequestForCapturingOptions(response)
@@ -82,8 +88,8 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
     override fun stopCapture(request: FingersModels.StopCapture.Request) {
         captureHandler?.let {
             try {
-                it.startCapture()
-                it.startPreview()
+                it.stopCapture()
+                it.stopPreview()
             }catch (e: Exception){
                 val response = FingersModels.Error.Request(e)
                 showError(response)
@@ -126,6 +132,9 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface FingersBusinessLogic {
+    // Read Preferences
+    fun readPreferences(request: FingersModels.ReadPreferences.Request)
+
     // Request for capturing options
     fun requestForCapturingOptions(request: FingersModels.RequestForCaptureOptions.Request)
 

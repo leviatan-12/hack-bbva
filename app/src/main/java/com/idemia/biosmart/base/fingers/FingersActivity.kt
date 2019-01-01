@@ -3,10 +3,7 @@ package com.idemia.biosmart.base.fingers
 import android.util.Log
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Torch
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 import morpho.urt.msc.mscengine.MorphoSurfaceView
 import java.lang.Exception
 
@@ -23,6 +20,8 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
     companion object {
         private val TAG = "FingersActivity"
     }
+
+    private var appCapturingOptions: FingersModels.AppCapturingOptions? = null
 
     //region Morpho Finger Capture Variables
     private lateinit var surfaceView: MorphoSurfaceView         // Morpho surface view is "the surface" where preview displays
@@ -42,7 +41,6 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
      */
     protected abstract fun readyForCapture()
     //endregion
-
 
     //region A "Dependency" Injection
     override fun inject() {
@@ -90,13 +88,25 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
     }
     //endregion
 
+    //region Read Preferences
+    private fun readPreferences(){
+        val request = FingersModels.ReadPreferences.Request(this@FingersActivity)
+        interactor.readPreferences(request)
+    }
+
+    override fun displayReadPreferences(viewModel: FingersModels.ReadPreferences.ViewModel) {
+        appCapturingOptions = viewModel.appCapturingOptions
+    }
+    //endregion
+
     //region Request for capturing options
     open fun requestForCapturingOptions(){
-        // Request for capturing options
-        // TODO: Read capturing options from settings
-        val appOptions = FingersModels.AppCapturingOptions(Camera.FRONT, Torch.ON, BioCaptureMode.FINGERPRINT_LEFT_HAND, 30)
-        val request = FingersModels.RequestForCaptureOptions.Request(appOptions)
-        interactor.requestForCapturingOptions(request)
+        // Read capturing options from settings
+        readPreferences()
+        appCapturingOptions?.let {
+            val request = FingersModels.RequestForCaptureOptions.Request(it)
+            interactor.requestForCapturingOptions(request)
+        }
     }
 
     override fun displayCaptureOptions(viewModel: FingersModels.RequestForCaptureOptions.ViewModel) {
@@ -166,6 +176,8 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface FingersDisplayLogic {
+    fun displayReadPreferences(viewModel: FingersModels.ReadPreferences.ViewModel)
+
     fun displayCaptureOptions(viewModel: FingersModels.RequestForCaptureOptions.ViewModel)
 
     fun displayCreateCaptureHandler(viewModel: FingersModels.CreateCaptureHandler.ViewModel)

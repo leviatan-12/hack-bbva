@@ -1,10 +1,8 @@
 package com.idemia.biosmart.base.fingers
 
 import android.app.Activity
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Torch
+import com.idemia.biosmart.base.android.BaseActivity
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 import java.lang.Exception
 
 /**
@@ -15,7 +13,22 @@ import java.lang.Exception
  */
 class FingersModels {
 
-    class AppCapturingOptions(val camera: Camera, val torch: Torch, val captureMode: BioCaptureMode, val timeout: Long = 30)
+    //region Custom Models
+    class AppCapturingOptions(val camera: Camera,
+                              val torch: Torch,
+                              val captureMode: BioCaptureMode,
+                              val timeout: Long = 30,
+                              val overlay: Overlay = Overlay.ON)
+    //endregion
+
+    //region Use Cases
+
+    // Read Preferences
+    class ReadPreferences{
+        data class Request(val activity: BaseActivity)
+        class Response(val values: List<Any>)
+        data class ViewModel(val appCapturingOptions: AppCapturingOptions)
+    }
 
     // Request for capturing options
     class RequestForCaptureOptions{
@@ -27,8 +40,8 @@ class FingersModels {
     // Create Capture Handler
     class CreateCaptureHandler{
         data class Request(val activity: Activity, val captureOptions: ICaptureOptions)
-        class Response()
-        class ViewModel()
+        class Response
+        class ViewModel
     }
 
     // CreateMatcherHandler
@@ -38,12 +51,14 @@ class FingersModels {
         class ViewModel
     }
 
+    // Start Capture
     class StartCapture{
         class Request
         class Response
         class ViewModel
     }
 
+    // Stop Capture
     class StopCapture{
         class Request
         class Response
@@ -56,4 +71,6 @@ class FingersModels {
         class Response(val throwable: Throwable)
         class ViewModel(val throwable: Throwable)
     }
+
+    //endregion
 }

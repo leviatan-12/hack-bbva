@@ -18,6 +18,16 @@ import java.lang.Exception
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class FingersWorker {
+    // Read Preferences
+    fun readPreferences(request: FingersModels.ReadPreferences.Request): List<Any> {
+        val preferenceManager = request.activity.preferenceManager
+        val camera = preferenceManager.getBoolean("KEY_USE_CAMERA_REAR", true)
+        val torch = preferenceManager.getBoolean("KEY_USE_TORCH", true)
+        val overlay = preferenceManager.getBoolean("KEY_USE_OVERLAY", true)
+        val timeout = preferenceManager.getLong("KEY_CAPTURE_TIMEOUT", 10)
+        return listOf(camera, torch, overlay, timeout)
+    }
+
     // Create Bio Capture Handler
     fun createBioCaptureHandler(request: FingersModels.CreateCaptureHandler.Request): Observable<IBioCaptureHandler>{
         return Observable.create<IBioCaptureHandler>{ emitter ->
@@ -41,7 +51,9 @@ class FingersWorker {
 
     fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request): Observable<IBioMatcherHandler>{
         return Observable.create<IBioMatcherHandler>{ emitter ->
-            BioSdk.createBioMatcherHandler(request.activity, BioMatcherSettings(), object: BioMatcherAsyncCallbacks<IBioMatcherHandler>{
+            BioSdk.createBioMatcherHandler(request.activity, BioMatcherSettings(),
+                object: BioMatcherAsyncCallbacks<IBioMatcherHandler>{
+
                 override fun onSuccess(p0: IBioMatcherHandler?) {
                     p0?.let {
                         emitter.onNext(it)

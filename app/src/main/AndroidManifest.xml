@@ -6,6 +6,7 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <!-- Bio Smart SDK -->
     <permission
@@ -65,8 +66,7 @@
                 android:writePermission="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
                 tools:replace="android:authorities, android:readPermission, android:writePermission"/>
 
-        <activity android:name=".scenes.capture_fingers.CaptureFingersActivity">
-        </activity>
+        <activity android:name=".scenes.capture_fingers.CaptureFingersActivity"/>
     </application>
 
 </manifest>
