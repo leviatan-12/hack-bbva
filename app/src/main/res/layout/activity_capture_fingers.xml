@@ -8,8 +8,23 @@
         tools:context=".scenes.capture_fingers.CaptureFingersActivity">
 
     <morpho.urt.msc.mscengine.MorphoSurfaceView
-            android:id="@+id/morpho_surface_view"
+            android:background="@android:color/black"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:id="@+id/morpho_surface_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_square_logo"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"/>
 
 </android.support.constraint.ConstraintLayout>

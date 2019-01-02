@@ -22,7 +22,7 @@ class WelcomePresenter @Inject constructor(val activity: WelcomeDisplayLogic) : 
     }
 
     override fun presentCreateLKMSLicense(response: WelcomeModels.ActivateBinFileLicenseToLkms.Response) {
-        val viewModel = WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel(response.activated)
+        val viewModel = WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel(response.activated, response.lkmsLicense, response.throwable)
         activity.displayCreateLKMSLicense(viewModel)
     }
 

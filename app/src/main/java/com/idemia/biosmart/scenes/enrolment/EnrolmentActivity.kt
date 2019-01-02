@@ -1,9 +1,8 @@
 package com.idemia.biosmart.scenes.enrolment
 
-import android.util.Log
-import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
+import kotlinx.android.synthetic.main.activity_enrolment.*
 
 /**
  *  Enrolment Activity
@@ -24,7 +23,15 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     override fun hideNavigationBar(): Boolean = false
 
     override fun onLoadActivity() {
-
+        button_start_process.setOnClickListener { goToNextScene(EnrolmentModels.Operation.START_PROCESS) }
+        float_button_selfie.setOnClickListener{ goToNextScene(EnrolmentModels.Operation.CAPTURE_FACE) }
+        button_capture_fingers.setOnClickListener {
+            if(switch_enable_contactless.isChecked){
+                goToNextScene(EnrolmentModels.Operation.CAPTURE_FINGERS_CONTACTLESS)
+            }else{
+                goToNextScene(EnrolmentModels.Operation.CAPTURE_FINGERS)
+            }
+        }
     }
 
     override fun inject() {
@@ -38,16 +45,20 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
 
     /**
-     * Do something Use Case
+     * Go To Next Scene
      */
-    private fun doSomething() {
-        val request = EnrolmentModels.DoSomething.Request()
-        interactor.doSomething(request)
+    private fun goToNextScene(operation: EnrolmentModels.Operation) {
+        val request = EnrolmentModels.GoToNextScene.Request(operation)
+        interactor.goToNextScene(request)
     }
 
-    override fun displayDoSomething(viewModel: EnrolmentModels.DoSomething.ViewModel) {
-        Log.i(TAG, "displayDoSomething: ")
-        Toast.makeText(applicationContext, "Hello World from Do Something", Toast.LENGTH_LONG).show()
+    override fun displayGoToNextScene(viewModel: EnrolmentModels.GoToNextScene.ViewModel) {
+        when(viewModel.operation){
+            EnrolmentModels.Operation.START_PROCESS -> router.routeToStartProcessScene()
+            EnrolmentModels.Operation.CAPTURE_FACE -> router.routeToCaptureFaceScene()
+            EnrolmentModels.Operation.CAPTURE_FINGERS -> router.routeToCaptureFingersMsoScene()
+            EnrolmentModels.Operation.CAPTURE_FINGERS_CONTACTLESS -> router.routeToCaptureFingersScene()
+        }
     }
 }
 
@@ -58,5 +69,5 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface EnrolmentDisplayLogic {
-    fun displayDoSomething(viewModel: EnrolmentModels.DoSomething.ViewModel)
+    fun displayGoToNextScene(viewModel: EnrolmentModels.GoToNextScene.ViewModel)
 }

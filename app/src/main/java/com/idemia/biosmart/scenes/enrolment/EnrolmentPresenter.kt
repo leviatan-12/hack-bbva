@@ -13,9 +13,9 @@ class EnrolmentPresenter : EnrolmentPresentationLogic {
         this.activity = activity
     }
 
-    override fun presentDoSomething(response: EnrolmentModels.DoSomething.Response) {
-        val viewModel = EnrolmentModels.DoSomething.ViewModel()
-        activity!!.displayDoSomething(viewModel)
+    override fun presentGoToNextScene(response: EnrolmentModels.GoToNextScene.Response) {
+        val viewModel = EnrolmentModels.GoToNextScene.ViewModel(response.operation)
+        activity!!.displayGoToNextScene(viewModel)
     }
 
     companion object {
@@ -31,5 +31,5 @@ class EnrolmentPresenter : EnrolmentPresentationLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface EnrolmentPresentationLogic {
-    fun presentDoSomething(response: EnrolmentModels.DoSomething.Response)
+    fun presentGoToNextScene(response: EnrolmentModels.GoToNextScene.Response)
 }

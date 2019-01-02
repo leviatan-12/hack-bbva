@@ -23,7 +23,7 @@ class WelcomeWorker {
     companion object {
         val TAG = "WelcomeWorker"
     }
-    val apiService by lazy { SDKApiService.create("http://200.66.76.220:8081/ServiceProviderLicense/") }
+    val apiService by lazy { SDKApiService.create("http://200.66.76.220:8081/ServiceProviderBPD/") }
 
     /**
      * Make your WS calls here

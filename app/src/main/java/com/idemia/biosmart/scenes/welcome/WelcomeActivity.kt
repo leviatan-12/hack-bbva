@@ -84,9 +84,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
         // Validate or activate license
         activateLkmsLicenseOnDevice()
-
-        // TODO: Delete this line, just for testing...
-        startActivity(Intent(this@WelcomeActivity, CaptureFingersActivity::class.java))
     }
     //endregion
 
@@ -127,21 +124,22 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             text_view_license_status.text = getString(R.string.welcome_message_license_bin_file_generated)
             createLKMSLicense(viewModel.activationData!!)
         }else{
-            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_bin_file_not_generated), Toast.LENGTH_LONG).show()
+            val message = getString(R.string.welcome_message_license_bin_file_not_generated)
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, message)
+            Toast.makeText(applicationContext, message , Toast.LENGTH_LONG).show()
         }
     }
 
     //endregion
 
     //region Create LKMS License
-    fun createLKMSLicense(activationData: ByteArray){
-        val lkmsUrl = getString(R.string.idemia_key_lkms_url)
+    private fun createLKMSLicense(activationData: ByteArray){
+        val lkmsUrlKey = getString(R.string.idemia_key_lkms_url)
         val defaultLkmsUrl = getString(R.string.default_lkms_server_url)
-        val lkmsUrlSelected = preferenceManager.getString( lkmsUrl , defaultLkmsUrl)
+        val lkmsUrlSelected = preferenceManager.getString( lkmsUrlKey , defaultLkmsUrl)
         val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData, applicationContext, lkmsUrlSelected!!)
         Log.i(TAG, "createLKMSLicense: LKMS Server URL - $lkmsUrlSelected")
-        loader = IDMProgress(this, "Activating License on LKMS Server", "Plaase Wait...").kProgress
+        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
         loader.show()
         interactor.createLKMSLicense(request)
     }
@@ -152,8 +150,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
         }else{
-            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated), Toast.LENGTH_LONG).show()
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message), Toast.LENGTH_LONG).show()
         }
     }
 

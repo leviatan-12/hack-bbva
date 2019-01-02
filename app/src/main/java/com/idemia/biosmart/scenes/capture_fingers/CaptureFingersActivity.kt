@@ -35,11 +35,16 @@ class CaptureFingersActivity : FingersActivity() {
         }
     }
 
+    override fun onLoadActivity() {
+        super.onLoadActivity()
+        requestForCameraPermission()
+    }
+
     /**
      * When SDK is ready for capture, this method will be executed
      */
     override fun readyForCapture() {
-        requestForCameraPermission()
+
     }
 
     override fun displayError(viewModel: FingersModels.Error.ViewModel) {
@@ -48,7 +53,7 @@ class CaptureFingersActivity : FingersActivity() {
     }
 
     private fun requestForCameraPermission(){
-        Dexter.withActivity(this)
+        Dexter.withActivity(this@CaptureFingersActivity)
             .withPermission(Manifest.permission.CAMERA)
             .withListener(listener).check()
     }

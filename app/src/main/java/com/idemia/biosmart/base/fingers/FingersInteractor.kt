@@ -117,6 +117,18 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
     }
     //endregion
 
+    override fun destroyHandlers(request: FingersModels.DestroyHandlers.Request) {
+        // Dispose everything
+        DisposableManager.dispose()
+
+        // Destroy capture handler and matcher handler
+        captureHandler?.destroy()
+        matcherHandler?.destroy()
+
+        val response = FingersModels.DestroyHandlers.Response()
+        presenter.presentDestroyHandlers(response)
+    }
+
     override fun showError(request: FingersModels.Error.Request) {
         Log.e(TAG, "showError: An error was happened", request.exception)
         val response = FingersModels.Error.Response(Throwable(request.exception))
@@ -149,6 +161,9 @@ interface FingersBusinessLogic {
 
     // Stop Capture
     fun stopCapture(request: FingersModels.StopCapture.Request)
+
+    // Destroy Handlers
+    fun destroyHandlers(request: FingersModels.DestroyHandlers.Request)
 
     // Show Error
     fun showError(request: FingersModels.Error.Request)

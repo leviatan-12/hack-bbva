@@ -116,7 +116,7 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
 
     //region Create Capture Handler
     private fun createCaptureHandler(){
-        val request = FingersModels.CreateCaptureHandler.Request(this@FingersActivity , captureOptions)
+        val request = FingersModels.CreateCaptureHandler.Request(this, captureOptions)
         interactor.createCaptureHandler(request)
     }
 
@@ -164,7 +164,12 @@ abstract class FingersActivity : BaseActivity(), FingersDisplayLogic {
 
     //region Destroy Handlers
     private fun destroyHandlers(){
-        DisposableManager.dispose()
+        val request = FingersModels.DestroyHandlers.Request()
+        interactor.destroyHandlers(request)
+    }
+
+    override fun displayDestroyHandlers(viewModel: FingersModels.DestroyHandlers.ViewModel) {
+        Log.i(TAG, "Handlers destroyed!")
     }
     //endregion
 }
@@ -183,6 +188,8 @@ interface FingersDisplayLogic {
     fun displayCreateCaptureHandler(viewModel: FingersModels.CreateCaptureHandler.ViewModel)
 
     fun displayCreateMatcherHandler(viewModel: FingersModels.CreateMatcherHandler.ViewModel)
+
+    fun displayDestroyHandlers(viewModel: FingersModels.DestroyHandlers.ViewModel)
 
     fun displayError(viewModel: FingersModels.Error.ViewModel)
 }

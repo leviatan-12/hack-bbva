@@ -65,6 +65,12 @@ class FingersModels {
         class ViewModel
     }
 
+    class DestroyHandlers{
+        class Request
+        class Response
+        class ViewModel
+    }
+
     // Error
     class Error {
         class Request(val exception: Exception)

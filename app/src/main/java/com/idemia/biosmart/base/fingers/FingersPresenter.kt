@@ -59,6 +59,12 @@ class FingersPresenter : FingersPresentationLogic {
         activity!!.displayCreateMatcherHandler(viewModel)
     }
 
+
+    override fun presentDestroyHandlers(response: FingersModels.DestroyHandlers.Response) {
+        val viewModel = FingersModels.DestroyHandlers.ViewModel()
+        activity!!.displayDestroyHandlers(viewModel)
+    }
+
     override fun presentError(response: FingersModels.Error.Response) {
         val viewModel = FingersModels.Error.ViewModel(response.throwable)
         activity!!.displayError(viewModel)
@@ -80,6 +86,8 @@ interface FingersPresentationLogic {
     fun presentCreateCaptureHandler(response: FingersModels.CreateCaptureHandler.Response)
 
     fun presentCreateMatcherHandler(response: FingersModels.CreateMatcherHandler.Response)
+
+    fun presentDestroyHandlers(response: FingersModels.DestroyHandlers.Response)
 
     fun presentError(response: FingersModels.Error.Response)
 }

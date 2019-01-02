@@ -14,9 +14,9 @@ class EnrolmentInteractor : EnrolmentBusinessLogic {
         this.presenter = presenter
     }
 
-    override fun doSomething(request: EnrolmentModels.DoSomething.Request) {
-        val response = EnrolmentModels.DoSomething.Response()
-        presenter.presentDoSomething(response)
+    override fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request) {
+        val response = EnrolmentModels.GoToNextScene.Response(request.operation)
+        presenter.presentGoToNextScene(response)
     }
 }
 
@@ -32,5 +32,5 @@ interface EnrolmentBusinessLogic {
      * Do Something
      * @param requuest A DoSomething Request to send
      */
-    fun doSomething(request: EnrolmentModels.DoSomething.Request)
+    fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request)
 }
