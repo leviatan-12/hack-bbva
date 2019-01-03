@@ -16,6 +16,23 @@ class CaptureFaceActivity : FaceCaptureActivity() {
 
     }
 
+
+    override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun displayError(viewModel: CaptureModels.Error.ViewModel) {
         Toast.makeText(applicationContext, "Error due: ${viewModel.throwable.localizedMessage}", Toast.LENGTH_LONG).show()
     }

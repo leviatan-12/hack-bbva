@@ -10,10 +10,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
 import morpho.urt.msc.mscengine.MorphoSurfaceView
 import java.lang.Exception
@@ -45,9 +41,9 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region Morpho Finger Capture Variables
-    protected lateinit var surfaceView: MorphoSurfaceView                           // Morpho surface view is "the surface" where preview displays
-    protected lateinit var captureOptions: ICaptureOptions                          // Used to set capture options like capture mode, timeout, etc...
-    protected var appCaptureOptions: CaptureModels.AppCaptureOptions? = null        // To store local capture options
+    private lateinit var surfaceView: MorphoSurfaceView                           // Morpho surface view is "the surface" where preview displays
+    private lateinit var captureOptions: ICaptureOptions                          // Used to set capture options like capture mode, timeout, etc...
+    private var appCaptureOptions: CaptureModels.AppCaptureOptions? = null        // To store local capture options
     //endregion
 
     //region Mandatory methods to implement
@@ -91,12 +87,15 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
         }
 
         override fun onPermissionDenied(response: PermissionDeniedResponse) {
-            Toast.makeText(applicationContext, "A Required permission was denied by user: ${response.permissionName}", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext,
+                "A Required permission was denied by user: ${response.permissionName}",
+                Toast.LENGTH_LONG).show()
         }
 
         override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
-            Toast.makeText(applicationContext, "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.", Toast.LENGTH_LONG).show()
-            token.continuePermissionRequest()
+            Toast.makeText(applicationContext,
+                "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.",
+                Toast.LENGTH_LONG).show()
         }
     }
     //endregion
@@ -158,7 +157,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     override fun displayCreateCaptureHandler(viewModel: CaptureModels.CreateCaptureHandler.ViewModel) {
         // 3.- Create Matcher Handler
-        // - createMatcherHandler()
+        createMatcherHandler()
     }
     //endregion
 
@@ -205,6 +204,16 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
+    //region LISTENER - BioCaptureFeedbackListener
+    abstract override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)
+    //endregion
+
+    //region LISTENER - BioCaptureResultListener
+    abstract override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel)
+    abstract override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel)
+    abstract override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
+    //endregion
+
     //region Display Error
     abstract override fun displayError(viewModel: CaptureModels.Error.ViewModel)
     //endregion
@@ -226,6 +235,14 @@ interface CaptureDisplayLogic {
     fun displayCreateMatcherHandler(viewModel: CaptureModels.CreateMatcherHandler.ViewModel)
 
     fun displayDestroyHandlers(viewModel: CaptureModels.DestroyHandlers.ViewModel)
+
+    fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)
+
+    fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel)
+
+    fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel)
+
+    fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
 
     fun displayError(viewModel: CaptureModels.Error.ViewModel)
 }

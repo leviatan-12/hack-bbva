@@ -15,6 +15,7 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.lang.Exception
 
@@ -115,20 +116,28 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     //region Bio Capture Feedback listener
     override fun onCaptureInfo(bioCaptureInfo: BioCaptureInfo?, bundle: Bundle?) {
         Log.i(FingersInteractor.TAG, "onCaptureInfo: name -> ${bioCaptureInfo?.name}")
+        val response = CaptureModels.CaptureInfo.Response(bioCaptureInfo, bundle)
+        presenter.presentCaptureInfo(response)
     }
     //endregion
 
     //region Bio Capture Result Listener
     override fun onCaptureFinish() {
         Log.i(FingersInteractor.TAG, "onCaptureFinish: Capture finished")
+        val response = CaptureModels.CaptureFinish.Response()
+        presenter.presentCaptureFinish(response)
     }
 
     override fun onCaptureSuccess(morphoImages: MutableList<MorphoImage>?) {
         Log.i(FingersInteractor.TAG, "onCaptureSuccess: Capture was successfully")
+        val response = CaptureModels.CaptureSuccess.Response(morphoImages)
+        presenter.presentCaptureSuccess(response)
     }
 
     override fun onCaptureFailure(captureError: CaptureError?, biometricInfo: IBiometricInfo?, bundle: Bundle?) {
         Log.i(FingersInteractor.TAG, "onCaptureFailure: An error was happened")
+        val response = CaptureModels.CaptureFailure.Response(captureError, biometricInfo, bundle)
+        presenter.presentCaptureFailure(response)
     }
     //endregion
 

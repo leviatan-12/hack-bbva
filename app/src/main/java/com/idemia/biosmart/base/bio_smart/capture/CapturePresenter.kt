@@ -1,6 +1,5 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
-import com.idemia.biosmart.base.bio_smart.fingers.FingersModels
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 
 /**
@@ -74,6 +73,27 @@ class CapturePresenter : CapturePresentationLogic {
         activity!!.displayDestroyHandlers(viewModel)
     }
 
+    override fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response) {
+        val message = response.captureInfo.toString()
+        val viewModel = CaptureModels.CaptureInfo.ViewModel(message)
+        activity!!.displayCaptureInfo(viewModel)
+    }
+
+    override fun presentCaptureFinish(response: CaptureModels.CaptureFinish.Response) {
+        val viewModel = CaptureModels.CaptureFinish.ViewModel()
+        activity!!.displayCaptureFinish(viewModel)
+    }
+
+    override fun presentCaptureSuccess(response: CaptureModels.CaptureSuccess.Response) {
+        val viewModel = CaptureModels.CaptureSuccess.ViewModel(response.morphoImages)
+        activity!!.displayCaptureSuccess(viewModel)
+    }
+
+    override fun presentCaptureFailure(response: CaptureModels.CaptureFailure.Response) {
+        val viewModel = CaptureModels.CaptureFailure.ViewModel(response.captureError, response.biometricInfo, response.bundle)
+        activity!!.displayCaptureFailure(viewModel)
+    }
+
     override fun presentError(response: CaptureModels.Error.Response) {
         val viewModel = CaptureModels.Error.ViewModel(response.throwable)
         activity!!.displayError(viewModel)
@@ -97,6 +117,14 @@ interface CapturePresentationLogic {
     fun presentCreateMatcherHandler(response: CaptureModels.CreateMatcherHandler.Response)
 
     fun presentDestroyHandlers(response: CaptureModels.DestroyHandlers.Response)
+
+    fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response)
+
+    fun presentCaptureFinish(response: CaptureModels.CaptureFinish.Response)
+
+    fun presentCaptureSuccess(response: CaptureModels.CaptureSuccess.Response)
+
+    fun presentCaptureFailure(response: CaptureModels.CaptureFailure.Response)
 
     fun presentError(response: CaptureModels.Error.Response)
 }
