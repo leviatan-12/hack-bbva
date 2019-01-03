@@ -1,4 +1,4 @@
-package com.idemia.biosmart.base.fingers
+package com.idemia.biosmart.base.bio_smart.fingers
 
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.BioMatcherSettings
@@ -18,37 +18,6 @@ import java.lang.Exception
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class FingersWorker {
-    // Read Preferences
-    fun readPreferences(request: FingersModels.ReadPreferences.Request): List<Any> {
-        val preferenceManager = request.activity.preferenceManager
-        val camera = preferenceManager.getBoolean("KEY_USE_CAMERA_REAR", true)
-        val torch = preferenceManager.getBoolean("KEY_USE_TORCH", true)
-        val overlay = preferenceManager.getBoolean("KEY_USE_OVERLAY", true)
-        val timeout = preferenceManager.getLong("KEY_CAPTURE_TIMEOUT", 10)
-        return listOf(camera, torch, overlay, timeout)
-    }
-
-    // Create Bio Capture Handler
-    fun createBioCaptureHandler(request: FingersModels.CreateCaptureHandler.Request): Observable<IBioCaptureHandler>{
-        return Observable.create<IBioCaptureHandler>{ emitter ->
-            BioSdk.createBioCaptureHandler(request.activity, request.captureOptions, object :
-                MscAsyncCallbacks<IBioCaptureHandler> {
-                override fun onPreExecute() {}
-
-                override fun onSuccess(iBioCaptureHandler: IBioCaptureHandler) {
-                    emitter.onNext(iBioCaptureHandler)
-                    emitter.onComplete()
-                }
-
-                override fun onError(bioCaptureHandlerError: BioCaptureHandlerError) {
-                    emitter.onError(Throwable("Error creating capture handler " +
-                            "(${bioCaptureHandlerError.name}, code error: ${bioCaptureHandlerError.mscValue})"))
-                }
-            })
-        }
-    }
-
-
     fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request): Observable<IBioMatcherHandler>{
         return Observable.create<IBioMatcherHandler>{ emitter ->
             BioSdk.createBioMatcherHandler(request.activity, BioMatcherSettings(),

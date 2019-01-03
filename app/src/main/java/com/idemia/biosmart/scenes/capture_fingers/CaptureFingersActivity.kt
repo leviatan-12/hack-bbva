@@ -3,8 +3,8 @@ package com.idemia.biosmart.scenes.capture_fingers
 import android.Manifest
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.fingers.FingersActivity
-import com.idemia.biosmart.base.fingers.FingersModels
+import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
+import com.idemia.biosmart.base.bio_smart.fingers.FingersActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -47,7 +47,7 @@ class CaptureFingersActivity : FingersActivity() {
 
     }
 
-    override fun displayError(viewModel: FingersModels.Error.ViewModel) {
+    override fun displayError(viewModel: CaptureModels.Error.ViewModel) {
         Toast.makeText(applicationContext, "Error: ${viewModel.throwable.localizedMessage}", Toast.LENGTH_LONG)
             .show()
     }

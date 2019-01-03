@@ -1,4 +1,4 @@
-package com.idemia.biosmart.base.fingers
+package com.idemia.biosmart.base.bio_smart.fingers
 
 import android.os.Bundle
 import android.util.Log
@@ -35,31 +35,6 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
         this.presenter = presenter
     }
 
-    override fun readPreferences(request: FingersModels.ReadPreferences.Request) {
-        val values = worker.readPreferences(request)
-        val response = FingersModels.ReadPreferences.Response(values)
-        presenter.presentReadPreferences(response)
-    }
-
-    override fun requestForCapturingOptions(request: FingersModels.RequestForCaptureOptions.Request) {
-        val response = FingersModels.RequestForCaptureOptions.Response(request.options)
-        presenter.presentRequestForCapturingOptions(response)
-    }
-
-    override fun createCaptureHandler(request: FingersModels.CreateCaptureHandler.Request) {
-        disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
-            val mCaptureHandler = (captureHandler as FingerCaptureHandler)
-            this.captureHandler = mCaptureHandler
-            this.captureHandler!!.setBioCaptureResultListener(this)
-            this.captureHandler!!.setBioCaptureFeedbackListener(this)
-            val response = FingersModels.CreateCaptureHandler.Response()
-            presenter.presentCreateCaptureHandler(response)
-        }, { throwable ->
-            val response = FingersModels.Error.Response(throwable)
-            presenter.presentError(response)
-        })
-        DisposableManager.add(disposable)
-    }
 
     override fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request) {
         disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
@@ -144,15 +119,6 @@ class FingersInteractor : FingersBusinessLogic, BioCaptureFeedbackListener, BioC
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface FingersBusinessLogic {
-    // Read Preferences
-    fun readPreferences(request: FingersModels.ReadPreferences.Request)
-
-    // Request for capturing options
-    fun requestForCapturingOptions(request: FingersModels.RequestForCaptureOptions.Request)
-
-    // Create Capture Handler
-    fun createCaptureHandler(request: FingersModels.CreateCaptureHandler.Request)
-
     // Create Matcher Handler
     fun createMatcherHandler(request: FingersModels.CreateMatcherHandler.Request)
 

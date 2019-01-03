@@ -1,6 +1,4 @@
-package com.idemia.biosmart.base.fingers
-
-import android.content.Intent
+package com.idemia.biosmart.base.bio_smart.fingers
 
 import java.lang.ref.WeakReference
 
