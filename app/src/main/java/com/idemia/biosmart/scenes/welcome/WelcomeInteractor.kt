@@ -27,7 +27,6 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
             val activationData = response.bytes()
             val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
             presenter.presentGenerateLicense(mResponse)
-
         },{ throwable ->
             val response = WelcomeModels.GenerateLicense.Response(false)
             Log.e(TAG,"Error generating BIN File License due: ", throwable)

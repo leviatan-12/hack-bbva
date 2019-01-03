@@ -9,6 +9,7 @@ import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBiometricInfo
 import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
@@ -28,7 +29,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     private var presenter: CapturePresentationLogic = CapturePresenter()
     private var disposable: Disposable? = null
 
-    private var captureHandler: BioCaptureHandler? = null    // Capture handler used for handling capture
+    private var captureHandler: IBioCaptureHandler? = null    // Capture handler used for handling capture
     private var matcherHandler: IBioMatcherHandler? = null      // A matcher handler used for local matching
 
     companion object {

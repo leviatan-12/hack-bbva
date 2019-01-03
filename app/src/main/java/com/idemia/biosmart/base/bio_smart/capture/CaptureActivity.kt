@@ -1,7 +1,15 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
+import android.Manifest
 import android.util.Log
+import android.widget.Toast
 import com.idemia.biosmart.base.android.BaseActivity
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
@@ -72,14 +80,35 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
+    //region Listener for permission
+    private val listener = object : PermissionListener {
+        override fun onPermissionGranted(response: PermissionGrantedResponse) {
+            // 1.- Request for capturing Options
+            requestCaptureOptions()
+
+            // 2.- Create Capture Handler
+            createCaptureHandler()
+        }
+
+        override fun onPermissionDenied(response: PermissionDeniedResponse) {
+            Toast.makeText(applicationContext, "A Required permission was denied by user: ${response.permissionName}", Toast.LENGTH_LONG).show()
+        }
+
+        override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
+            Toast.makeText(applicationContext, "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.", Toast.LENGTH_LONG).show()
+            token.continuePermissionRequest()
+        }
+    }
+    //endregion
+
     //region Android Lifecycle
     override fun onResume() {
         super.onResume()
-        // 1.- Request for capturing Options
-        requestCaptureOptions()
-
-        // 2.- Create Capture Handler
-        createCaptureHandler()
+        Dexter.withActivity(this@CaptureActivity)
+            .withPermission(Manifest.permission.CAMERA).
+                withListener(listener).withErrorListener { error ->
+                Log.e(TAG, "Error with camera permission: ${error.name}")
+            }.check()
     }
 
     override fun onPause() {
