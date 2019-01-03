@@ -23,6 +23,7 @@ class CaptureFingersActivity : FingersActivity() {
     // Listener for permission
     private val listener = object : PermissionListener {
         override fun onPermissionGranted(response: PermissionGrantedResponse) {
+            // TODO: Verify if handlers are ready to capture...
             startCapture()
         }
 

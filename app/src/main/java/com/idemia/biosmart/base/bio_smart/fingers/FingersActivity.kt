@@ -1,7 +1,7 @@
 package com.idemia.biosmart.base.bio_smart.fingers
 
-import android.util.Log
 import com.idemia.biosmart.base.bio_smart.capture.CaptureActivity
+import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 
 /**
  *  Fingers Activity
@@ -17,6 +17,9 @@ abstract class FingersActivity : CaptureActivity(), FingersDisplayLogic {
         private val TAG = "FingersActivity"
     }
 
+    // Fingers Capture Handler
+    override val handlerType: CaptureModels.CaptureHanlderType = CaptureModels.CaptureHanlderType.FINGERS
+
     //region A "Dependency" Injection
     override fun inject() {
         super.inject()
@@ -29,49 +32,6 @@ abstract class FingersActivity : CaptureActivity(), FingersDisplayLogic {
         (router as FingersRouter).setActivity(this)
     }
     //endregion
-
-    //region Create Matcher Handler
-    private fun createMatcherHandler(){
-        val request = FingersModels.CreateMatcherHandler.Request(this@FingersActivity)
-        interactor.createMatcherHandler(request)
-    }
-
-    override fun displayCreateMatcherHandler(viewModel: FingersModels.CreateMatcherHandler.ViewModel) {
-        // 4.- Ready for capture
-        readyForCapture()
-    }
-    //endregion
-
-    //region Start Capture
-    /**
-     * Use this method to start a new capture
-     */
-    protected fun startCapture(){
-        val request = FingersModels.StartCapture.Request()
-        interactor.startCapture(request)
-    }
-    //endregion}
-
-    //region Stop Capture
-    /**
-     * Use this method to stop a capture
-     */
-    protected fun stopCapture(){
-        val request = FingersModels.StopCapture.Request()
-        interactor.stopCapture(request)
-    }
-    //endregion
-
-    //region Destroy Handlers
-    private fun destroyHandlers(){
-        val request = FingersModels.DestroyHandlers.Request()
-        interactor.destroyHandlers(request)
-    }
-
-    override fun displayDestroyHandlers(viewModel: FingersModels.DestroyHandlers.ViewModel) {
-        Log.i(TAG, "Handlers destroyed!")
-    }
-    //endregion
 }
 
 /**
@@ -80,8 +40,4 @@ abstract class FingersActivity : CaptureActivity(), FingersDisplayLogic {
  *  Created by Alfredo on 28/12/2018.
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
-interface FingersDisplayLogic {
-    fun displayCreateMatcherHandler(viewModel: FingersModels.CreateMatcherHandler.ViewModel)
-
-    fun displayDestroyHandlers(viewModel: FingersModels.DestroyHandlers.ViewModel)
-}
+interface FingersDisplayLogic

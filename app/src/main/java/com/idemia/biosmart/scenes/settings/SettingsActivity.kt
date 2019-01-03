@@ -22,8 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 
-
-
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -80,7 +78,7 @@ class SettingsActivity : PreferenceActivity() {
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
                 || GeneralPreferenceFragment::class.java.name == fragmentName
-                //|| DataSyncPreferenceFragment::class.java.name == fragmentName
+                || FaceAndFingersPreferenceFragment::class.java.name == fragmentName
                 //|| NotificationPreferenceFragment::class.java.name == fragmentName
     }
 
@@ -103,6 +101,35 @@ class SettingsActivity : PreferenceActivity() {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_ip_address)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_name)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_port)))
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            val id = item.itemId
+            if (id == android.R.id.home) {
+                startActivity(Intent(activity, SettingsActivity::class.java))
+                return true
+            }
+            return super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * This fragment shows face and fingers configuration. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    class FaceAndFingersPreferenceFragment: PreferenceFragment(){
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.pref_face_and_fingers)
+            setHasOptionsMenu(true)
+
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_CAPTURE_TIMEOUT)))
+            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_CAMERA_REAR)))
+            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_OVERLAY)))
+            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_TORCH)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FACE_CAPTURE_MODE)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FINGERS_CAPTURE_MODE)))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -144,7 +171,7 @@ class SettingsActivity : PreferenceActivity() {
                 // using RingtoneManager.
                 if (TextUtils.isEmpty(stringValue)) {
                     // Empty values correspond to 'silent' (no ringtone).
-                    preference.setSummary(R.string.pref_ringtone_silent)
+                    preference.setSummary("")
 
                 } else {
                     val ringtone = RingtoneManager.getRingtone(
@@ -162,10 +189,17 @@ class SettingsActivity : PreferenceActivity() {
                     }
                 }
 
-            } else {
+            }
+            else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
-                preference.summary = stringValue
+                if(stringValue == "true"){
+                    preference.summary = "Yes"
+                }else if (stringValue == "false"){
+                    preference.summary = "No"
+                }else{
+                    preference.summary = stringValue
+                }
             }
             true
         }
@@ -198,6 +232,20 @@ class SettingsActivity : PreferenceActivity() {
                 PreferenceManager
                     .getDefaultSharedPreferences(preference.context)
                     .getString(preference.key, "")
+            )
+        }
+
+        private fun bindPreferenceBoolean(preference: Preference){
+            // Set the listener to watch for value changes.
+            preference.onPreferenceChangeListener = sBindPreferenceSummaryToValueListener
+
+            // Trigger the listener immediately with the preference's
+            // current value.
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(
+                preference,
+                PreferenceManager
+                    .getDefaultSharedPreferences(preference.context)
+                    .getBoolean(preference.key, false)
             )
         }
     }

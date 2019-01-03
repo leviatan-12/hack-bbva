@@ -19,11 +19,17 @@ class CaptureModels {
                             val captureMode: BioCaptureMode,
                             val timeout: Long = 30,
                             val overlay: Overlay = Overlay.ON)
+
+
+    enum class CaptureHanlderType {
+        FACIAL,
+        FINGERS
+    }
     //endregion
 
     // Read Preferences
     class ReadPreferences{
-        data class Request(val activity: BaseActivity)
+        data class Request(val activity: BaseActivity, val handlerType: CaptureHanlderType)
         class Response(val values: List<Any>)
         data class ViewModel(val appCaptureOptions: CaptureModels.AppCaptureOptions)
     }
@@ -37,7 +43,35 @@ class CaptureModels {
 
     // Create Capture Handler
     class CreateCaptureHandler{
-        data class Request(val activity: Activity, val captureOptions: ICaptureOptions)
+        data class Request(val handlerType: CaptureHanlderType, val activity: Activity, val captureOptions: ICaptureOptions)
+        class Response
+        class ViewModel
+    }
+
+    // CreateMatcherHandler
+    class CreateMatcherHandler{
+        class Request(val activity: Activity)
+        class Response
+        class ViewModel
+    }
+
+    // Start Capture
+    class StartCapture{
+        class Request
+        class Response
+        class ViewModel
+    }
+
+    // Stop Capture
+    class StopCapture{
+        class Request
+        class Response
+        class ViewModel
+    }
+
+    // Destroy Handlers
+    class DestroyHandlers{
+        class Request
         class Response
         class ViewModel
     }

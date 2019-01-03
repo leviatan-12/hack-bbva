@@ -25,17 +25,23 @@ class CapturePresenter : CapturePresentationLogic {
      * 1.- Use torch (Boolean)
      * 3.- Use Overlay (Boolean)
      * 4.- Capture timeout (Long)
+     * X.- Last must be Capture Mode
      */
     override fun presentReadPreferences(response: CaptureModels.ReadPreferences.Response) {
         val useCameraRear = if (response.values[0] as Boolean) Camera.REAR else Camera.FRONT
         val useTorch = if (response.values[1] as Boolean) Torch.ON else Torch.OFF
         val useOverlay = if (response.values[2] as Boolean) Overlay.ON else Overlay.OFF
         val captureTimeout = response.values[3] as Long
+        val captureMode = response.values.last() as BioCaptureMode
 
         val appCaptureOptions = CaptureModels.AppCaptureOptions(
-            useCameraRear, useTorch,
-            BioCaptureMode.FINGERPRINT_LEFT_HAND, captureTimeout, useOverlay
+            useCameraRear,
+            useTorch,
+            captureMode,
+            captureTimeout,
+            useOverlay
         )
+
         val viewModel = CaptureModels.ReadPreferences.ViewModel(appCaptureOptions)
         activity!!.displayReadPreferences(viewModel)
     }
@@ -57,7 +63,18 @@ class CapturePresenter : CapturePresentationLogic {
         activity!!.displayCreateCaptureHandler(viewModel)
     }
 
-    override fun presentError(response: FingersModels.Error.Response) {
+
+    override fun presentCreateMatcherHandler(response: CaptureModels.CreateMatcherHandler.Response) {
+        val viewModel = CaptureModels.CreateMatcherHandler.ViewModel()
+        activity!!.displayCreateMatcherHandler(viewModel)
+    }
+
+    override fun presentDestroyHandlers(response: CaptureModels.DestroyHandlers.Response) {
+        val viewModel = CaptureModels.DestroyHandlers.ViewModel()
+        activity!!.displayDestroyHandlers(viewModel)
+    }
+
+    override fun presentError(response: CaptureModels.Error.Response) {
         val viewModel = CaptureModels.Error.ViewModel(response.throwable)
         activity!!.displayError(viewModel)
     }
@@ -77,5 +94,9 @@ interface CapturePresentationLogic {
 
     fun presentCreateCaptureHandler(response: CaptureModels.CreateCaptureHandler.Response)
 
-    fun presentError(response: FingersModels.Error.Response)
+    fun presentCreateMatcherHandler(response: CaptureModels.CreateMatcherHandler.Response)
+
+    fun presentDestroyHandlers(response: CaptureModels.DestroyHandlers.Response)
+
+    fun presentError(response: CaptureModels.Error.Response)
 }

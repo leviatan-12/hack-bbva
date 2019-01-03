@@ -2,10 +2,12 @@ package com.idemia.biosmart.base.bio_smart.capture
 
 import android.os.Bundle
 import android.util.Log
-import com.idemia.biosmart.base.bio_smart.fingers.FingersModels
+import com.idemia.biosmart.base.bio_smart.fingers.FingersInteractor
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBiometricInfo
+import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
@@ -13,6 +15,7 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
 import io.reactivex.disposables.Disposable
+import java.lang.Exception
 
 /**
  *  Capture Interactor
@@ -25,7 +28,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     private var presenter: CapturePresentationLogic = CapturePresenter()
     private var disposable: Disposable? = null
 
-    private var captureHandler: FingerCaptureHandler? = null    // Capture handler used for handling capture
+    private var captureHandler: BioCaptureHandler? = null    // Capture handler used for handling capture
     private var matcherHandler: IBioMatcherHandler? = null      // A matcher handler used for local matching
 
     companion object {
@@ -49,39 +52,100 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
         disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
-            val mCaptureHandler = (captureHandler as FingerCaptureHandler)
+            var mCaptureHandler: BioCaptureHandler? = null
+
+            when (request.handlerType){
+                CaptureModels.CaptureHanlderType.FACIAL -> {
+                    mCaptureHandler = (captureHandler as FaceCaptureHandler)
+                }
+                CaptureModels.CaptureHanlderType.FINGERS -> {
+                    mCaptureHandler = (captureHandler as FingerCaptureHandler)
+                }
+            }
+
             this.captureHandler = mCaptureHandler
             this.captureHandler!!.setBioCaptureResultListener(this)
             this.captureHandler!!.setBioCaptureFeedbackListener(this)
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
-            val response = FingersModels.Error.Response(throwable)
+            val response = CaptureModels.Error.Response(throwable)
             presenter.presentError(response)
         })
         DisposableManager.add(disposable)
     }
 
-
-    override fun onCaptureInfo(p0: BioCaptureInfo?, p1: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request) {
+        disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
+            this.matcherHandler = matcherHandler
+            val response = CaptureModels.CreateMatcherHandler.Response()
+            presenter.presentCreateMatcherHandler(response)
+        },{ throwable ->
+            val response = CaptureModels.Error.Response(throwable)
+            presenter.presentError(response)
+        })
+        DisposableManager.add(disposable)
     }
 
+    override fun startCapture(request: CaptureModels.StartCapture.Request) {
+        captureHandler?.let {
+            try {
+                it.startPreview()
+                it.startCapture()
+            }catch (e: Exception){
+                val response = CaptureModels.Error.Request(e)
+                showError(response)
+            }
+        }
+    }
+
+    override fun stopCapture(request: CaptureModels.StopCapture.Request) {
+        captureHandler?.let {
+            try {
+                it.stopCapture()
+                it.stopPreview()
+            }catch (e: Exception){
+                val response = CaptureModels.Error.Request(e)
+                showError(response)
+            }
+        }
+    }
+
+    //region Bio Capture Feedback listener
+    override fun onCaptureInfo(bioCaptureInfo: BioCaptureInfo?, bundle: Bundle?) {
+        Log.i(FingersInteractor.TAG, "onCaptureInfo: name -> ${bioCaptureInfo?.name}")
+    }
+    //endregion
+
+    //region Bio Capture Result Listener
     override fun onCaptureFinish() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.i(FingersInteractor.TAG, "onCaptureFinish: Capture finished")
     }
 
-    override fun onCaptureSuccess(p0: MutableList<MorphoImage>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCaptureSuccess(morphoImages: MutableList<MorphoImage>?) {
+        Log.i(FingersInteractor.TAG, "onCaptureSuccess: Capture was successfully")
     }
 
-    override fun onCaptureFailure(p0: CaptureError?, p1: IBiometricInfo?, p2: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCaptureFailure(captureError: CaptureError?, biometricInfo: IBiometricInfo?, bundle: Bundle?) {
+        Log.i(FingersInteractor.TAG, "onCaptureFailure: An error was happened")
+    }
+    //endregion
+
+    override fun destroyHandlers(request: CaptureModels.DestroyHandlers.Request) {
+        // Dispose everything
+        DisposableManager.dispose()
+
+        // Destroy capture handler and matcher handler
+        captureHandler?.destroy()
+        matcherHandler?.destroy()
+
+        val response = CaptureModels.DestroyHandlers.Response()
+        presenter.presentDestroyHandlers(response)
     }
 
-    override fun showError(request: FingersModels.Error.Request) {
+    override fun showError(request: CaptureModels.Error.Request) {
         Log.e(TAG, "showError: An error was happened", request.exception)
-        val response = FingersModels.Error.Response(Throwable(request.exception))
+        val response = CaptureModels.Error.Response(Throwable(request.exception))
         presenter.presentError(response)
     }
 }
@@ -103,6 +167,18 @@ interface CaptureBusinessLogic {
     // Create Capture Handler
     fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request)
 
+    // Create Matcher Handler
+    fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request)
+
+    // Start Capture
+    fun startCapture(request: CaptureModels.StartCapture.Request)
+
+    // Stop Capture
+    fun stopCapture(request: CaptureModels.StopCapture.Request)
+
+    // Destroy Handlers
+    fun destroyHandlers(request: CaptureModels.DestroyHandlers.Request)
+
     // Show Error
-    fun showError(request: FingersModels.Error.Request)
+    fun showError(request: CaptureModels.Error.Request)
 }

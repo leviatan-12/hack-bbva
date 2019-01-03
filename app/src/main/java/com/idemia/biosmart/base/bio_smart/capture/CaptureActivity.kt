@@ -2,7 +2,10 @@ package com.idemia.biosmart.base.bio_smart.capture
 
 import android.util.Log
 import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.base.bio_smart.fingers.FingersModels
+import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
 import morpho.urt.msc.mscengine.MorphoSurfaceView
 import java.lang.Exception
@@ -51,6 +54,11 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
      * Now you can start your capture.
      */
     protected abstract fun readyForCapture()
+
+    /**
+     * Select capture handler type to cast
+     */
+    protected abstract val handlerType: CaptureModels.CaptureHanlderType
     //endregion
 
     //region On Load Activity (called within "onCreate() method")
@@ -76,20 +84,20 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     override fun onPause() {
         super.onPause()
-        // - destroyHandlers()
+        destroyHandlers()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // - destroyHandlers()
+        destroyHandlers()
         // Destroy surface view
         surfaceView.onDestroy()
     }
     //endregion
 
     //region Read Preferences
-    protected fun readPreferences(){
-        val request = CaptureModels.ReadPreferences.Request(this@CaptureActivity)
+    private fun readPreferences(){
+        val request = CaptureModels.ReadPreferences.Request(this@CaptureActivity, handlerType)
         interactor.readPreferences(request)
     }
 
@@ -115,13 +123,56 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region Create Capture Handler
     private fun createCaptureHandler(){
-        val request = CaptureModels.CreateCaptureHandler.Request(this@CaptureActivity, captureOptions)
+        val request = CaptureModels.CreateCaptureHandler.Request(handlerType, this@CaptureActivity, captureOptions)
         interactor.createCaptureHandler(request)
     }
 
     override fun displayCreateCaptureHandler(viewModel: CaptureModels.CreateCaptureHandler.ViewModel) {
         // 3.- Create Matcher Handler
         // - createMatcherHandler()
+    }
+    //endregion
+
+    //region Create Matcher Handler
+    private fun createMatcherHandler(){
+        val request = CaptureModels.CreateMatcherHandler.Request(this@CaptureActivity)
+        interactor.createMatcherHandler(request)
+    }
+
+    override fun displayCreateMatcherHandler(viewModel: CaptureModels.CreateMatcherHandler.ViewModel) {
+        // 4.- Ready for capture
+        readyForCapture()
+    }
+    //endregion
+
+    //region Start Capture
+    /**
+     * Use this method to start a new capture
+     */
+    protected fun startCapture(){
+        val request = CaptureModels.StartCapture.Request()
+        interactor.startCapture(request)
+    }
+    //endregion}
+
+    //region Stop Capture
+    /**
+     * Use this method to stop a capture
+     */
+    protected fun stopCapture(){
+        val request = CaptureModels.StopCapture.Request()
+        interactor.stopCapture(request)
+    }
+    //endregion
+
+    //region Destroy Handlers
+    private fun destroyHandlers(){
+        val request = CaptureModels.DestroyHandlers.Request()
+        interactor.destroyHandlers(request)
+    }
+
+    override fun displayDestroyHandlers(viewModel: CaptureModels.DestroyHandlers.ViewModel) {
+        Log.i(TAG, "Handlers destroyed!")
     }
     //endregion
 
@@ -142,6 +193,10 @@ interface CaptureDisplayLogic {
     fun displayCaptureOptions(viewModel: CaptureModels.RequestCaptureOptions.ViewModel)
 
     fun displayCreateCaptureHandler(viewModel: CaptureModels.CreateCaptureHandler.ViewModel)
+
+    fun displayCreateMatcherHandler(viewModel: CaptureModels.CreateMatcherHandler.ViewModel)
+
+    fun displayDestroyHandlers(viewModel: CaptureModels.DestroyHandlers.ViewModel)
 
     fun displayError(viewModel: CaptureModels.Error.ViewModel)
 }
