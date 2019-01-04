@@ -7,10 +7,18 @@ package com.idemia.biosmart.scenes.enrolment;
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class EnrolmentModels {
-    // Do Something
-    class DoSomething {
-        class Request
-        class Response
-        class ViewModel
+
+    enum class Operation{
+        CAPTURE_FINGERS,
+        CAPTURE_FINGERS_CONTACTLESS,
+        CAPTURE_FACE,
+        START_PROCESS
+    }
+
+    // Go to next scene
+    class GoToNextScene {
+        data class Request(val operation: EnrolmentModels.Operation)
+        class Response(val operation: EnrolmentModels.Operation)
+        class ViewModel(val operation: EnrolmentModels.Operation)
     }
 }

@@ -5,4 +5,30 @@
     <string name="idemia_key_middleware_port" translatable="false">idemia_key_middleware_port</string>
     <string name="idemia_key_middleware_ip_address" translatable="false">idemia_key_middleware_ip_address</string>
     <string name="idemia_key_middleware_https" translatable="false">idemia_key_middleware_https</string>
+
+
+    <string name="IDEMIA_KEY_USE_CAMERA_REAR">IDEMIA_KEY_USE_CAMERA_REAR</string>
+    <string name="IDEMIA_KEY_USE_TORCH">IDEMIA_KEY_USE_TORCH</string>
+    <string name="IDEMIA_KEY_USE_OVERLAY">IDEMIA_KEY_USE_OVERLAY</string>
+    <string name="IDEMIA_KEY_CAPTURE_TIMEOUT">IDEMIA_KEY_CAPTURE_TIMEOUT</string>
+    <string name="IDEMIA_KEY_FACE_CAPTURE_MODE">IDEMIA_KEY_FACE_CAPTURE_MODE</string>
+    <string name="IDEMIA_KEY_FINGERS_CAPTURE_MODE">IDEMIA_KEY_FINGERS_CAPTURE_MODE</string>
+
+    <string-array name="face_capture_mode_values">
+        <item>TRACK_FACE_CHALLENGE_VERY_LOW</item>
+        <item>TRACK_FACE_CHALLENGE_LOW</item>
+        <item>TRACK_FACE_CHALLENGE_MEDIUM</item>
+        <item>TRACK_FACE_CHALLENGE_HIGH</item>
+        <item>TRACK_FACE_CHALLENGE_VERY_HIGH</item>
+        <item>TRACK_FACE_LIVENESS_LOW</item>
+        <item>TRACK_FACE_LIVENESS_MEDIUM</item>
+        <item>TRACK_FACE_LIVENESS_HIGH</item>
+    </string-array>
+
+    <string-array name="fingers_capture_mode_values">
+        <item>FINGERPRINT_RIGHT_HAND</item>
+        <item>FINGERPRINT_LEFT_HAND</item>
+        <item>FINGERPRINT_LEFT_HAND_AUTHENTICATION</item>
+        <item>FINGERPRINT_RIGHT_HAND_AUTHENTICATION</item>
+    </string-array>
 </resources>

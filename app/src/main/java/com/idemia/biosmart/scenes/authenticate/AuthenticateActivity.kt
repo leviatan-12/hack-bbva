@@ -1,9 +1,11 @@
 package com.idemia.biosmart.scenes.authenticate
 
-import android.util.Log
-import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.utils.Validator
+import com.jakewharton.rxbinding2.widget.textChanges
+import kotlinx.android.synthetic.main.activity_authenticate.*
 
 /**
  *  Authenticate Activity
@@ -15,18 +17,23 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     private lateinit var interactor: AuthenticateBusinessLogic    // Interactor
     private lateinit var router: AuthenticateRoutingLogic         // Router
 
+    // To check if data is completed
+    private var usernameIsValid = false
+    private var faceTaken = false
+    private var fingersTaken = false
+
+    companion object { private val TAG = "AuthenticateActivity" }
+
     override fun resourceLayoutId(): Int  = R.layout.activity_authenticate
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
     override fun onLoadActivity() {
-
+        addObservableToUsernameTextField()
+        addActionButtons()
     }
 
-    companion object {
-        private val TAG = "AuthenticateActivity"
-    }
-
+    //region A "dependency injection"
     override fun inject() {
         val activity = this
         this.interactor = AuthenticateInteractor()
@@ -36,19 +43,58 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
         presenter.setActivity(activity)
         (router as AuthenticateRouter).setActivity(this)
     }
+    //endregion
 
-
+    //region Go to next scene
     /**
-     * Do something Use Case
+     * Go To Next Scene
      */
-    private fun doSomething() {
-        val request = AuthenticateModels.DoSomething.Request()
-        interactor.doSomething(request)
+    private fun goToNextScene(operation: AuthenticateModels.Operation) {
+        val request = AuthenticateModels.GoToNextScene.Request(operation)
+        interactor.goToNextScene(request)
     }
 
-    override fun displayDoSomething(viewModel: AuthenticateModels.DoSomething.ViewModel) {
-        Log.i(TAG, "displayDoSomething: ")
-        Toast.makeText(applicationContext, "Hello World from Do Something", Toast.LENGTH_LONG).show()
+    override fun displayGoToNextScene(viewModel: AuthenticateModels.GoToNextScene.ViewModel) {
+        when(viewModel.operation){
+            AuthenticateModels.Operation.START_PROCESS -> router.routeToStartProcessScene()
+            AuthenticateModels.Operation.CAPTURE_FACE -> router.routeToCaptureFaceScene()
+            AuthenticateModels.Operation.CAPTURE_FINGERS -> router.routeToCaptureFingersMsoScene()
+            AuthenticateModels.Operation.CAPTURE_FINGERS_CONTACTLESS -> router.routeToCaptureFingersScene()
+        }
+    }
+    //endregion
+
+    /**
+     * Adds an observable for username validation
+     */
+    private fun addObservableToUsernameTextField(){
+        DisposableManager.add(edit_text_username.textChanges().subscribe{
+            usernameIsValid = Validator.validate(edit_text_username)
+            button_start_process.isEnabled = isDataValid()
+        })
+    }
+
+    /**
+     * Adds on click listener to buttons
+     */
+    private fun addActionButtons(){
+        button_start_process.setOnClickListener {
+            if(isDataValid()){
+                goToNextScene(AuthenticateModels.Operation.START_PROCESS)
+            }
+        }
+        float_button_selfie.setOnClickListener{ goToNextScene(AuthenticateModels.Operation.CAPTURE_FACE) }
+        button_capture_fingers.setOnClickListener {
+            if(switch_enable_contactless.isChecked){
+                goToNextScene(AuthenticateModels.Operation.CAPTURE_FINGERS_CONTACTLESS)
+            }else{
+                goToNextScene(AuthenticateModels.Operation.CAPTURE_FINGERS)
+            }
+        }
+    }
+
+    private fun isDataValid(): Boolean{
+        return (usernameIsValid && faceTaken) || (usernameIsValid && fingersTaken)
     }
 }
 
@@ -59,5 +105,5 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface AuthenticateDisplayLogic {
-    fun displayDoSomething(viewModel: AuthenticateModels.DoSomething.ViewModel)
+    fun displayGoToNextScene(viewModel: AuthenticateModels.GoToNextScene.ViewModel)
 }

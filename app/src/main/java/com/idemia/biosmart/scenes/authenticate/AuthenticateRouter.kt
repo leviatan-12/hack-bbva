@@ -1,5 +1,8 @@
 package com.idemia.biosmart.scenes.authenticate
 
+import android.content.Intent
+import com.idemia.biosmart.scenes.capture_face.CaptureFaceActivity
+import com.idemia.biosmart.scenes.capture_fingers.CaptureFingersActivity
 import java.lang.ref.WeakReference
 
 /**
@@ -16,13 +19,26 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
         this.activity = WeakReference(activity)
     }
 
-    override fun routeToNextScene(name: String) {
+    override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
-            /*Intent intent = new Intent(activity.get().getApplicationContext(), NextSceneActivity.class);
-            intent.putExtra("user_name", name);
-            activity.get().startActivity(intent);
-            */
+            val intent = Intent(activity!!.get()!!.applicationContext, CaptureFingersActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
         }
+    }
+
+    override fun routeToCaptureFingersMsoScene() {
+
+    }
+
+    override fun routeToCaptureFaceScene() {
+        if (activity?.get() != null){
+            val intent = Intent(activity!!.get()!!.applicationContext, CaptureFaceActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
+        }
+    }
+
+    override fun routeToStartProcessScene() {
+
     }
 }
 
@@ -34,7 +50,13 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
  */
 interface AuthenticateRoutingLogic {
     /**
-     * Route to Next Scene
+     * Route to Capture Fingers Scene
      */
-    fun routeToNextScene(name: String)
+    fun routeToCaptureFingersScene()
+
+    fun routeToCaptureFingersMsoScene()
+
+    fun routeToCaptureFaceScene()
+
+    fun routeToStartProcessScene()
 }

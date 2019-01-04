@@ -7,10 +7,18 @@ package com.idemia.biosmart.scenes.authenticate;
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class AuthenticateModels {
-    // Do Something
-    class DoSomething {
-        class Request
-        class Response
-        class ViewModel
+
+    enum class Operation{
+        CAPTURE_FINGERS,
+        CAPTURE_FINGERS_CONTACTLESS,
+        CAPTURE_FACE,
+        START_PROCESS
+    }
+
+    // Go to next scene
+    class GoToNextScene {
+        data class Request(val operation: AuthenticateModels.Operation)
+        class Response(val operation: AuthenticateModels.Operation)
+        class ViewModel(val operation: AuthenticateModels.Operation)
     }
 }

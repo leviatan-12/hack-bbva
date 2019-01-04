@@ -41,17 +41,17 @@ class WelcomeWorker {
             licenseManager.createLicense(request.applicationContext, request.lkmsUrl, networkSettings(), request.activationData,
                 object : BioSdkLicenceAsyncCallbacks<ILkmsLicense> {
                     override fun onPreExecute() {
-                        Log.i(TAG,"onPreExecute")
+                        // Log.i(TAG,"onPreExecute")
                     }
 
                     override fun onSuccess(result: ILkmsLicense) {
-                        Log.i(TAG,"onSuccess, ID: ${result.id}")
+                        // Log.i(TAG,"onSuccess, ID: ${result.id}")
                         emitter.onNext(result)
                         emitter.onComplete()
                     }
 
                     override fun onError(e: LkmsException) {
-                        Log.i(TAG,"onError", e)
+                        // Log.i(TAG,"onError", e)
                         emitter.onError(e)
                     }
                 })

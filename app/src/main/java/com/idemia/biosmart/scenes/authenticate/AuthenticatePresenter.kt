@@ -13,9 +13,9 @@ class AuthenticatePresenter : AuthenticatePresentationLogic {
         this.activity = activity
     }
 
-    override fun presentDoSomething(response: AuthenticateModels.DoSomething.Response) {
-        val viewModel = AuthenticateModels.DoSomething.ViewModel()
-        activity!!.displayDoSomething(viewModel)
+    override fun presentGoToNextScene(response: AuthenticateModels.GoToNextScene.Response) {
+        val viewModel = AuthenticateModels.GoToNextScene.ViewModel(response.operation)
+        activity!!.displayGoToNextScene(viewModel)
     }
 
     companion object {
@@ -31,5 +31,5 @@ class AuthenticatePresenter : AuthenticatePresentationLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface AuthenticatePresentationLogic {
-    fun presentDoSomething(response: AuthenticateModels.DoSomething.Response)
+    fun presentGoToNextScene(response: AuthenticateModels.GoToNextScene.Response)
 }

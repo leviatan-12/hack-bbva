@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="@string/pref_header_general_capture_settings">
+
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:title="@string/pref_title_use_torch"
+                android:key="@string/IDEMIA_KEY_USE_TORCH"/>
+
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:title="@string/pref_title_use_camera_rear"
+                android:key="@string/IDEMIA_KEY_USE_CAMERA_REAR"/>
+
+
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:title="@string/pref_title_use_overlay"
+                android:key="@string/IDEMIA_KEY_USE_OVERLAY"/>
+
+        <EditTextPreference
+                android:defaultValue="10"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_title_capture_timeout"
+                android:key="@string/IDEMIA_KEY_CAPTURE_TIMEOUT"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Facial Capture Settings">
+
+
+        <ListPreference
+                android:defaultValue="1"
+                android:title="@string/pref_title_face_capture_mode"
+                android:entries="@array/face_capture_mode_values"
+                android:entryValues="@array/face_capture_mode_values"
+                android:key="@string/IDEMIA_KEY_FACE_CAPTURE_MODE"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Finger Capture Settings">
+        <ListPreference
+                android:defaultValue="1"
+                android:title="@string/pref_title_finger_capture_mode"
+                android:entries="@array/fingers_capture_mode_values"
+                android:entryValues="@array/fingers_capture_mode_values"
+                android:key="@string/IDEMIA_KEY_FINGERS_CAPTURE_MODE"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

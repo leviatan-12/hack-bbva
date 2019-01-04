@@ -1,6 +1,5 @@
 package com.idemia.biosmart.scenes.welcome
 
-import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
@@ -11,8 +10,6 @@ import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
-import com.idemia.biosmart.scenes.capture_fingers.CaptureFingersActivity
-import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.IDMProgress
@@ -32,7 +29,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     @Inject lateinit var interactor: WelcomeBusinessLogic    // Interactor
     @Inject lateinit var router: WelcomeRoutingLogic         // Router
 
-    lateinit var loader: KProgressHUD
+    var loader: KProgressHUD? = null
 
     companion object {
         private val TAG = "WelcomeActivity"
@@ -58,7 +55,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         text_view_sdk_version.text = sdkInfo.version
 
         // Linear Layout
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recycle_view_menu.layoutManager = layoutManager
         recycle_view_menu.setHasFixedSize(true)
 
@@ -84,15 +81,17 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
         // Validate or activate license
         activateLkmsLicenseOnDevice()
-
-        // TODO: Delete this line, just for testing...
-        startActivity(Intent(this@WelcomeActivity, CaptureFingersActivity::class.java))
     }
     //endregion
 
+    override fun onPause() {
+        super.onPause()
+        destroyComponents()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        DisposableManager.dispose()  // Dispose all subscriptions
+        destroyComponents()
     }
 
     //region Action Bar / Menu
@@ -115,45 +114,47 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
      */
     private fun generateLicense() {
         loader = IDMProgress(this, "Generating License", "Please Wait...").kProgress
-        loader.show()
+        loader?.show()
         val request = WelcomeModels.GenerateLicense.Request()
         interactor.generateLicense(request)
     }
 
     override fun displayGenerateLicense(viewModel: WelcomeModels.GenerateLicense.ViewModel) {
-        loader.dismiss()
+        loader?.dismiss()
         Log.i(TAG, "displayGenerateLicense: ")
         if(viewModel.generated){
             text_view_license_status.text = getString(R.string.welcome_message_license_bin_file_generated)
             createLKMSLicense(viewModel.activationData!!)
         }else{
-            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_bin_file_not_generated), Toast.LENGTH_LONG).show()
+            val message = getString(R.string.welcome_message_license_bin_file_not_generated)
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, message)
+            Toast.makeText(applicationContext, message , Toast.LENGTH_LONG).show()
         }
     }
 
     //endregion
 
-    //region Create LKMS License
-    fun createLKMSLicense(activationData: ByteArray){
-        val lkmsUrl = getString(R.string.idemia_key_lkms_url)
+    //region Create LKMS License on Server
+    private fun createLKMSLicense(activationData: ByteArray){
+        val lkmsUrlKey = getString(R.string.idemia_key_lkms_url)
         val defaultLkmsUrl = getString(R.string.default_lkms_server_url)
-        val lkmsUrlSelected = preferenceManager.getString( lkmsUrl , defaultLkmsUrl)
+        val lkmsUrlSelected = preferenceManager.getString( lkmsUrlKey , defaultLkmsUrl)
         val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData, applicationContext, lkmsUrlSelected!!)
         Log.i(TAG, "createLKMSLicense: LKMS Server URL - $lkmsUrlSelected")
-        loader = IDMProgress(this, "Activating License on LKMS Server", "Plaase Wait...").kProgress
-        loader.show()
+        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
+        loader?.show()
         interactor.createLKMSLicense(request)
     }
 
     override fun displayCreateLKMSLicense(viewModel: WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel) {
-        loader.dismiss()
+        loader?.dismiss()
         if(viewModel.activated){
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
         }else{
-            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated), Toast.LENGTH_LONG).show()
+            text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
+            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -162,18 +163,20 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     //region Activate Lkms License On Device
     private fun activateLkmsLicenseOnDevice(){
         loader = IDMProgress(this, "Activating License", "Please Wait...").kProgress
-        loader.show()
+        loader?.show()
         val request = WelcomeModels.ActivateLkmsLicenseOnDevice.Request(applicationContext)
         interactor.activateLkmsLicenseOnDevice(request)
     }
 
     override fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel) {
-        loader.dismiss()
+        loader?.dismiss()
         if(viewModel.isLicenseValid){
+            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_green_light))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
         }else {
             Log.i(TAG, "License is not active or is not valid, a new one will be generated...")
             generateLicense()
+            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_red_dark))
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
         }
     }
@@ -197,6 +200,12 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         }
     }
     //endregion
+
+    private fun destroyComponents(){
+        DisposableManager.dispose()     // Dispose all subscriptions
+        loader?.dismiss()
+        loader = null                   // Destroy loader
+    }
 }
 
 /**

@@ -4,6 +4,10 @@
     <header
             android:fragment="com.idemia.biosmart.scenes.settings.SettingsActivity$GeneralPreferenceFragment"
             android:title="@string/pref_header_general"
-            android:icon="@drawable/ic_info_black_24dp"/>
+            android:icon="@drawable/ic_info_black_48dp"/>
+
+    <header android:fragment="com.idemia.biosmart.scenes.settings.SettingsActivity$FaceAndFingersPreferenceFragment"
+            android:title="@string/pref_header_facial_and_fingers_config"
+            android:icon="@drawable/ic_fingerprint_black_48dp"/>
 
 </preference-headers>

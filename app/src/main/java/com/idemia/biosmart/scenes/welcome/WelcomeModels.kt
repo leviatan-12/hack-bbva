@@ -32,8 +32,8 @@ class WelcomeModels {
         data class Request(val activationData: ByteArray,
                            val applicationContext: Context,
                            val lkmsUrl: String = "https://service-intg.dictao.com/lkms-server-app")
-        data class Response(var activated: Boolean, val lkmsLicense: ILkmsLicense? = null)
-        data class ViewModel(var activated: Boolean,  val lkmsLicense: ILkmsLicense? = null)
+        data class Response(var activated: Boolean, val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
+        data class ViewModel(var activated: Boolean,  val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
     }
 
     // Activate Lkms License On Device

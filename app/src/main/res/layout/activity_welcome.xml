@@ -42,7 +42,7 @@
                       android:layout_height="wrap_content"
                       android:layout_marginStart="16dp"
                       android:layout_marginEnd="16dp"
-                      android:orientation="horizontal">
+                      android:orientation="vertical">
 
             <TextView
                     android:text="@string/welcome_label_license_status"
@@ -54,7 +54,6 @@
 
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:layout_marginStart="8dp"
                       android:id="@+id/text_view_license_status"
                       tools:text="License Activated Successfully"/>
 
@@ -96,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
+                android:padding="25dp"
                 android:layout_marginBottom="65dp">
         </android.support.v7.widget.RecyclerView>
 

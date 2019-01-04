@@ -27,7 +27,6 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
             val activationData = response.bytes()
             val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
             presenter.presentGenerateLicense(mResponse)
-
         },{ throwable ->
             val response = WelcomeModels.GenerateLicense.Response(false)
             Log.e(TAG,"Error generating BIN File License due: ", throwable)
@@ -45,7 +44,7 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
                 presenter.presentCreateLKMSLicense(response)
             },{ throwable ->
                 Log.e(TAG, "License not activated due: ", throwable)
-                val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(false)
+                val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(false, null, throwable)
                 presenter.presentCreateLKMSLicense(response)
             })
         DisposableManager.add(disposable)

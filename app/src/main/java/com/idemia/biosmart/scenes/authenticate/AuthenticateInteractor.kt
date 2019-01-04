@@ -14,9 +14,9 @@ class AuthenticateInteractor : AuthenticateBusinessLogic {
         this.presenter = presenter
     }
 
-    override fun doSomething(request: AuthenticateModels.DoSomething.Request) {
-        val response = AuthenticateModels.DoSomething.Response()
-        presenter.presentDoSomething(response)
+    override fun goToNextScene(request: AuthenticateModels.GoToNextScene.Request) {
+        val response = AuthenticateModels.GoToNextScene.Response(request.operation)
+        presenter.presentGoToNextScene(response)
     }
 }
 
@@ -29,8 +29,8 @@ class AuthenticateInteractor : AuthenticateBusinessLogic {
  */
 interface AuthenticateBusinessLogic {
     /**
-     * Do Something
+     * Go to next Scene
      * @param requuest A DoSomething Request to send
      */
-    fun doSomething(request: AuthenticateModels.DoSomething.Request)
+    fun goToNextScene(request: AuthenticateModels.GoToNextScene.Request)
 }
