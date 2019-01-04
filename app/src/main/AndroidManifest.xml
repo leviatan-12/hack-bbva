@@ -66,8 +66,10 @@
                 android:writePermission="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
                 tools:replace="android:authorities, android:readPermission, android:writePermission"/>
 
-        <activity android:name=".scenes.capture_fingers.CaptureFingersActivity"/>
-        <activity android:name=".scenes.capture_face.CaptureFaceActivity">
+        <activity android:name=".scenes.capture_fingers.FingersCaptureActivity"/>
+        <activity android:name=".scenes.capture_face.FaceCaptureActivity">
+        </activity>
+        <activity android:name=".scenes.face_info.FaceInfoActivity">
         </activity>
     </application>
 

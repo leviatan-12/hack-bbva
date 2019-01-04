@@ -54,6 +54,11 @@
     <string name="mso_label_ring">Ring</string>
     <string name="mso_label_little">Little</string>
 
+    <!-- Face Capture Scene -->
+    <string name="label_face_capture_brief">Position your face in the center of the screen. Look straight.
+        Once the face capture starts, the camera will follow your face movements. Follow instructions which will appear
+        on the screen to accomplish the challenge (optimal head rotation us up to 20 degrees)
+    </string>
 
     <!-- General Labels -->
     <string name="label_NA">N/A</string>
@@ -73,7 +78,8 @@
     <string name="label_start_process">Start Process</string>
     <string name="label_yes">Yes</string>
     <string name="label_no">No</string>
-
+    <string name="label_face_capture">Face Capture</string>
+    <string name="label_dont_show_again">Don\'t show again</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
@@ -86,7 +92,7 @@
     <string name="pref_header_idemia_middleware_ip_address">IP Address / URL</string>
     <string name="pref_header_idemia_middlware_https">Use Https?</string>
 
-    <!-- Example settings for Face and & Fingers -->
+    <!-- Settings for Face and & Fingers -->
     <string name="pref_header_facial_and_fingers_config">Face &amp; Fingers</string>
     <string name="pref_header_general_capture_settings">General Capture Settings</string>
     <string name="pref_title_use_torch">Use Torch</string>
