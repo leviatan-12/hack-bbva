@@ -6,7 +6,28 @@ import java.util.regex.Pattern
 
 class Validator {
     companion object {
-        private const val USERNAME_VALIDATION_MSG = "This field only can contains Letters, numbers, dash (-) and underscores (_)"
+        private const val NAME_VALIDATION_MSG = "This field only can contains letters"
+        private const val USERNAME_VALIDATION_MSG = "This field only can contains letters, numbers, dash (-) and underscores (_)"
+
+
+        /**
+         * Checks if the name is valid.
+         * @param data - can be EditText or String
+         * @param updateUI - if true and if data is EditText, the function sets error to the EditText or its TextInputLayout
+         * @return - true if the username is valid.
+         */
+        fun validateName(data: Any, updateUI: Boolean = true): Boolean {
+            val str = getText(data)
+            val valid = str.isNotBlank() && str.isNotEmpty() && Pattern.compile("[a-zA-Z\\s]+").matcher(str).matches()
+
+            // Set error if required
+            if(updateUI) {
+                val error: String? = if (valid) null else NAME_VALIDATION_MSG
+                setError(data, error)
+            }
+
+            return valid
+        }
 
         /**
          * Checks if the username is valid.
@@ -14,7 +35,7 @@ class Validator {
          * @param updateUI - if true and if data is EditText, the function sets error to the EditText or its TextInputLayout
          * @return - true if the username is valid.
          */
-        fun validate(data: Any, updateUI: Boolean = true): Boolean {
+        fun validateUsername(data: Any, updateUI: Boolean = true): Boolean {
             val str = getText(data)
             val valid = str.isNotBlank() && str.isNotEmpty() && Pattern.compile("[a-zA-Z-_\\d]+").matcher(str).matches()
 

@@ -15,6 +15,10 @@
         successfully!
     </string>
     <string name="welcome_message_license_not_generated">License not generated from Service Provider</string>
+    <string name="welcome_label_description">
+        Enrolment process is used to store a new person in MBSS. It verifies if person already exists, if not, the
+        person will be stored in MBSS. Once the person is enrolled, you can perform and authentication or identification
+    </string>
 
     <!-- Enrolment Scene -->
     <string name="enrolment_label_start_process">Start Enrolment Process</string>

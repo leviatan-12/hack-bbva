@@ -69,7 +69,7 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
      */
     private fun addObservableToUsernameTextField(){
         DisposableManager.add(edit_text_username.textChanges().subscribe{
-            usernameIsValid = Validator.validate(edit_text_username)
+            usernameIsValid = Validator.validateUsername(edit_text_username)
             button_start_process.isEnabled = isDataValid()
         })
     }

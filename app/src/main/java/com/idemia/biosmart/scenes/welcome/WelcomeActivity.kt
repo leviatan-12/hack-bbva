@@ -60,7 +60,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         recycle_view_menu.setHasFixedSize(true)
 
         val list = arrayListOf(
-            WelcomeModels.CardMenu(getString(R.string.label_enrolment),getString(R.string.label_start_process), R.drawable.ic_user_96,"",
+            WelcomeModels.CardMenu(getString(R.string.label_enrolment),getString(R.string.label_start_process), R.drawable.ic_user_96, getString(R.string.welcome_label_description),
                 View.OnClickListener {
                     startProcess(WelcomeModels.Operation.ENROLMENT)
                 }

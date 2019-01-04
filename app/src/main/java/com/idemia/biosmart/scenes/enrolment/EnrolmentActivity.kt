@@ -2,6 +2,9 @@ package com.idemia.biosmart.scenes.enrolment
 
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.utils.Validator
+import com.jakewharton.rxbinding2.widget.textChanges
 import kotlinx.android.synthetic.main.activity_enrolment.*
 
 /**
@@ -18,6 +21,13 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
         private val TAG = "EnrolmentActivity"
     }
 
+    private var isNameValid = false
+    private var isLastNameValid = false
+    private var isSecondLastNameValid = false
+    private var isUsernameValid = false
+    private var faceTaken = false
+    private var fingersTaken = false
+
     override fun resourceLayoutId(): Int = R.layout.activity_enrolment
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
@@ -32,6 +42,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
                 goToNextScene(EnrolmentModels.Operation.CAPTURE_FINGERS)
             }
         }
+        addObservables()
     }
 
     override fun inject() {
@@ -59,6 +70,30 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
             EnrolmentModels.Operation.CAPTURE_FINGERS -> router.routeToCaptureFingersMsoScene()
             EnrolmentModels.Operation.CAPTURE_FINGERS_CONTACTLESS -> router.routeToCaptureFingersScene()
         }
+    }
+
+    private fun addObservables(){
+        DisposableManager.add(edit_text_name.textChanges().subscribe{
+            Validator.validateName(edit_text_name)
+            button_start_process.isEnabled = isDataValid()
+        })
+        DisposableManager.add(edit_text_last_name.textChanges().subscribe{
+            Validator.validateName(edit_text_last_name)
+            button_start_process.isEnabled = isDataValid()
+        })
+        DisposableManager.add(edit_text_m_last_name.textChanges().subscribe{
+            Validator.validateName(edit_text_m_last_name)
+            button_start_process.isEnabled = isDataValid()
+        })
+        DisposableManager.add(edit_text_username.textChanges().subscribe{
+            Validator.validateUsername(edit_text_username)
+            button_start_process.isEnabled = isDataValid()
+        })
+    }
+
+    private fun isDataValid(): Boolean{
+        val dataInfoValid = (isUsernameValid && isLastNameValid && isSecondLastNameValid && isUsernameValid && isNameValid)
+        return (dataInfoValid && faceTaken) || (dataInfoValid && fingersTaken)
     }
 }
 
