@@ -9,9 +9,9 @@ data class EnrolmentResponse(
     @SerializedName("encode_person")
     val encodePerson: EncodePerson,
     @SerializedName("enroll_person")
-    val enrollPerson: EnrollPerson,
+    val enrollPerson: EnrollPerson?,
     @SerializedName("match_person_to_person")
-    val matchPersonToPerson: MatchPersonToPerson,
+    val matchPersonToPerson: MatchPersonToPerson?,
     @SerializedName("message")
     val message: String,
     @SerializedName("request_type")

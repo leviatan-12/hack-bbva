@@ -95,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
+                android:padding="25dp"
                 android:layout_marginBottom="65dp">
         </android.support.v7.widget.RecyclerView>
 

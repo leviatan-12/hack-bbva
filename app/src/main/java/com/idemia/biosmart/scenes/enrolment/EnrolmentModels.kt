@@ -15,7 +15,7 @@ class EnrolmentModels {
         START_PROCESS
     }
 
-    // Do Something
+    // Go to next scene
     class GoToNextScene {
         data class Request(val operation: EnrolmentModels.Operation)
         class Response(val operation: EnrolmentModels.Operation)

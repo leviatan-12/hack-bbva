@@ -29,7 +29,7 @@ class EnrolmentInteractor : EnrolmentBusinessLogic {
  */
 interface EnrolmentBusinessLogic {
     /**
-     * Do Something
+     * Go to next Scene
      * @param requuest A DoSomething Request to send
      */
     fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request)

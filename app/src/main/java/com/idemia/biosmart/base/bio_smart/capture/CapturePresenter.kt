@@ -1,5 +1,6 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
+import com.morpho.mph_bio_sdk.android.sdk.common.LogLevel
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 
 /**
@@ -53,6 +54,7 @@ class CapturePresenter : CapturePresentationLogic {
         capturingOptions.captureTimeout = response.options.timeout
         capturingOptions.captureImageTimeout = response.options.timeout
         capturingOptions.overlay = response.options.overlay
+        capturingOptions.logLevel = LogLevel.DEBUG
         val viewModel = CaptureModels.RequestCaptureOptions.ViewModel(capturingOptions)
         activity!!.displayCaptureOptions(viewModel)
     }
