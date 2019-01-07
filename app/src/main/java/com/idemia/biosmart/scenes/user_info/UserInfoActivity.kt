@@ -6,12 +6,10 @@ import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.utils.Base64
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import android.graphics.BitmapFactory
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoDataFragment
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoTechnicalDetailsFragment
 import com.idemia.biosmart.utils.IDMProgress
-import com.kaopiz.kprogresshud.KProgressHUD
 
 /**
  *  UserInfo Activity
@@ -31,17 +29,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     private val userInfoDataFragment = UserInfoDataFragment()
     private val userInfoTechnicalDetailsFragment = UserInfoTechnicalDetailsFragment()
-    lateinit var loader: KProgressHUD
 
     override fun onLoadActivity() {
         initViewPager()
         // TODO: Call this to search user after authenticate or identify user
         search("alfredo")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DisposableManager.dispose()
     }
 
     override fun inject() {
@@ -54,14 +46,15 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         (router as UserInfoRouter).setActivity(this)
     }
 
-    //region Search User in DB
+    //region USECASE: Search User in DB
     /**
      * Search User in DB
      */
     private fun search(username: String) {
         loader = IDMProgress(this, "Getting User Info", "Please Wait...").kProgress
-        loader.show()
-        val request = UserInfoModels.Search.Request(username,1)
+        loader?.show()
+        val searchPersonRequest = UserInfoModels.SearchPersonRequest(username, 1)
+        val request = UserInfoModels.Search.Request(this@UserInfoActivity, searchPersonRequest)
         interactor.search(request)
     }
 
@@ -71,7 +64,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         }else{
             displaySearchNotFound(getString(R.string.message_user_not_found))
         }
-        loader.dismiss()
+        loader?.dismiss()
     }
 
     private fun displaySearchSuccess(message: String, user: UserInfoModels.User){
@@ -89,14 +82,14 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     private fun displaySearchNotFound(message: String){
         Toast.makeText(applicationContext, message.toLowerCase().capitalize(), Toast.LENGTH_LONG).show()
         userInfoDataFragment.dataBinding(null)
-        loader.dismiss()
+        loader?.dismiss()
     }
     //endregion
 
-    //region Display Error
+    //region USECASE: Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
         Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
-        loader.dismiss()
+        loader?.dismiss()
     }
     //endregion
 

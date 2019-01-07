@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.kaopiz.kprogresshud.KProgressHUD
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity: AppCompatActivity(){
@@ -31,6 +33,9 @@ abstract class BaseActivity: AppCompatActivity(){
     /** Use this method to load all UI Elements, add functions, and so on...*/
     abstract fun onLoadActivity()
 
+    /** A [KProgressHUD] Loader */
+    var loader: KProgressHUD? = null
+
     /**
      * On Create Method
      */
@@ -42,6 +47,18 @@ abstract class BaseActivity: AppCompatActivity(){
         inject()
         preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
         onLoadActivity()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        DisposableManager.dispose()
+        loader?.dismiss()
+        loader = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DisposableManager.dispose()
     }
 
     /**

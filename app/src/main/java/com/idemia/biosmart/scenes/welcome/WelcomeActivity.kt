@@ -29,8 +29,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     @Inject lateinit var interactor: WelcomeBusinessLogic    // Interactor
     @Inject lateinit var router: WelcomeRoutingLogic         // Router
 
-    var loader: KProgressHUD? = null
-
     companion object {
         private val TAG = "WelcomeActivity"
     }
@@ -84,16 +82,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
     //endregion
 
-    override fun onPause() {
-        super.onPause()
-        destroyComponents()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyComponents()
-    }
-
     //region Action Bar / Menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_app_bar, menu)
@@ -108,7 +96,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
     //endregion
 
-    //region Generate License Usecase
+    //region USECASE: Generate License
     /**
      * Generate License Use Case
      */
@@ -134,7 +122,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //endregion
 
-    //region Create LKMS License on Server
+    //region USECASE: Create LKMS License on Server
     private fun createLKMSLicense(activationData: ByteArray){
         val lkmsUrlKey = getString(R.string.idemia_key_lkms_url)
         val defaultLkmsUrl = getString(R.string.default_lkms_server_url)
@@ -160,7 +148,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //endregion
 
-    //region Activate Lkms License On Device
+    //region USECASE: Activate Lkms License On Device
     private fun activateLkmsLicenseOnDevice(){
         loader = IDMProgress(this, "Activating License", "Please Wait...").kProgress
         loader?.show()
@@ -182,10 +170,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
     //endregion
 
-    //region Start Process
-    /**
-     * Go to next view
-     */
+    //region USECASE: Start Process
     private fun startProcess(operation: WelcomeModels.Operation){
         val request = WelcomeModels.StartEnrollment.Request(operation)
         interactor.startProcess(request)
@@ -200,12 +185,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         }
     }
     //endregion
-
-    private fun destroyComponents(){
-        DisposableManager.dispose()     // Dispose all subscriptions
-        loader?.dismiss()
-        loader = null                   // Destroy loader
-    }
 }
 
 /**

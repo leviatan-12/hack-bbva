@@ -1,29 +1,27 @@
 package com.idemia.biosmart.utils
 
+import com.idemia.biosmart.base.android.BaseActivity
+
 class ApiUrlManager {
     companion object {
-        fun url(): String {
+        fun url(activity: BaseActivity): String {
             // Https
-            val useHttps = ""//getString(R.string.idemia_key_middleware_https)
-            val middlewareHttpsValue = false//BioSmartApplication.preferenceManager?.getBoolean(useHttps, false)
+            val middlewareHttpsValue = activity.preferenceManager.getBoolean("IDEMIA_KEY_MIDDLEWARE_HTTPS", false)
 
             // IP
-            val middlewareIp = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_ip_address)
-            val middleareIpValue = "200.66.76.220"//BioSmartApplication.preferenceManager?.getString(middlewareIp,"")
+            val middlewareIpValue = activity.preferenceManager.getString("IDEMIA_KEY_MIDDLEWARE_IP_ADDRESS","200.66.76.220")
 
             // Port
-            val middlewarePort = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_port)
-            val middlearePortValue = "8082"//BioSmartApplication.preferenceManager?.getString(middlewarePort,"")
+            val middlewarePortValue = activity.preferenceManager.getString("IDEMIA_KEY_MIDDLEWARE_PORT","8081")
 
             // Middleware name
-            val middlewareName = ""//BioSmartApplication.instance?.getString(R.string.idemia_key_middleware_name)
-            val middleareNameValue = "idemia"//BioSmartApplication.preferenceManager?.getString(middlewareName,"")
+            val middlewareNameValue = activity.preferenceManager.getString("IDEMIA_KEY_MIDDLEWARE_NAME","idemia")
 
             val url = generateUrl(
                 middlewareHttpsValue,
-                middleareIpValue,
-                middlearePortValue,
-                middleareNameValue
+                middlewareIpValue!!,
+                middlewarePortValue!!,
+                middlewareNameValue!!
             )
             return url
         }

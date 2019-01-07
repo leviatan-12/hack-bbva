@@ -71,6 +71,8 @@
         </activity>
         <activity android:name=".scenes.face_info.FaceInfoActivity">
         </activity>
+        <activity android:name=".scenes.enrolment_details.EnrolmentDetailsActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -19,7 +19,7 @@ import retrofit2.http.POST
 interface IdemiaApiService {
 
     @POST("api/users/search")
-    fun search(@Body request: UserInfoModels.Search.Request): Observable<Response<UserInfoModels.Search.Response>>
+    fun search(@Body request: UserInfoModels.SearchPersonRequest): Observable<Response<UserInfoModels.Search.Response>>
 
     @POST("api/users/enrolment")
     fun enrolment(@Body request: UserBiometrics): Observable<Response<EnrolmentResponse>>

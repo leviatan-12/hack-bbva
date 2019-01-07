@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="idemia_key_lkms_url" translatable="false">idemia_key_lkms_url</string>
-    <string name="idemia_key_middleware_name" translatable="false">idemia_key_middleware_name</string>
-    <string name="idemia_key_middleware_port" translatable="false">idemia_key_middleware_port</string>
-    <string name="idemia_key_middleware_ip_address" translatable="false">idemia_key_middleware_ip_address</string>
-    <string name="idemia_key_middleware_https" translatable="false">idemia_key_middleware_https</string>
+    <string name="idemia_key_lkms_url" translatable="false">IDEMIA_KEY_LKMS_URL</string>
+    <string name="idemia_key_middleware_name" translatable="false">IDEMIA_KEY_MIDDLEWARE_NAME</string>
+    <string name="idemia_key_middleware_port" translatable="false">IDEMIA_KEY_MIDDLEWARE_PORT</string>
+    <string name="idemia_key_middleware_ip_address" translatable="false">IDEMIA_KEY_MIDDLEWARE_IP_ADDRESS</string>
+    <string name="idemia_key_middleware_https" translatable="false">IDEMIA_KEY_MIDDLEWARE_HTTPS</string>
 
 
     <string name="IDEMIA_KEY_USE_CAMERA_REAR">IDEMIA_KEY_USE_CAMERA_REAR</string>
