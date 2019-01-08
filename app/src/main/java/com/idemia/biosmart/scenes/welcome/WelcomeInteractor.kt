@@ -36,7 +36,7 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
     }
 
     override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
-        disposable = worker.createLKMSLicense(request)
+        disposable = worker. createLKMSLicense(request)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ lkmsLicense ->

@@ -9,7 +9,9 @@ import com.morpho.lkms.android.sdk.lkms_core.network.NetworkSettings
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import com.morpho.mph_bio_sdk.android.sdk.licence.async.BioSdkLicenceAsyncCallbacks
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.single.SingleObserveOn
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 
@@ -35,9 +37,9 @@ class WelcomeWorker {
     }
 
     /** Create LKMS License */
-    fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request): Observable<ILkmsLicense>{
+    fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request): Single<ILkmsLicense>{
         val licenseManager = BioSdk.createLicenseManager(request.applicationContext)
-        return Observable.create<ILkmsLicense> { emitter ->
+        return Single.create<ILkmsLicense> { emitter ->
             licenseManager.createLicense(request.applicationContext, request.lkmsUrl, networkSettings(), request.activationData,
                 object : BioSdkLicenceAsyncCallbacks<ILkmsLicense> {
                     override fun onPreExecute() {
@@ -45,14 +47,13 @@ class WelcomeWorker {
                     }
 
                     override fun onSuccess(result: ILkmsLicense) {
-                        // Log.i(TAG,"onSuccess, ID: ${result.id}")
-                        emitter.onNext(result)
-                        emitter.onComplete()
+                        Log.i(TAG,"onSuccess, ID: ${result.id}")
+                        emitter.onSuccess(result)
                     }
 
                     override fun onError(e: LkmsException) {
-                        // Log.i(TAG,"onError", e)
-                        if(emitter.isDisposed){
+                        Log.i(TAG,"onError", e)
+                        if(!emitter.isDisposed){
                             emitter.onError(e)
                         }
                     }

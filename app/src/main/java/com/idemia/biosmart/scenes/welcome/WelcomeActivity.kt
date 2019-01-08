@@ -9,11 +9,9 @@ import android.widget.Toast
 import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.IDMProgress
-import com.kaopiz.kprogresshud.KProgressHUD
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference

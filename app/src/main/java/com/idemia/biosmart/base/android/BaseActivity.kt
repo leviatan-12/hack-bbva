@@ -56,11 +56,6 @@ abstract class BaseActivity: AppCompatActivity(){
         loader = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        DisposableManager.dispose()
-    }
-
     /**
      * Attach Base Context
      */
