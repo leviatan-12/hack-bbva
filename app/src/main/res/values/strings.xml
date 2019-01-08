@@ -80,6 +80,8 @@
     <string name="label_no">No</string>
     <string name="label_face_capture">Face Capture</string>
     <string name="label_dont_show_again">Don\'t show again</string>
+    <string name="label_capture_finished">Capture Finished</string>
+    <string name="label_error">An error happened: %1$s</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
