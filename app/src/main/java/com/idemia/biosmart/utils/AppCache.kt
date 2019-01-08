@@ -4,7 +4,8 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 
 object AppCache {
     // Face and fingers
-    var imageList: List<MorphoImage>? = null
+    var imageListLeft: List<MorphoImage>? = null
+    var imageListRight: List<MorphoImage>? = null
     var facePhoto: MorphoImage? = null
 
     // User info
@@ -15,7 +16,8 @@ object AppCache {
 
     /** Clear Cache */
     fun clearCache(){
-        imageList = null
+        imageListLeft = null
+        imageListRight = null
         facePhoto = null
 
         username = null

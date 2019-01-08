@@ -45,7 +45,9 @@ class FingersCaptureActivity : FingersActivity() {
 
     override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel) {
         viewModel.morphoImages?.let { imageList ->
-            AppCache.imageList = imageList
+            // TODO: Verify hand position
+            AppCache.imageListLeft = imageList
+            AppCache.imageListRight = imageList
         }
     }
 

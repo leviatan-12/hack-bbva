@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
+import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
@@ -9,6 +10,7 @@ import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.scenes.enrolment_details.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonToPersonDataFragment
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.PersonDataFragment
+import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.IDMProgress
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.android.synthetic.main.activity_enrolment_details.*
@@ -28,11 +30,15 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     override fun hideActionBar(): Boolean  = false
     override fun hideNavigationBar(): Boolean = false
 
+    // Local Variables
+    var userBiometrics: UserBiometrics? = null
+
     // Fragments
     private val personDataFragment = PersonDataFragment()
     private val matchPersonToPersonDataFragment = MatchPersonToPersonDataFragment()
 
     override fun onLoadActivity() {
+        retrieveUserInfo()
         initViewPager()
     }
 
@@ -46,16 +52,29 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
         (router as EnrolmentDetailsRouter).setActivity(this)
     }
 
+
+    //region USECASE - Retrive user info
+    private fun retrieveUserInfo(){
+        val request = EnrolmentDetailsModels.RetriveUserInfo.Request()
+        interactor.retrieveUserInfo(request)
+    }
+
+    override fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetriveUserInfo.ViewModel) {
+        userBiometrics = viewModel.userBiometrics
+    }
+    //endregion
+
     //region USECASE: Enrol Person
     /** Enrol Person */
     private fun enrolPerson() {
-        loader = IDMProgress(this, "Trying to enrol new user", "Please wait...").kProgress
-        loader?.show()
-
-        // TODO: Add biometry info
-        val userBiometrics = UserBiometrics("tester",1,false)
-        val request = EnrolmentDetailsModels.EnrolPerson.Request(this@EnrolmentDetailsActivity, userBiometrics)
-        interactor.enrolPerson(request)
+        userBiometrics?.let { biometryInfo ->
+            loader = IDMProgress(this, getString(R.string.enrolment_details_trying_enroll_new_user), getString(R.string.label_please_wait)).kProgress
+            loader?.show()
+            val request = EnrolmentDetailsModels.EnrolPerson.Request(this@EnrolmentDetailsActivity, biometryInfo)
+            interactor.enrolPerson(request)
+        }?: run{
+            Toast.makeText(applicationContext, getString(R.string.enrolment_details_user_biometry_info_incomplete),Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel) {
@@ -83,5 +102,6 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 interface EnrolmentDetailsDisplayLogic {
+    fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetriveUserInfo.ViewModel)
     fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel)
 }

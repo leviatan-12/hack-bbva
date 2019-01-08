@@ -8,11 +8,24 @@ package com.idemia.biosmart.scenes.enrolment;
  */
 class EnrolmentModels {
 
+    enum class RequestCode(value: Int){
+        REQUEST_CODE_FACE(0x64),
+        REQUEST_CODE_HAND_LETT(0xC8),
+        REQUEST_CODE_HAND_RIGHT(0x12C)
+    }
+
     enum class Operation{
         CAPTURE_FINGERS,
         CAPTURE_FINGERS_CONTACTLESS,
         CAPTURE_FACE,
         START_PROCESS
+    }
+
+    // Save User Info
+    class SaveUserInfo {
+        data class Request(val username: String, val name: String, val lastName: String, val secondLastName: String)
+        class Response
+        class ViewModel
     }
 
     // Go to next scene

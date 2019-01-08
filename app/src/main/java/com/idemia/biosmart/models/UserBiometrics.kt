@@ -7,23 +7,23 @@ data class UserBiometrics(@SerializedName("customer_id") val userId: String,
                           val encrypted: Boolean = false) {
 
     // Image Face
-    @SerializedName("image_src")    val photo: String? = null
+    @SerializedName("image_src")    var photo: String? = null
 
     // Left Hand
-    @SerializedName("left_thumb")   val leftThumb: String? = null
-    @SerializedName("left_index")   val leftIndex: String? = null
-    @SerializedName("left_middle")  val leftMiddle: String? = null
-    @SerializedName("left_ring")    val leftRing: String? = null
-    @SerializedName("left_little")  val leftLittle: String? = null
+    @SerializedName("left_thumb")   var leftThumb: String? = null
+    @SerializedName("left_index")   var leftIndex: String? = null
+    @SerializedName("left_middle")  var leftMiddle: String? = null
+    @SerializedName("left_ring")    var leftRing: String? = null
+    @SerializedName("left_little")  var leftLittle: String? = null
 
     // Right Hand
-    @SerializedName("right_thumb")  val rightThumb: String? = null
-    @SerializedName("right_index")  val rightIndex: String? = null
-    @SerializedName("right_middle") val rightMiddle: String? = null
-    @SerializedName("right_ring")   val rightRing: String? = null
-    @SerializedName("right_little") val rightLittle: String? = null
+    @SerializedName("right_thumb")  var rightThumb: String? = null
+    @SerializedName("right_index")  var rightIndex: String? = null
+    @SerializedName("right_middle") var rightMiddle: String? = null
+    @SerializedName("right_ring")   var rightRing: String? = null
+    @SerializedName("right_little") var rightLittle: String? = null
 
     // Iris
-    @SerializedName("left_iris")    val leftIris: String? = null
-    @SerializedName("right_iris")   val rightIris: String? = null
+    @SerializedName("left_iris")    var leftIris: String? = null
+    @SerializedName("right_iris")   var rightIris: String? = null
 }

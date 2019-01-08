@@ -11,6 +11,13 @@ import com.idemia.biosmart.models.UserBiometrics
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 class EnrolmentDetailsModels {
+
+    class RetriveUserInfo{
+        class Request
+        class Response(val userBiometrics: UserBiometrics)
+        class ViewModel(val userBiometrics: UserBiometrics)
+    }
+
     // Enrol Person
     class EnrolPerson {
         data class Request(val activity: BaseActivity, val userBiometrics: UserBiometrics)

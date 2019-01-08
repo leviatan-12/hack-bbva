@@ -14,6 +14,12 @@ class EnrolmentInteractor : EnrolmentBusinessLogic {
         this.presenter = presenter
     }
 
+    override fun saveUserInfo(request: EnrolmentModels.SaveUserInfo.Request) {
+        worker.saveUserInfo(request)
+        val response = EnrolmentModels.SaveUserInfo.Response()
+        presenter.presentSaveUserInfo(response)
+    }
+
     override fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request) {
         val response = EnrolmentModels.GoToNextScene.Response(request.operation)
         presenter.presentGoToNextScene(response)
@@ -28,9 +34,6 @@ class EnrolmentInteractor : EnrolmentBusinessLogic {
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface EnrolmentBusinessLogic {
-    /**
-     * Go to next Scene
-     * @param requuest A DoSomething Request to send
-     */
+    fun saveUserInfo(request: EnrolmentModels.SaveUserInfo.Request)
     fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request)
 }

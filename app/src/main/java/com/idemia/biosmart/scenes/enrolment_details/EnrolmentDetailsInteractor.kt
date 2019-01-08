@@ -23,6 +23,12 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
         this.presenter = presenter
     }
 
+    override fun retrieveUserInfo(request: EnrolmentDetailsModels.RetriveUserInfo.Request) {
+        val userBiometrics = worker.retrieveUserInfo()
+        val response = EnrolmentDetailsModels.RetriveUserInfo.Response(userBiometrics)
+        presenter.presentRetrieveUserInfo(response)
+    }
+
     override fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request) {
         dispoable = worker.enrolPerson(request).subscribe({ responseFromService ->
             val response = EnrolmentDetailsModels.EnrolPerson.Response(responseFromService.body()!!)
@@ -42,5 +48,6 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
  *  Copyright (c) 2019 requestAlfredo. All rights reserved.
  */
 interface EnrolmentDetailsBusinessLogic {
+    fun retrieveUserInfo(request: EnrolmentDetailsModels.RetriveUserInfo.Request)
     fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request)
 }

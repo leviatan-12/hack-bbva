@@ -17,6 +17,11 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
         this.activity = activity
     }
 
+    override fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetriveUserInfo.Response) {
+        val viewModel = EnrolmentDetailsModels.RetriveUserInfo.ViewModel(response.userBiometrics)
+        activity!!.displayRetrieveUserInfo(viewModel)
+    }
+
     override fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response) {
         val viewModel = EnrolmentDetailsModels.EnrolPerson.ViewModel(response.enrolmentResponse)
         activity!!.displayEnrolPerson(viewModel)
@@ -31,5 +36,6 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 interface EnrolmentDetailsPresentationLogic {
+    fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetriveUserInfo.Response)
     fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response)
 }
