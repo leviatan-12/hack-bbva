@@ -76,7 +76,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/label_name"
-                            android:inputType="text"
+                            android:inputType="textCapWords"
                             android:textColor="@color/colorAccent" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -90,7 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/label_last_name"
-                            android:inputType="text"
+                            android:inputType="textCapWords"
                             android:textColor="@color/colorAccent" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -104,7 +104,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/label_m_last_name"
-                            android:inputType="text"
+                            android:inputType="textCapWords"
                             android:textColor="@color/colorAccent" />
                 </android.support.design.widget.TextInputLayout>
 

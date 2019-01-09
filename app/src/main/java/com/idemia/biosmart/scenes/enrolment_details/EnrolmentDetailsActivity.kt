@@ -1,18 +1,15 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
-import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.scenes.enrolment_details.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonToPersonDataFragment
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.PersonDataFragment
-import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.IDMProgress
-import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.android.synthetic.main.activity_enrolment_details.*
 
 /**
@@ -39,9 +36,15 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     override fun onLoadActivity() {
         retrieveUserInfo()
+        button_finish.setOnClickListener {
+            finish()
+        }
+        displayUserPhoto()
         initViewPager()
+        enrolPerson()
     }
 
+    //region A "dependency injection"
     override fun inject() {
         val activity = this
         this.interactor = EnrolmentDetailsInteractor()
@@ -51,20 +54,34 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
         presenter.setActivity(activity)
         (router as EnrolmentDetailsRouter).setActivity(this)
     }
-
+    //endregion
 
     //region USECASE - Retrive user info
     private fun retrieveUserInfo(){
-        val request = EnrolmentDetailsModels.RetriveUserInfo.Request()
+        val request = EnrolmentDetailsModels.RetrieveUserInfo.Request()
         interactor.retrieveUserInfo(request)
     }
 
-    override fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetriveUserInfo.ViewModel) {
+    override fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetrieveUserInfo.ViewModel) {
+        Log.i(TAG, "User Biometrics info loaded from App Cache")
         userBiometrics = viewModel.userBiometrics
     }
     //endregion
 
-    //region USECASE: Enrol Person
+    //region USECASE - Display User Photo
+    private fun displayUserPhoto(){
+        val request = EnrolmentDetailsModels.DisplayUserPhoto.Request()
+        interactor.displayUserPhoto(request)
+    }
+
+    override fun displayUserPhoto(viewModel: EnrolmentDetailsModels.DisplayUserPhoto.ViewModel) {
+        if(viewModel.photoAvailable){
+            image_view_photo.setImageBitmap(viewModel.bitmap)
+        }
+    }
+    //endregion
+
+    //region USECASE - Enrol Person
     /** Enrol Person */
     private fun enrolPerson() {
         userBiometrics?.let { biometryInfo ->
@@ -79,15 +96,33 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     override fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel) {
         Log.i(TAG, "displayEnrolPerson: ${viewModel.enrolmentResponse.message}")
-        Toast.makeText(applicationContext, "Person Enrolled Successfully", Toast.LENGTH_LONG).show()
+        if(viewModel.enrolmentResponse.code == 200){
+            onEnrolmentSuccess(viewModel.enrolmentResponse)
+        }else {
+            onEnrolmentFailed(viewModel.enrolmentResponse)
+        }
         loader?.dismiss()
+    }
+
+    private fun onEnrolmentSuccess(enrolmentResponse: EnrolmentResponse){
+        Toast.makeText(applicationContext, "Person Enrolled Successfully", Toast.LENGTH_LONG).show()
+        personDataFragment.bind(enrolmentResponse)
+    }
+
+    private fun onEnrolmentFailed(enrolmentResponse: EnrolmentResponse){
+        Toast.makeText(applicationContext, enrolmentResponse.message, Toast.LENGTH_LONG).show()
+        when(enrolmentResponse.code){
+            409 -> personDataFragment.bind(enrolmentResponse)
+            // TODO: Uncomment this line
+            // else -> finish()
+        }
     }
     //endregion
 
-    //region UI: Init View Pager
+    //region UI - Init View Pager
     private fun initViewPager(){
         val adapter  = ViewPageUserInfoAdapter(supportFragmentManager)
-        adapter.addFragment(personDataFragment, "General User Info")
+        adapter.addFragment(personDataFragment, getString(R.string.person_data_fragment_label_general_user_info))
         adapter.addFragment(matchPersonToPersonDataFragment, "Match Person to Person Details")
         view_pager.adapter = adapter
         tab_layout.setupWithViewPager(view_pager)
@@ -102,6 +137,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 interface EnrolmentDetailsDisplayLogic {
-    fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetriveUserInfo.ViewModel)
+    fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetrieveUserInfo.ViewModel)
+    fun displayUserPhoto(viewModel: EnrolmentDetailsModels.DisplayUserPhoto.ViewModel)
     fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel)
 }

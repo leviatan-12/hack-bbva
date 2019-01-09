@@ -23,10 +23,21 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
         this.presenter = presenter
     }
 
-    override fun retrieveUserInfo(request: EnrolmentDetailsModels.RetriveUserInfo.Request) {
+    override fun retrieveUserInfo(request: EnrolmentDetailsModels.RetrieveUserInfo.Request) {
         val userBiometrics = worker.retrieveUserInfo()
-        val response = EnrolmentDetailsModels.RetriveUserInfo.Response(userBiometrics)
+        val response = EnrolmentDetailsModels.RetrieveUserInfo.Response(userBiometrics)
         presenter.presentRetrieveUserInfo(response)
+    }
+
+    override fun displayUserPhoto(request: EnrolmentDetailsModels.DisplayUserPhoto.Request) {
+        dispoable = worker.retrieveUserPhoto().subscribe({ image ->
+            val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(true, image)
+            presenter.presentDisplayUserPhoto(response)
+        },{ t ->
+            val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(false)
+            presenter.presentDisplayUserPhoto(response)
+        })
+        DisposableManager.add(dispoable)
     }
 
     override fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request) {
@@ -48,6 +59,7 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
  *  Copyright (c) 2019 requestAlfredo. All rights reserved.
  */
 interface EnrolmentDetailsBusinessLogic {
-    fun retrieveUserInfo(request: EnrolmentDetailsModels.RetriveUserInfo.Request)
+    fun retrieveUserInfo(request: EnrolmentDetailsModels.RetrieveUserInfo.Request)
+    fun displayUserPhoto(request: EnrolmentDetailsModels.DisplayUserPhoto.Request)
     fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request)
 }

@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.enrolment_details;
 
+import android.graphics.Bitmap
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
@@ -12,10 +13,17 @@ import com.idemia.biosmart.models.UserBiometrics
  */
 class EnrolmentDetailsModels {
 
-    class RetriveUserInfo{
+    // Retrieve User Info
+    class RetrieveUserInfo{
         class Request
-        class Response(val userBiometrics: UserBiometrics)
-        class ViewModel(val userBiometrics: UserBiometrics)
+        data class Response(val userBiometrics: UserBiometrics)
+        data class ViewModel(val userBiometrics: UserBiometrics)
+    }
+
+    class DisplayUserPhoto {
+        class Request
+        data class Response(val photoAvailable: Boolean, val image: ByteArray? = null)
+        data class ViewModel(val photoAvailable: Boolean, val bitmap: Bitmap? = null)
     }
 
     // Enrol Person

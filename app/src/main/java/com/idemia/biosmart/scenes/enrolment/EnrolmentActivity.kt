@@ -51,6 +51,11 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
     //endregion
 
+    override fun onResume() {
+        super.onResume()
+        addObservables()
+    }
+
     //region A "dependency injection"
     override fun inject() {
         val activity = this
@@ -93,6 +98,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
                 if(isDataValid()){
                     saveUserInfo()
                     router.routeToStartProcessScene()
+                    finish()
                 }
             }
             EnrolmentModels.Operation.CAPTURE_FACE -> router.routeToCaptureFaceScene()

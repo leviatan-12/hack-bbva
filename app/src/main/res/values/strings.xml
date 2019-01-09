@@ -87,6 +87,13 @@
     <string name="label_capture_finished">Capture Finished</string>
     <string name="label_error">An error happened: %1$s</string>
     <string name="label_please_wait">Please Wait</string>
+    <string name="label_duration">Duration</string>
+    <string name="label_error_code">Error Code</string>
+    <string name="label_message">Message</string>
+    <string name="label_ms">%1$d ms</string>
+    <string name="label_score">Score</string>
+    <string name="label_decision">Decision</string>
+    <string name="label_person_id">Person ID</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
@@ -109,4 +116,12 @@
     <string name="pref_title_capture_timeout">Capture Timeout</string>
     <string name="pref_title_face_capture_mode">Face Capture Mode</string>
     <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>
+
+    <!-- Fragment Person Data -->
+    <string name="person_data_fragment_label_general_user_info">General User Info</string>
+    <string name="person_data_fragment_label_enrol_person_process">Enrol Person Process</string>
+    <string name="person_data_fragment_label_encode_person_process">Encode Person Process</string>
+
+    <!-- Fragment Person to Person match -->
+    <string name="person_to_person_data_fragment_no_hit_rank">No. Hit Rank: %1$d</string>
 </resources>

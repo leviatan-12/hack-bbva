@@ -1,5 +1,7 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
+import android.graphics.BitmapFactory
+
 /**
  *  EnrolmentDetails Presenter
  *  BioSmart
@@ -17,9 +19,20 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
         this.activity = activity
     }
 
-    override fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetriveUserInfo.Response) {
-        val viewModel = EnrolmentDetailsModels.RetriveUserInfo.ViewModel(response.userBiometrics)
+    override fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetrieveUserInfo.Response) {
+        val viewModel = EnrolmentDetailsModels.RetrieveUserInfo.ViewModel(response.userBiometrics)
         activity!!.displayRetrieveUserInfo(viewModel)
+    }
+
+    override fun presentDisplayUserPhoto(response: EnrolmentDetailsModels.DisplayUserPhoto.Response) {
+        if(response.photoAvailable){
+            val bitmap = BitmapFactory.decodeByteArray(response.image,0 , response.image!!.size)
+            val viewModel = EnrolmentDetailsModels.DisplayUserPhoto.ViewModel(true, bitmap)
+            activity!!.displayUserPhoto(viewModel)
+        }else {
+            val viewModel = EnrolmentDetailsModels.DisplayUserPhoto.ViewModel(false)
+            activity!!.displayUserPhoto(viewModel)
+        }
     }
 
     override fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response) {
@@ -36,6 +49,7 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 interface EnrolmentDetailsPresentationLogic {
-    fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetriveUserInfo.Response)
+    fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetrieveUserInfo.Response)
+    fun presentDisplayUserPhoto(response: EnrolmentDetailsModels.DisplayUserPhoto.Response)
     fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response)
 }
