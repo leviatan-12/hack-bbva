@@ -38,8 +38,8 @@ class PersonDataFragment: Fragment() {
         text_view_enrol_message.text = enrolmentResponse.enrollPerson?.message
         text_view_enrol_duration.text = getString(R.string.label_ms, enrolmentResponse.enrollPerson?.duration)
 
-        text_view_encode_error_code.text = enrolmentResponse.encodePerson?.errorCode
-        text_view_encode_message.text = enrolmentResponse.encodePerson?.message
-        text_view_encode_duration.text = getString(R.string.label_ms, enrolmentResponse.encodePerson?.duration)
+        text_view_encode_error_code.text = enrolmentResponse.encodePerson.errorCode
+        text_view_encode_message.text = enrolmentResponse.encodePerson.message
+        text_view_encode_duration.text = getString(R.string.label_ms, enrolmentResponse.encodePerson.duration)
     }
 }

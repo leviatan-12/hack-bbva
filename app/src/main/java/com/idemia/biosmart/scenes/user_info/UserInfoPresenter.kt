@@ -13,6 +13,16 @@ class UserInfoPresenter : UserInfoPresentationLogic {
         this.activity = activity
     }
 
+    override fun authenticateUser(response: UserInfoModels.AuthenticateUser.Response) {
+        val viewModel = UserInfoModels.AuthenticateUser.ViewModel(response.authenticationResponse)
+        activity!!.displayAuthenticateUser(viewModel)
+    }
+
+    override fun identifyUser(response: UserInfoModels.IdentifyUser.Response) {
+        val viewModel = UserInfoModels.IdentifyUser.ViewModel(response.identifyResponse)
+        activity!!.displayIdentifyUser(viewModel)
+    }
+
     override fun presentSearch(response: UserInfoModels.Search.Response) {
         when(response.codeResponse){
             "USER_FOUND" -> {
@@ -44,6 +54,8 @@ class UserInfoPresenter : UserInfoPresentationLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface UserInfoPresentationLogic {
+    fun authenticateUser(response: UserInfoModels.AuthenticateUser.Response)
+    fun identifyUser(response: UserInfoModels.IdentifyUser.Response)
     fun presentSearch(response: UserInfoModels.Search.Response)
     fun presentError(response: UserInfoModels.Error.Response)
 }

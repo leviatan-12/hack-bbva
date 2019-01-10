@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.capture_face
 
+import android.os.Bundle
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
@@ -16,6 +17,9 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     }
 
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
+        super.onLoadActivity(savedInstanceState)
+    }
 
     override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

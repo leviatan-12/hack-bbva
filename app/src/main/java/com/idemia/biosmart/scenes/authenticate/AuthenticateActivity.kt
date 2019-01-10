@@ -1,8 +1,11 @@
 package com.idemia.biosmart.scenes.authenticate
 
+import android.os.Bundle
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity.Companion.AUTHENTICATE_USER
 import com.idemia.biosmart.utils.Validator
 import com.jakewharton.rxbinding2.widget.textChanges
 import kotlinx.android.synthetic.main.activity_authenticate.*
@@ -19,7 +22,8 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
 
     // To check if data is completed
     private var usernameIsValid = false
-    private var faceTaken = false
+    //TODO: Change to false (true it's just for testing)
+    private var faceTaken = true
     private var fingersTaken = false
 
     companion object { private val TAG = "AuthenticateActivity" }
@@ -28,12 +32,21 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    override fun onLoadActivity() {
+    //region BASE ACTIVITY - On load activity
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         addObservableToUsernameTextField()
         addActionButtons()
     }
+    //endregion
 
-    //region A "dependency injection"
+    //region ANDROID - On Resume
+    override fun onResume() {
+        super.onResume()
+        addObservableToUsernameTextField()
+    }
+    //endregion
+
+    //region BASE ACTIVITY - A "dependency injection"
     override fun inject() {
         val activity = this
         this.interactor = AuthenticateInteractor()
@@ -56,7 +69,8 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
 
     override fun displayGoToNextScene(viewModel: AuthenticateModels.GoToNextScene.ViewModel) {
         when(viewModel.operation){
-            AuthenticateModels.Operation.START_PROCESS -> router.routeToStartProcessScene()
+            AuthenticateModels.Operation.START_PROCESS ->
+                router.routeToStartProcessScene(UserInfoActivity.AUTHENTICATE_USER, edit_text_username.text.toString())
             AuthenticateModels.Operation.CAPTURE_FACE -> router.routeToCaptureFaceScene()
             AuthenticateModels.Operation.CAPTURE_FINGERS -> router.routeToCaptureFingersMsoScene()
             AuthenticateModels.Operation.CAPTURE_FINGERS_CONTACTLESS -> router.routeToCaptureFingersScene()
@@ -64,6 +78,7 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     }
     //endregion
 
+    //region UI
     /**
      * Adds an observable for username validation
      */
@@ -96,6 +111,7 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     private fun isDataValid(): Boolean{
         return (usernameIsValid && faceTaken) || (usernameIsValid && fingersTaken)
     }
+    //endregion
 }
 
 /**

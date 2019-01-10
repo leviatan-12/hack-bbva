@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.splash
 
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
@@ -18,7 +19,7 @@ class SplashActivity : BaseActivity() {
         // Do nothing :)
     }
 
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         handler.postDelayed({
             startActivity(Intent(this, WelcomeActivity::class.java))
             finish()

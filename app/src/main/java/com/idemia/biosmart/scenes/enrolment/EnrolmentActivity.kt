@@ -2,6 +2,7 @@ package com.idemia.biosmart.scenes.enrolment
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
@@ -36,8 +37,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    //region Base Activity lifecycle
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         button_start_process.setOnClickListener { goToNextScene(EnrolmentModels.Operation.START_PROCESS) }
         float_button_selfie.setOnClickListener{ goToNextScene(EnrolmentModels.Operation.CAPTURE_FACE) }
         button_capture_fingers.setOnClickListener {

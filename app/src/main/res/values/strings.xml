@@ -46,6 +46,9 @@
     <string name="user_info_label_enrolment_duration">Enrolment Duration</string>
     <string name="user_info_label_encoding_duration">Encoding Duration</string>
     <string name="user_info_label_match_person_to_person_duration">Match Person to Person Duration</string>
+    <string name="user_info_label_match_person_to_person_process">PtP</string>
+    <string name="user_info_label_technical_details">Technical Details</string>
+    <string name="user_info_label_user_info">User Info</string>
 
     <!-- MSO Scene -->
     <string name="mso_label_thumb">Thumb</string>
@@ -121,7 +124,17 @@
     <string name="person_data_fragment_label_general_user_info">General User Info</string>
     <string name="person_data_fragment_label_enrol_person_process">Enrol Person Process</string>
     <string name="person_data_fragment_label_encode_person_process">Encode Person Process</string>
+    <string name="person_data_fragment_label_match_person_to_person_process">Match Person to Person Details</string>
 
     <!-- Fragment Person to Person match -->
     <string name="person_to_person_data_fragment_no_hit_rank">No. Hit Rank: %1$d</string>
+
+    <!-- Fragment User info technical details -->
+    <string name="userinfo_technical_details_fragment_label_encode_person_process">Encode Person Process</string>
+    <string name="userinfo_technical_details_fragment_label_authenticate_person_process">Authenticate Person Process</string>
+
+    <!-- FATAL messages -->
+    <string name="fatal_invalid_operation">[FATAL] Invalid Operation to perform</string>
+    <string name="fatal_user_biometry_info_incomplete">[FATAL] User Biometry info incomplete!</string>
+    <string name="fatal_unknown_error">[FATAL] Unknown error: %1$s</string>
 </resources>

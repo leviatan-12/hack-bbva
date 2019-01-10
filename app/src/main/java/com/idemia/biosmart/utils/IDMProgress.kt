@@ -20,7 +20,7 @@ class IDMProgress(context: Context, label: String, details: String) {
             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
             .setLabel(label)
             .setDetailsLabel(details)
-            .setDimAmount(0.75f)
+            .setDimAmount(0.85f)
             .setCancellable(true)
     }
 }

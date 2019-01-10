@@ -1,6 +1,7 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
 import android.Manifest
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.base.android.BaseActivity
@@ -66,7 +67,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region On Load Activity (called within "onCreate() method")
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         try{
             val surfaceViewResource = surfaceViewLayout()
             surfaceView = findViewById(surfaceViewResource)

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_userinfo_data.*
 
 class UserInfoDataFragment: Fragment(){
     lateinit var mView: View
+    var user: UserInfoModels.User? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,9 +28,14 @@ class UserInfoDataFragment: Fragment(){
         text_view_name.text = getString(R.string.label_NA)
         text_view_last_name.text = getString(R.string.label_NA)
         text_view_m_last_name.text = getString(R.string.label_NA)
+        // Try to load data if exists
+        user?.let {
+            dataBinding(it)
+        }
     }
 
     fun dataBinding(user: UserInfoModels.User?){
+        this.user = user
         user?.let {
             text_view_username.text = it.username
             text_view_name.text = it.name

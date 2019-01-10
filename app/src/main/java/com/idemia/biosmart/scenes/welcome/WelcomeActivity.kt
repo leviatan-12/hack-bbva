@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.welcome
 
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
@@ -43,7 +44,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun hideNavigationBar(): Boolean = false
 
     //region On load activity
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         setSupportActionBar(bottom_app_bar)
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
@@ -75,7 +76,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
         recycle_view_menu.adapter = CardsMenuAdapter(list)
 
-        // Validate or activate license
+        //Validate or activate license
         activateLkmsLicenseOnDevice()
     }
     //endregion
@@ -160,10 +161,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_green_light))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
         }else {
-            Log.i(TAG, "License is not active or is not valid, a new one will be generated...")
+            Log.i(TAG, getString(R.string.welcome_message_license_is_not_active))
             generateLicense()
             text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_red_dark))
-            Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
+            // Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
         }
     }
     //endregion

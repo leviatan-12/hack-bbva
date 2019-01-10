@@ -8,7 +8,7 @@ package com.idemia.biosmart.scenes.authenticate;
  */
 class AuthenticateModels {
 
-    enum class Operation{
+    enum class Operation {
         CAPTURE_FINGERS,
         CAPTURE_FINGERS_CONTACTLESS,
         CAPTURE_FACE,

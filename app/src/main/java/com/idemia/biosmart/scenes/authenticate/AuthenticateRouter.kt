@@ -3,6 +3,8 @@ package com.idemia.biosmart.scenes.authenticate
 import android.content.Intent
 import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
 import com.idemia.biosmart.scenes.face_info.FaceInfoActivity
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import com.idemia.biosmart.utils.AppCache
 import java.lang.ref.WeakReference
 
 /**
@@ -37,8 +39,13 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
         }
     }
 
-    override fun routeToStartProcessScene() {
-
+    override fun routeToStartProcessScene(operation: Int, username: String) {
+        if (activity?.get() != null){
+            val intent = Intent(activity!!.get()!!.applicationContext, UserInfoActivity::class.java)
+            AppCache.username = username
+            intent.putExtra(UserInfoActivity.KEY_OPERATION_TYPE, operation)
+            activity!!.get()!!.startActivity(intent)
+        }
     }
 }
 
@@ -58,5 +65,5 @@ interface AuthenticateRoutingLogic {
 
     fun routeToCaptureFaceScene()
 
-    fun routeToStartProcessScene()
+    fun routeToStartProcessScene(operation: Int, username: String)
 }

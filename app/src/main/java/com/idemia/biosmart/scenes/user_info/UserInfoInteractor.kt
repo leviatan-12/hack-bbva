@@ -24,6 +24,32 @@ class UserInfoInteractor : UserInfoBusinessLogic {
         this.presenter = presenter
     }
 
+    override fun authenticateUser(request: UserInfoModels.AuthenticateUser.Request) {
+        DisposableManager.add(
+            worker.authenticateUser(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    presenter.authenticateUser(UserInfoModels.AuthenticateUser.Response(response.body()!!))
+                }, { t ->
+                    presenter.presentError(UserInfoModels.Error.Response(t))
+                })
+        )
+    }
+
+    override fun identifyUser(request: UserInfoModels.IdentifyUser.Request) {
+        DisposableManager.add(
+            worker.identifyUser(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    presenter.identifyUser(UserInfoModels.IdentifyUser.Response(response.body()!!))
+                }, { t ->
+                    presenter.presentError(UserInfoModels.Error.Response(t))
+                })
+        )
+    }
+
     // TODO: Change 404 WS response when user not found...
     override fun search(request: UserInfoModels.Search.Request) {
         disposable = worker.search(request).subscribeOn(Schedulers.io())
@@ -43,5 +69,7 @@ class UserInfoInteractor : UserInfoBusinessLogic {
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface UserInfoBusinessLogic {
+    fun authenticateUser(request: UserInfoModels.AuthenticateUser.Request)
+    fun identifyUser(request: UserInfoModels.IdentifyUser.Request)
     fun search(request: UserInfoModels.Search.Request)
 }

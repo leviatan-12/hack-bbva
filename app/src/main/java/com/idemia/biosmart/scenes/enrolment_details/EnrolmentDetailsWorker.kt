@@ -30,29 +30,8 @@ class EnrolmentDetailsWorker {
     }
 
     fun retrieveUserInfo(): UserBiometrics{
-        val userBiometrics = UserBiometrics(AppCache.username!!)
-        AppCache.facePhoto?.let {
-            userBiometrics.photo = Base64.encode(it.jpegImage)
-        }
-
-        AppCache.imageListLeft?.let {
-            if(it.size == 4){
-               userBiometrics.leftIndex = Base64.encode(it[0].jpegImage)
-                userBiometrics.leftMiddle = Base64.encode(it[1].jpegImage)
-                userBiometrics.leftRing = Base64.encode(it[2].jpegImage)
-                userBiometrics.leftLittle = Base64.encode(it[3].jpegImage)
-            }
-        }
-
-        AppCache.imageListRight?.let {
-            if(it.size == 4){
-                userBiometrics.rightIndex = Base64.encode(it[0].jpegImage)
-                userBiometrics.rightMiddle = Base64.encode(it[1].jpegImage)
-                userBiometrics.rightRing = Base64.encode(it[2].jpegImage)
-                userBiometrics.rightLittle = Base64.encode(it[3].jpegImage)
-            }
-        }
-        return userBiometrics
+        val userBiometrics = AppCache.userBiometrics
+        return userBiometrics!!
     }
 
     fun retrieveUserPhoto(): Single<ByteArray>{

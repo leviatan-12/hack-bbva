@@ -5,7 +5,9 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
+import com.idemia.biosmart.models.AuthenticationResponse
 import com.idemia.biosmart.models.EnrolmentResponse
+import com.idemia.biosmart.models.IdentifyResponse
 import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.scenes.user_info.UserInfoModels
 import retrofit2.Response
@@ -25,10 +27,10 @@ interface IdemiaApiService {
     fun enrolment(@Body request: UserBiometrics): Observable<Response<EnrolmentResponse>>
 
     @POST("api/users/authenticate")
-    fun authenticate(@Body request: UserBiometrics)
+    fun authenticate(@Body request: UserBiometrics): Observable<Response<AuthenticationResponse>>
 
     @POST("api/users/identify")
-    fun identify(@Body request: UserBiometrics)
+    fun identify(@Body request: UserBiometrics): Observable<Response<IdentifyResponse>>
 
     // Web Service endpoints
     companion object {

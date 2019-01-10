@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.capture_fingers
 
 import android.app.Activity
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -21,8 +22,8 @@ class FingersCaptureActivity : FingersActivity() {
     override fun hideNavigationBar(): Boolean = false
     override fun surfaceViewLayout(): Int = R.id.morpho_surface_view
 
-    override fun onLoadActivity() {
-        super.onLoadActivity()
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
+        super.onLoadActivity(savedInstanceState)
         initUi()
     }
 

@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.identify
 
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
@@ -19,7 +20,7 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
 
     }
 

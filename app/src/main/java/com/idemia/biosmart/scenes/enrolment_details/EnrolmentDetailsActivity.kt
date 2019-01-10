@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
@@ -34,7 +35,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     private val personDataFragment = PersonDataFragment()
     private val matchPersonToPersonDataFragment = MatchPersonToPersonDataFragment()
 
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         retrieveUserInfo()
         button_finish.setOnClickListener {
             finish()
@@ -123,7 +124,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     private fun initViewPager(){
         val adapter  = ViewPageUserInfoAdapter(supportFragmentManager)
         adapter.addFragment(personDataFragment, getString(R.string.person_data_fragment_label_general_user_info))
-        adapter.addFragment(matchPersonToPersonDataFragment, "Match Person to Person Details")
+        adapter.addFragment(matchPersonToPersonDataFragment, getString(R.string.person_data_fragment_label_match_person_to_person_process))
         view_pager.adapter = adapter
         tab_layout.setupWithViewPager(view_pager)
     }

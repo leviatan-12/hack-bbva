@@ -34,6 +34,7 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
             val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(true, image)
             presenter.presentDisplayUserPhoto(response)
         },{ t ->
+            Log.e(TAG, "displayUserPhoto:", t)
             val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(false)
             presenter.presentDisplayUserPhoto(response)
         })

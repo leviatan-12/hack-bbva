@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.kaopiz.kprogresshud.KProgressHUD
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
@@ -31,7 +32,7 @@ abstract class BaseActivity: AppCompatActivity(){
     abstract fun inject()
 
     /** Use this method to load all UI Elements, add functions, and so on...*/
-    abstract fun onLoadActivity()
+    abstract fun onLoadActivity(savedInstanceState: Bundle?)
 
     /** A [KProgressHUD] Loader */
     var loader: KProgressHUD? = null
@@ -46,7 +47,7 @@ abstract class BaseActivity: AppCompatActivity(){
         setContentView(resourceLayoutId())
         inject()
         preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-        onLoadActivity()
+        onLoadActivity(savedInstanceState)
     }
 
     override fun onPause() {
@@ -81,5 +82,11 @@ abstract class BaseActivity: AppCompatActivity(){
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+    }
+
+    protected fun showToast(message: String, duration: Int = Toast.LENGTH_LONG){
+        runOnUiThread {
+            Toast.makeText(applicationContext, message, duration).show()
+        }
     }
 }

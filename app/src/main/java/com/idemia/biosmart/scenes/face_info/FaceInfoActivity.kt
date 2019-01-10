@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.face_info
 
+import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
@@ -23,9 +24,9 @@ class FaceInfoActivity : BaseActivity(), FaceInfoDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    override fun onLoadActivity() {
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
         button_start_process.setOnClickListener { goToNextScene() }
-        switch_dont_show_again.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_dont_show_again.setOnCheckedChangeListener { _, isChecked ->
             Log.i(TAG, "IS CHECKED? $isChecked")
             setDoNotShowThisTutorialAgain(isChecked)
         }
