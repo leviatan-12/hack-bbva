@@ -41,6 +41,11 @@
                 android:entries="@array/face_capture_mode_values"
                 android:entryValues="@array/face_capture_mode_values"
                 android:key="@string/IDEMIA_KEY_FACE_CAPTURE_MODE"/>
+
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:title="@string/pref_title_do_not_show_face_tutorial"
+                android:key="@string/IDEMIA_KEY_DO_NOT_SHOW_FACE_TUTORIAL"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -51,6 +56,11 @@
                 android:entries="@array/fingers_capture_mode_values"
                 android:entryValues="@array/fingers_capture_mode_values"
                 android:key="@string/IDEMIA_KEY_FINGERS_CAPTURE_MODE"/>
+
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:title="@string/pref_title_do_not_show_fingers_tutorial"
+                android:key="@string/IDEMIA_KEY_DO_NOT_SHOW_FINGERS_TUTORIAL"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

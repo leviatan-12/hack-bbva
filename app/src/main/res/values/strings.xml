@@ -132,6 +132,8 @@
     <string name="pref_title_timeout">Timeout</string>
     <string name="pref_title_use_camera_rear">Use Camera Rear</string>
     <string name="pref_title_use_overlay">Use Overlay</string>
+    <string name="pref_title_do_not_show_fingers_tutorial">Do not show fingers tutorial</string>
+    <string name="pref_title_do_not_show_face_tutorial">Do not show face tutorial</string>
     <string name="pref_title_capture_timeout">Capture Timeout</string>
     <string name="pref_title_face_capture_mode">Face Capture Mode</string>
     <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>

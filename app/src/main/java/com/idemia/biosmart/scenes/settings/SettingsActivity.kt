@@ -128,6 +128,8 @@ class SettingsActivity : PreferenceActivity() {
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_CAMERA_REAR)))
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_OVERLAY)))
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_TORCH)))
+            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_DO_NOT_SHOW_FINGERS_TUTORIAL)))
+            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_DO_NOT_SHOW_FACE_TUTORIAL)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FACE_CAPTURE_MODE)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FINGERS_CAPTURE_MODE)))
         }
