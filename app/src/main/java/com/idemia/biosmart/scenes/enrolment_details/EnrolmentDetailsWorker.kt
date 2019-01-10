@@ -1,16 +1,12 @@
 package com.idemia.biosmart.scenes.enrolment_details;
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import com.idemia.biosmart.api.IdemiaApiService
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.utils.ApiUrlManager
 import com.idemia.biosmart.utils.AppCache
-import com.idemia.biosmart.utils.Base64
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

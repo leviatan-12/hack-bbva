@@ -114,9 +114,15 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
         Toast.makeText(applicationContext, enrolmentResponse.message, Toast.LENGTH_LONG).show()
         when(enrolmentResponse.code){
             409 -> personDataFragment.bind(enrolmentResponse)
-            // TODO: Uncomment this line
-            // else -> finish()
+            else -> finish()
         }
+    }
+    //endregion
+
+    //region USECASE - Display Error
+    override fun displayError(viewModel: EnrolmentDetailsModels.Error.ViewModel) {
+        Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
+        loader?.dismiss()
     }
     //endregion
 
@@ -141,4 +147,5 @@ interface EnrolmentDetailsDisplayLogic {
     fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetrieveUserInfo.ViewModel)
     fun displayUserPhoto(viewModel: EnrolmentDetailsModels.DisplayUserPhoto.ViewModel)
     fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel)
+    fun displayError(viewModel: EnrolmentDetailsModels.Error.ViewModel)
 }

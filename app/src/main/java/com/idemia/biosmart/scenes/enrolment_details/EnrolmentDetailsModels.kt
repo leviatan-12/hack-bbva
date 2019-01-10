@@ -32,4 +32,9 @@ class EnrolmentDetailsModels {
         data class Response(val enrolmentResponse: EnrolmentResponse)
         data class ViewModel(val enrolmentResponse: EnrolmentResponse)
     }
+
+    class Error {
+        class Response(val throwable: Throwable, val errorCode: Int = -1)
+        class ViewModel(val throwable: Throwable, val errorCode: Int = -1)
+    }
 }

@@ -2,6 +2,8 @@ package com.idemia.biosmart.utils
 
 import com.idemia.biosmart.models.UserBiometrics
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 
 object AppCache {
     // Face and fingers
@@ -25,6 +27,12 @@ object AppCache {
         name = null
         lastName = null
         secondLastName = null
+    }
+
+    var handsCaptureObserver: Subject<Boolean> = PublishSubject.create()
+
+    fun addImageListLeft(){
+        handsCaptureObserver.onNext(true)
     }
 
     val userBiometrics: UserBiometrics?

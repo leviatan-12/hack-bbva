@@ -37,8 +37,19 @@ class UserInfoPresenter : UserInfoPresentationLogic {
     }
 
     override fun presentError(response: UserInfoModels.Error.Response) {
-        val viewModel = UserInfoModels.Error.ViewModel(response.throwable)
-        activity!!.displayError(viewModel)
+        when(response.errorCode){
+            -1 -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable("[FATAL] Unknown App Error"))
+                activity!!.displayError(viewModel)
+            }
+            404 -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable("[WS Connection] Middleware URL cannot be reached!"))
+                activity!!.displayError(viewModel)
+            }else -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable("[WS Connection] Error code ${response.errorCode}"))
+                activity!!.displayError(viewModel)
+            }
+        }
     }
 
     companion object {

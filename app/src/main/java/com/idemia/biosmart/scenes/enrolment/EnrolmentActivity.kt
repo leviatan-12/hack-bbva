@@ -1,12 +1,11 @@
 package com.idemia.biosmart.scenes.enrolment
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.Validator
 import com.jakewharton.rxbinding2.widget.textChanges
 import kotlinx.android.synthetic.main.activity_enrolment.*
@@ -29,9 +28,6 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     private var isLastNameValid = false
     private var isSecondLastNameValid = false
     private var isUsernameValid = false
-    // TODO: Set to false
-    private var faceTaken = true
-    private var fingersTaken = false
 
     override fun resourceLayoutId(): Int = R.layout.activity_enrolment
     override fun hideActionBar(): Boolean = false
@@ -128,26 +124,10 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
         })
     }
 
-    private fun isDataValid(): Boolean{
+    private fun isDataValid(): Boolean {
         val dataInfoValid = (isUsernameValid && isLastNameValid && isSecondLastNameValid && isUsernameValid && isNameValid)
-        return (dataInfoValid && faceTaken) || (dataInfoValid && fingersTaken)
-    }
-    //endregion
-
-
-    //region Android - On Activity resut
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            Log.i(TAG, "Request code was $requestCode")
-            when(resultCode){
-                EnrolmentModels.RequestCode.REQUEST_CODE_FACE.ordinal -> faceTaken = true
-                EnrolmentModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal,
-                EnrolmentModels.RequestCode.REQUEST_CODE_HAND_RIGHT.ordinal -> fingersTaken = true
-            }
-        }else{
-            Log.e(TAG, "Activity result: canceled")
-        }
+        //return (dataInfoValid && (AppCache.facePhoto != null)) || (dataInfoValid && (AppCache.imageListLeft!=null)) || (dataInfoValid && (AppCache.imageListRight!=null))
+        return (dataInfoValid)
     }
     //endregion
 }

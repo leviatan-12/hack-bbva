@@ -3,6 +3,7 @@ package com.idemia.biosmart.scenes.enrolment_details
 import android.util.Log
 import com.idemia.biosmart.base.utils.DisposableManager
 import io.reactivex.disposables.Disposable
+import retrofit2.HttpException
 
 /**
  *  EnrolmentDetails Interactor
@@ -13,7 +14,7 @@ import io.reactivex.disposables.Disposable
 class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
     private val worker = EnrolmentDetailsWorker()
     private var presenter: EnrolmentDetailsPresentationLogic = EnrolmentDetailsPresenter()
-    private var dispoable: Disposable? = null
+    private var disposable: Disposable? = null
 
     companion object {
         val TAG = "EnrolmentDetailsInt"
@@ -30,7 +31,7 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
     }
 
     override fun displayUserPhoto(request: EnrolmentDetailsModels.DisplayUserPhoto.Request) {
-        dispoable = worker.retrieveUserPhoto().subscribe({ image ->
+        disposable = worker.retrieveUserPhoto().subscribe({ image ->
             val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(true, image)
             presenter.presentDisplayUserPhoto(response)
         },{ t ->
@@ -38,17 +39,21 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
             val response = EnrolmentDetailsModels.DisplayUserPhoto.Response(false)
             presenter.presentDisplayUserPhoto(response)
         })
-        DisposableManager.add(dispoable)
+        DisposableManager.add(disposable)
     }
 
     override fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request) {
-        dispoable = worker.enrolPerson(request).subscribe({ responseFromService ->
-            val response = EnrolmentDetailsModels.EnrolPerson.Response(responseFromService.body()!!)
-            presenter.presentEnrolPerson(response)
-        },{ throwable ->
-            Log.e(TAG, "enrolPerson:" ,throwable)
-        })
-        DisposableManager.add(dispoable)
+        disposable = worker.enrolPerson(request).subscribe{ responseFromService ->
+            if(responseFromService.isSuccessful){
+                val response = EnrolmentDetailsModels.EnrolPerson.Response(responseFromService.body()!!)
+                presenter.presentEnrolPerson(response)
+            }else {
+                Log.e(TAG, "enrolPerson:" + responseFromService.errorBody())
+                val response = EnrolmentDetailsModels.Error.Response(Throwable("Communication Error"), responseFromService.code())
+                presenter.presentError(response)
+            }
+        }
+        DisposableManager.add(disposable)
     }
 }
 

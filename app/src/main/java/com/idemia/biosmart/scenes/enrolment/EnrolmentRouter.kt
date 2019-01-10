@@ -5,6 +5,7 @@ import com.idemia.biosmart.scenes.capture_face.FaceCaptureActivity
 import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
 import com.idemia.biosmart.scenes.enrolment_details.EnrolmentDetailsActivity
 import com.idemia.biosmart.scenes.face_info.FaceInfoActivity
+import com.idemia.biosmart.scenes.fingers_info.FingersInfoActivity
 import java.lang.ref.WeakReference
 
 /**
@@ -23,7 +24,7 @@ class EnrolmentRouter : EnrolmentRoutingLogic {
 
     override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
-            val intent = Intent(activity!!.get()!!.applicationContext, FingersCaptureActivity::class.java)
+            val intent = Intent(activity!!.get()!!.applicationContext, FingersInfoActivity::class.java)
             activity!!.get()!!.startActivityForResult(intent, EnrolmentModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal)
         }
     }

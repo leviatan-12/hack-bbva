@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.activity_userinfo.*
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
-import com.idemia.biosmart.models.Candidate
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonToPersonDataFragment
 import com.idemia.biosmart.scenes.user_info.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoDataFragment
@@ -72,18 +71,18 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
 
     override fun displayAuthenticateUser(viewModel: UserInfoModels.AuthenticateUser.ViewModel) {
-        // TODO: Delete this Binding, just for testing
-        matchPersonToPersonDataFragment.bind(arrayListOf(Candidate("HIT",false,"Sample",3500)))
         when(viewModel.authenticationResponse.code){
             200 -> {
                 val candidateId = viewModel.authenticationResponse.personId
                 userInfoTechnicalDetailsFragment.bind(viewModel.authenticationResponse)
+                matchPersonToPersonDataFragment.bind(viewModel.authenticationResponse.authenticatePerson!!.candidates)
                 loader?.dismiss()
                 search(candidateId!!)
             }
             400 -> {
                 showToast(getString(R.string.fatal_user_biometry_info_incomplete))
                 loader?.dismiss()
+                finish()
             }
             404 -> {
                 showToast(viewModel.authenticationResponse.authenticatePerson!!.message)
@@ -95,8 +94,6 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
                 loader?.dismiss()
             }
         }
-        Log.i(TAG, "displayAuthenticateUser: ${viewModel.authenticationResponse.message}")
-        search("alfredo")
     }
     //endregion
 
@@ -110,17 +107,17 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
 
     override fun displayIdentifyUser(viewModel: UserInfoModels.IdentifyUser.ViewModel) {
-        // TODO: Delete this Binding, just for testing
-        matchPersonToPersonDataFragment.bind(arrayListOf(Candidate("HIT",false,"Sample",3500)))
         when(viewModel.identifyResponse.code){
             200 -> {
                 val candidateId = viewModel.identifyResponse.matchPersonToPerson!!.candidates[0].id
+                userInfoTechnicalDetailsFragment.bind(viewModel.identifyResponse)
                 matchPersonToPersonDataFragment.bind(viewModel.identifyResponse.matchPersonToPerson.candidates)
                 search(candidateId)
             }
             400 -> {
                 showToast(getString(R.string.fatal_user_biometry_info_incomplete))
                 loader?.dismiss()
+                finish()
             }
             404 -> {
                 showToast(viewModel.identifyResponse.message)
@@ -132,8 +129,6 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
                 loader?.dismiss()
             }
         }
-        loader?.dismiss()
-        search("alfredo")
     }
     //endregion
 
@@ -181,6 +176,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
         Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
         loader?.dismiss()
+        finish()
     }
     //endregion
 

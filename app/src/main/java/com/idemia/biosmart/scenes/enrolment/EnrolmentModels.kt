@@ -14,6 +14,11 @@ class EnrolmentModels {
         REQUEST_CODE_HAND_RIGHT(0x12C)
     }
 
+    enum class HandPosition {
+        LEFT_HAND,
+        RIGHT_HAND
+    }
+
     enum class Operation{
         CAPTURE_FINGERS,
         CAPTURE_FINGERS_CONTACTLESS,

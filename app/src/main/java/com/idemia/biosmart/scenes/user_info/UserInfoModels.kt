@@ -48,7 +48,7 @@ class UserInfoModels {
 
 
     class Error {
-        class Response(val throwable: Throwable)
-        class ViewModel(val throwable: Throwable)
+        class Response(val throwable: Throwable, val errorCode: Int = -1)
+        class ViewModel(val throwable: Throwable, val errorCode: Int = -1)
     }
 }

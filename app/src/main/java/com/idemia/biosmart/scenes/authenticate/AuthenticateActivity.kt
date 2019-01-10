@@ -1,13 +1,11 @@
 package com.idemia.biosmart.scenes.authenticate
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.Validator
 import com.jakewharton.rxbinding2.widget.textChanges
 import kotlinx.android.synthetic.main.activity_authenticate.*
@@ -24,9 +22,6 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
 
     // To check if data is completed
     private var usernameIsValid = false
-    //TODO: Change to false (true it's just for testing)
-    private var faceTaken = true
-    private var fingersTaken = false
 
     companion object { private val TAG = "AuthenticateActivity" }
 
@@ -111,23 +106,8 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     }
 
     private fun isDataValid(): Boolean{
-        return (usernameIsValid && faceTaken) || (usernameIsValid && fingersTaken)
-    }
-    //endregion
-
-    //region Android - On Activity resut
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            Log.i(TAG, "Request code was $requestCode")
-            when(resultCode){
-                AuthenticateModels.RequestCode.REQUEST_CODE_FACE.ordinal -> faceTaken = true
-                AuthenticateModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal,
-                AuthenticateModels.RequestCode.REQUEST_CODE_HAND_RIGHT.ordinal -> fingersTaken = true
-            }
-        }else{
-            Log.e(TAG, "Activity result: canceled")
-        }
+        // return (usernameIsValid && (AppCache.facePhoto != null)) || (usernameIsValid && (AppCache.imageListLeft!=null)) || (usernameIsValid && (AppCache.imageListRight!=null))
+        return (usernameIsValid)
     }
     //endregion
 }

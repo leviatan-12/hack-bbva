@@ -9,6 +9,7 @@ import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import com.idemia.biosmart.utils.AppCache
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -28,9 +29,6 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    private var subject: Subject<Boolean> = PublishSubject.create()
-    private var disposable: Disposable? = null
-
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }
         button_start_process.setOnClickListener { goToNextScene(IdentifyModels.Operation.START_PROCESS) }
@@ -41,8 +39,6 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
                 goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS)
             }
         }
-        button_start_process.isEnabled = false
-        addCaptureDoneObservable()
     }
 
     override fun inject() {
@@ -55,22 +51,18 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
         (router as IdentifyRouter).setActivity(this)
     }
 
-    //region ANDROID - On destroy
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable?.dispose()
-    }
-    //endregion
-
     companion object {
         private val TAG = "IdentifyActivity"
     }
 
-
     //region USECASE - Go to next scene
     private fun goToNextScene(operation: IdentifyModels.Operation){
-        val request = IdentifyModels.GoToNextScene.Request(operation)
-        interactor.goToNextScene(request)
+        if(isDataValid()){
+            val request = IdentifyModels.GoToNextScene.Request(operation)
+            interactor.goToNextScene(request)
+        }else{
+            showToast(getString(R.string.label_no_biometric_data))
+        }
     }
 
     override fun displayGoToNextScene(viewModel: IdentifyModels.GoToNextScene.ViewModel) {
@@ -83,33 +75,10 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     }
     //endregion
 
-
-    //region UI - Add capture done observable
-    private fun addCaptureDoneObservable(){
-        disposable = subject.subscribe { isValid ->
-            Log.i(TAG, "addCaptureDoneObservable: isValid -> $isValid")
-            button_start_process.isEnabled = isValid
-        }
+    private fun isDataValid(): Boolean {
+        // return (AppCache.facePhoto != null || AppCache.imageListLeft!=null || AppCache.imageListRight!=null)
+        return true
     }
-    //endregion
-
-    //region Android - On Activity resut
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            Log.i(TAG, "Request code was $requestCode")
-            when(resultCode){
-                IdentifyModels.RequestCode.REQUEST_CODE_FACE.ordinal -> subject.onNext(true)
-                IdentifyModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal,
-                IdentifyModels.RequestCode.REQUEST_CODE_HAND_RIGHT.ordinal -> subject.onNext(true)
-            }
-        }else{
-            Log.e(TAG, "Activity result: canceled")
-            //TODO: Delete line below
-            subject.onNext(true)
-        }
-    }
-    //endregion
 }
 
 /**

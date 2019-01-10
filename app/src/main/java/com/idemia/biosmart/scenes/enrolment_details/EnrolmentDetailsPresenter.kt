@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
 import android.graphics.BitmapFactory
+import retrofit2.HttpException
 
 /**
  *  EnrolmentDetails Presenter
@@ -39,6 +40,22 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
         val viewModel = EnrolmentDetailsModels.EnrolPerson.ViewModel(response.enrolmentResponse)
         activity!!.displayEnrolPerson(viewModel)
     }
+
+    override fun presentError(response: EnrolmentDetailsModels.Error.Response) {
+        when(response.errorCode){
+            -1 -> {
+                val viewModel = EnrolmentDetailsModels.Error.ViewModel(Throwable("[FATAL] Unknown App Error"))
+                activity!!.displayError(viewModel)
+            }
+            404 -> {
+                val viewModel = EnrolmentDetailsModels.Error.ViewModel(Throwable("[WS Connection] Middleware URL cannot be reached!"))
+                activity!!.displayError(viewModel)
+            }else -> {
+                val viewModel = EnrolmentDetailsModels.Error.ViewModel(Throwable("[WS Connection] Error code ${response.errorCode}"))
+                activity!!.displayError(viewModel)
+            }
+        }
+    }
 }
 
 
@@ -52,4 +69,5 @@ interface EnrolmentDetailsPresentationLogic {
     fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetrieveUserInfo.Response)
     fun presentDisplayUserPhoto(response: EnrolmentDetailsModels.DisplayUserPhoto.Response)
     fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response)
+    fun presentError(response: EnrolmentDetailsModels.Error.Response)
 }

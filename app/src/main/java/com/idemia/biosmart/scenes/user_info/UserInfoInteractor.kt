@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.user_info
 
+import android.util.Log
 import com.idemia.biosmart.base.utils.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -29,12 +30,15 @@ class UserInfoInteractor : UserInfoBusinessLogic {
             worker.authenticateUser(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    presenter.authenticateUser(UserInfoModels.AuthenticateUser.Response(response.body()!!))
-                }, { t ->
-                    presenter.presentError(UserInfoModels.Error.Response(t))
+                .subscribe{ onNext ->
+                    if(onNext.isSuccessful){
+                        presenter.authenticateUser(UserInfoModels.AuthenticateUser.Response(onNext.body()!!))
+                    }else {
+                        Log.e(TAG, "authenticateUser:" + onNext.errorBody())
+                        val response = UserInfoModels.Error.Response(Throwable("Communication Error"), onNext.code())
+                        presenter.presentError(response)
+                    }
                 })
-        )
     }
 
     override fun identifyUser(request: UserInfoModels.IdentifyUser.Request) {
@@ -42,15 +46,18 @@ class UserInfoInteractor : UserInfoBusinessLogic {
             worker.identifyUser(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    presenter.identifyUser(UserInfoModels.IdentifyUser.Response(response.body()!!))
-                }, { t ->
-                    presenter.presentError(UserInfoModels.Error.Response(t))
-                })
+                .subscribe{ onNext ->
+                    if(onNext.isSuccessful){
+                        presenter.identifyUser(UserInfoModels.IdentifyUser.Response(onNext.body()!!))
+                    }else {
+                        Log.e(TAG, "identifyUser:" + onNext.errorBody())
+                        val response = UserInfoModels.Error.Response(Throwable("Communication Error"), onNext.code())
+                        presenter.presentError(response)
+                    }
+                }
         )
     }
 
-    // TODO: Change 404 WS response when user not found...
     override fun search(request: UserInfoModels.Search.Request) {
         disposable = worker.search(request).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->

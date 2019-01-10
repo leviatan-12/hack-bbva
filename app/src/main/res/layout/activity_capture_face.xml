@@ -18,10 +18,10 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="32dp"
+    <ImageView
+            android:layout_width="155dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_square_logo"
+            android:src="@drawable/idemia_logo_white_500px"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

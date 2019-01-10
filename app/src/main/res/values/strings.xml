@@ -57,10 +57,22 @@
     <string name="mso_label_ring">Ring</string>
     <string name="mso_label_little">Little</string>
 
-    <!-- Face Capture Scene -->
-    <string name="label_face_capture_brief">Position your face in the center of the screen. Look straight.
+    <!-- Face Capture Info Scene -->
+    <string name="face_info_label_face_capture_brief">Position your face in the center of the screen. Look straight.
         Once the face capture starts, the camera will follow your face movements. Follow instructions which will appear
         on the screen to accomplish the challenge (optimal head rotation us up to 20 degrees)
+    </string>
+
+
+    <!-- Fingers Capture Info Scene -->
+    <string name="fingers_info_label_fingers_capture_brief">
+        Position your hand in the center of the screen. You can capture left hand, right hand or both hands. Once the
+        capture start, the camera will follow your fingers.
+    </string>
+
+    <string name="fingers_info_label_fingers_capture_brief_2">
+        For making you capture hands, be careful with the environment lights. If your phone camera has not autofocus,
+        quality capture could be low.
     </string>
 
     <!-- Enrolment Details -->
@@ -86,6 +98,7 @@
     <string name="label_yes">Yes</string>
     <string name="label_no">No</string>
     <string name="label_face_capture">Face Capture</string>
+    <string name="label_fingers_capture">Fingers Capture</string>
     <string name="label_dont_show_again">Don\'t show again</string>
     <string name="label_capture_finished">Capture Finished</string>
     <string name="label_error">An error happened: %1$s</string>
@@ -97,6 +110,9 @@
     <string name="label_score">Score</string>
     <string name="label_decision">Decision</string>
     <string name="label_person_id">Person ID</string>
+    <string name="label_capture_left_hand">Capture Left Hand</string>
+    <string name="label_capture_right_hand">Capture Right Hand</string>
+    <string name="label_no_biometric_data">Biometric data has been not captured</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
@@ -131,7 +147,8 @@
 
     <!-- Fragment User info technical details -->
     <string name="userinfo_technical_details_fragment_label_encode_person_process">Encode Person Process</string>
-    <string name="userinfo_technical_details_fragment_label_authenticate_person_process">Authenticate Person Process</string>
+    <string name="userinfo_technical_details_fragment_label_authenticate_person_process">Authenticate Person Process
+    </string>
 
     <!-- FATAL messages -->
     <string name="fatal_invalid_operation">[FATAL] Invalid Operation to perform</string>
