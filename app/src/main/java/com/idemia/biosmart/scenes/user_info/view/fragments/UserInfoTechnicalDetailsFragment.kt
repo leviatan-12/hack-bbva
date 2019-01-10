@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.idemia.biosmart.R
 import com.idemia.biosmart.models.AuthenticationResponse
+import com.idemia.biosmart.models.IdentifyResponse
 import kotlinx.android.synthetic.main.fragment_userinfo_technical_details.*
 
 class UserInfoTechnicalDetailsFragment: Fragment() {
     lateinit var mView: View
     var authenticationResponse: AuthenticationResponse? = null
+    var identifyResponse: IdentifyResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +35,7 @@ class UserInfoTechnicalDetailsFragment: Fragment() {
         text_view_authenticate_message.text = getString(R.string.label_NA)
 
         authenticationResponse?.let { bind(it) }
+        identifyResponse?.let { bind(it) }
     }
 
     fun bind(authenticationResponse: AuthenticationResponse){
@@ -44,5 +47,16 @@ class UserInfoTechnicalDetailsFragment: Fragment() {
         text_view_authenticate_duration.text = authenticationResponse.authenticatePerson?.duration.toString()
         text_view_authenticate_error_code.text = authenticationResponse.authenticatePerson?.errorCode
         text_view_authenticate_message.text = authenticationResponse.authenticatePerson?.message
+    }
+
+    fun bind(identifyResponse: IdentifyResponse){
+        this.identifyResponse = identifyResponse
+        text_view_encode_duration.text = identifyResponse.encodePerson?.duration.toString()
+        text_view_encode_error_code.text = identifyResponse.encodePerson?.errorCode
+        text_view_encode_message.text = identifyResponse.encodePerson?.message
+
+        text_view_authenticate_duration.text = identifyResponse.matchPersonToPerson?.duration.toString()
+        text_view_authenticate_error_code.text = identifyResponse.matchPersonToPerson?.errorCode
+        text_view_authenticate_message.text = identifyResponse.matchPersonToPerson?.message
     }
 }

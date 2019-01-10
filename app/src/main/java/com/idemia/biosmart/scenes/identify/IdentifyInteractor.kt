@@ -14,9 +14,9 @@ class IdentifyInteractor : IdentifyBusinessLogic {
         this.presenter = presenter
     }
 
-    override fun doSomething(request: IdentifyModels.DoSomething.Request) {
-        val response = IdentifyModels.DoSomething.Response()
-        presenter.presentDoSomething(response)
+    override fun goToNextScene(request: IdentifyModels.GoToNextScene.Request) {
+        val response = IdentifyModels.GoToNextScene.Response(request.operation)
+        presenter.presentGoToNextScene(response)
     }
 }
 
@@ -28,9 +28,5 @@ class IdentifyInteractor : IdentifyBusinessLogic {
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface IdentifyBusinessLogic {
-    /**
-     * Do Something
-     * @param requuest A DoSomething Request to send
-     */
-    fun doSomething(request: IdentifyModels.DoSomething.Request)
+    fun goToNextScene(request: IdentifyModels.GoToNextScene.Request)
 }

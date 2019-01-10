@@ -33,7 +33,6 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun inject() {
-        // TODO: Refactor this code
         val app = application as BioSmartApplication
         app.component.plus(WelcomeModule(this)).inject(this)
         (router as WelcomeRouter).activity = WeakReference(this)

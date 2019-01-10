@@ -24,7 +24,7 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
     override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
             val intent = Intent(activity!!.get()!!.applicationContext, FingersCaptureActivity::class.java)
-            activity!!.get()!!.startActivity(intent)
+            activity!!.get()!!.startActivityForResult(intent, AuthenticateModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal)
         }
     }
 
@@ -35,7 +35,7 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
     override fun routeToCaptureFaceScene() {
         if (activity?.get() != null){
             val intent = Intent(activity!!.get()!!.applicationContext, FaceInfoActivity::class.java)
-            activity!!.get()!!.startActivity(intent)
+            activity!!.get()!!.startActivityForResult(intent, AuthenticateModels.RequestCode.REQUEST_CODE_FACE.ordinal)
         }
     }
 

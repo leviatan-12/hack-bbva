@@ -1,10 +1,18 @@
 package com.idemia.biosmart.scenes.identify
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.scenes.user_info.UserInfoActivity
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
+import kotlinx.android.synthetic.main.activity_identify.*
 
 /**
  *  Identify Activity
@@ -20,8 +28,21 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
-    override fun onLoadActivity(savedInstanceState: Bundle?) {
+    private var subject: Subject<Boolean> = PublishSubject.create()
+    private var disposable: Disposable? = null
 
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
+        float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }
+        button_start_process.setOnClickListener { goToNextScene(IdentifyModels.Operation.START_PROCESS) }
+        button_capture_fingers.setOnClickListener {
+            if(switch_enable_contactless.isChecked){
+                goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS_CONTACTLESS)
+            }else{
+                goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS)
+            }
+        }
+        button_start_process.isEnabled = false
+        addCaptureDoneObservable()
     }
 
     override fun inject() {
@@ -34,22 +55,61 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
         (router as IdentifyRouter).setActivity(this)
     }
 
+    //region ANDROID - On destroy
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
+    }
+    //endregion
+
     companion object {
         private val TAG = "IdentifyActivity"
     }
 
-    /**
-     * Do something Use Case
-     */
-    private fun doSomething() {
-        val request = IdentifyModels.DoSomething.Request()
-        interactor.doSomething(request)
+
+    //region USECASE - Go to next scene
+    private fun goToNextScene(operation: IdentifyModels.Operation){
+        val request = IdentifyModels.GoToNextScene.Request(operation)
+        interactor.goToNextScene(request)
     }
 
-    override fun displayDoSomething(viewModel: IdentifyModels.DoSomething.ViewModel) {
-        Log.i(TAG, "displayDoSomething: ")
-        Toast.makeText(applicationContext, "Hello World from Do Something", Toast.LENGTH_LONG).show()
+    override fun displayGoToNextScene(viewModel: IdentifyModels.GoToNextScene.ViewModel) {
+        when(viewModel.operation){
+            IdentifyModels.Operation.CAPTURE_FACE -> { router.routeToCaptureFaceScene() }
+            IdentifyModels.Operation.CAPTURE_FINGERS -> { router.routeToCaptureFingersMsoScene() }
+            IdentifyModels.Operation.CAPTURE_FINGERS_CONTACTLESS -> { router.routeToCaptureFingersScene() }
+            IdentifyModels.Operation.START_PROCESS -> { router.routeToStartProcessScene(UserInfoActivity.IDENTIFY_USER) }
+        }
     }
+    //endregion
+
+
+    //region UI - Add capture done observable
+    private fun addCaptureDoneObservable(){
+        disposable = subject.subscribe { isValid ->
+            Log.i(TAG, "addCaptureDoneObservable: isValid -> $isValid")
+            button_start_process.isEnabled = isValid
+        }
+    }
+    //endregion
+
+    //region Android - On Activity resut
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            Log.i(TAG, "Request code was $requestCode")
+            when(resultCode){
+                IdentifyModels.RequestCode.REQUEST_CODE_FACE.ordinal -> subject.onNext(true)
+                IdentifyModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal,
+                IdentifyModels.RequestCode.REQUEST_CODE_HAND_RIGHT.ordinal -> subject.onNext(true)
+            }
+        }else{
+            Log.e(TAG, "Activity result: canceled")
+            //TODO: Delete line below
+            subject.onNext(true)
+        }
+    }
+    //endregion
 }
 
 /**
@@ -59,5 +119,5 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface IdentifyDisplayLogic {
-    fun displayDoSomething(viewModel: IdentifyModels.DoSomething.ViewModel)
+    fun displayGoToNextScene(viewModel: IdentifyModels.GoToNextScene.ViewModel)
 }

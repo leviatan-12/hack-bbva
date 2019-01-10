@@ -92,9 +92,9 @@ data class IdentifyResponse(
     @SerializedName("code")
     val code: Int,
     @SerializedName("encode_person")
-    val encodePerson: EncodePerson,
+    val encodePerson: EncodePerson?,
     @SerializedName("match_person_to_person")
-    val matchPersonToPerson: MatchPersonToPerson,
+    val matchPersonToPerson: MatchPersonToPerson?,
     @SerializedName("message")
     val message: String,
     @SerializedName("request_type")

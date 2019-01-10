@@ -8,6 +8,12 @@ package com.idemia.biosmart.scenes.authenticate;
  */
 class AuthenticateModels {
 
+    enum class RequestCode(value: Int){
+        REQUEST_CODE_FACE(0x64),
+        REQUEST_CODE_HAND_LETT(0xC8),
+        REQUEST_CODE_HAND_RIGHT(0x12C)
+    }
+
     enum class Operation {
         CAPTURE_FINGERS,
         CAPTURE_FINGERS_CONTACTLESS,

@@ -35,6 +35,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     override fun resourceLayoutId(): Int = R.layout.activity_userinfo
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
+    val viewPageUserInfoAdapter = ViewPageUserInfoAdapter(supportFragmentManager)
 
     //region VARS - Local variables
     private val userInfoDataFragment = UserInfoDataFragment()
@@ -44,7 +45,6 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region BASE ACTIVITY - On load activity
     override fun onLoadActivity(savedInstanceState: Bundle?) {
-        initViewPager()
         val operation = intent.getIntExtra(KEY_OPERATION_TYPE, 0x00)
         verifyOperationType(operation)
     }
@@ -114,15 +114,22 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         matchPersonToPersonDataFragment.bind(arrayListOf(Candidate("HIT",false,"Sample",3500)))
         when(viewModel.identifyResponse.code){
             200 -> {
-                val canditateId = viewModel.identifyResponse.matchPersonToPerson.candidates[0].id
+                val candidateId = viewModel.identifyResponse.matchPersonToPerson!!.candidates[0].id
                 matchPersonToPersonDataFragment.bind(viewModel.identifyResponse.matchPersonToPerson.candidates)
-                search(canditateId)
+                search(candidateId)
+            }
+            400 -> {
+                showToast(getString(R.string.fatal_user_biometry_info_incomplete))
+                loader?.dismiss()
             }
             404 -> {
-
+                showToast(viewModel.identifyResponse.message)
+                userInfoTechnicalDetailsFragment.bind(viewModel.identifyResponse)
+                loader?.dismiss()
             }
             else -> {
-
+                showToast(getString(R.string.fatal_unknown_error, "Error on displayIdentifyUser() method"))
+                loader?.dismiss()
             }
         }
         loader?.dismiss()
@@ -178,20 +185,27 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     //endregion
 
     //region UI - Init view pager
-    private fun initViewPager(){
-        val adapter  = ViewPageUserInfoAdapter(supportFragmentManager)
-        adapter.addFragment(userInfoDataFragment, getString(R.string.user_info_label_user_info))
-        adapter.addFragment(userInfoTechnicalDetailsFragment, getString(R.string.user_info_label_technical_details))
-        adapter.addFragment(matchPersonToPersonDataFragment, getString(R.string.user_info_label_match_person_to_person_process))
-        view_pager.adapter = adapter
+    private fun initViewPager(withMatchPersonToPersonTab: Boolean){
+        viewPageUserInfoAdapter.addFragment(userInfoDataFragment, getString(R.string.user_info_label_user_info))
+        viewPageUserInfoAdapter.addFragment(userInfoTechnicalDetailsFragment, getString(R.string.user_info_label_technical_details))
+        if(withMatchPersonToPersonTab){
+            viewPageUserInfoAdapter.addFragment(matchPersonToPersonDataFragment, getString(R.string.user_info_label_match_person_to_person_process))
+        }
+        view_pager.adapter = viewPageUserInfoAdapter
         tab_layout.setupWithViewPager(view_pager)
     }
     //endregion
 
     private fun verifyOperationType(type: Int){
         when(type){
-            AUTHENTICATE_USER -> authenticateUser()
-            IDENTIFY_USER -> identifyUser()
+            AUTHENTICATE_USER -> {
+                authenticateUser()
+                initViewPager(true)
+            }
+            IDENTIFY_USER -> {
+                identifyUser()
+                initViewPager(false)
+            }
             else -> showToast(getString(R.string.fatal_invalid_operation))
         }
     }

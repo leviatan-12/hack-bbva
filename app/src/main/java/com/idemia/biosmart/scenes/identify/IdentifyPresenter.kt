@@ -9,20 +9,19 @@ package com.idemia.biosmart.scenes.identify
 class IdentifyPresenter : IdentifyPresentationLogic {
     private var activity: IdentifyDisplayLogic? = null
 
+    companion object {
+        private val TAG = "IdentifyPresenter"
+    }
+
     fun setActivity(activity: IdentifyDisplayLogic) {
         this.activity = activity
     }
 
-    override fun presentDoSomething(response: IdentifyModels.DoSomething.Response) {
-        val viewModel = IdentifyModels.DoSomething.ViewModel()
-        activity!!.displayDoSomething(viewModel)
-    }
-
-    companion object {
-        private val TAG = "IdentifyPresenter"
+    override fun presentGoToNextScene(response: IdentifyModels.GoToNextScene.Response) {
+        val viewModel = IdentifyModels.GoToNextScene.ViewModel(response.operation)
+        activity!!.displayGoToNextScene(viewModel)
     }
 }
-
 
 /**
  *  Identify Presentation Logic
@@ -31,5 +30,5 @@ class IdentifyPresenter : IdentifyPresentationLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface IdentifyPresentationLogic {
-    fun presentDoSomething(response: IdentifyModels.DoSomething.Response)
+    fun presentGoToNextScene(response: IdentifyModels.GoToNextScene.Response)
 }

@@ -1,11 +1,13 @@
 package com.idemia.biosmart.scenes.authenticate
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
-import com.idemia.biosmart.scenes.user_info.UserInfoActivity.Companion.AUTHENTICATE_USER
 import com.idemia.biosmart.utils.Validator
 import com.jakewharton.rxbinding2.widget.textChanges
 import kotlinx.android.synthetic.main.activity_authenticate.*
@@ -110,6 +112,22 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
 
     private fun isDataValid(): Boolean{
         return (usernameIsValid && faceTaken) || (usernameIsValid && fingersTaken)
+    }
+    //endregion
+
+    //region Android - On Activity resut
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            Log.i(TAG, "Request code was $requestCode")
+            when(resultCode){
+                AuthenticateModels.RequestCode.REQUEST_CODE_FACE.ordinal -> faceTaken = true
+                AuthenticateModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal,
+                AuthenticateModels.RequestCode.REQUEST_CODE_HAND_RIGHT.ordinal -> fingersTaken = true
+            }
+        }else{
+            Log.e(TAG, "Activity result: canceled")
+        }
     }
     //endregion
 }
