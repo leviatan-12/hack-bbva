@@ -104,6 +104,7 @@
                             android:textStyle="bold"
                             android:textColorHint="@color/colorAccent"
                             android:checked="true"
+                            android:enabled="false"
                             android:gravity="center"
                             android:layout_weight="0.5"
                             android:text="@string/label_use_contactless" />
