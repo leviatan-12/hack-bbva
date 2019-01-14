@@ -15,7 +15,6 @@ import javax.inject.Inject
  */
 class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLogic) : WelcomeBusinessLogic {
     private val worker = WelcomeWorker()
-    private var disposable: Disposable? = null
 
     companion object {
         val TAG = "WelcomeInteractor"
@@ -23,7 +22,7 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
 
     override fun generateLicense(request: WelcomeModels.GenerateLicense.Request) {
         // Call WS to generate license file bin (Service Provider)
-        disposable = worker.generateLicense().subscribe({ response ->
+        val disposable = worker.generateLicense().subscribe({ response ->
             val activationData = response.bytes()
             val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
             presenter.presentGenerateLicense(mResponse)
@@ -36,7 +35,7 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
     }
 
     override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
-        disposable = worker. createLKMSLicense(request)
+        val disposable = worker. createLKMSLicense(request)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ lkmsLicense ->

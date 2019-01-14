@@ -26,7 +26,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     private lateinit var router: CaptureRoutingLogic         // Router
 
     companion object {
-        private val TAG = "CaptureActivity"
+        private const val TAG = "CaptureActivity"
     }
 
     //region A "Dependency Injection"

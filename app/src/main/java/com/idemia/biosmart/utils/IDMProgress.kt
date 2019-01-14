@@ -11,7 +11,7 @@ class IDMProgress(context: Context, label: String, details: String) {
     init {
         kProgress = create(context, label, details)
         kProgress.setCancellable {
-            DisposableManager.dispose()
+            DisposableManager.clear()
         }
     }
 

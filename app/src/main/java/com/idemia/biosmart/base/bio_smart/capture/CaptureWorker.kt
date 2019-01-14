@@ -1,5 +1,6 @@
 package com.idemia.biosmart.base.bio_smart.capture;
 
+import android.util.Log
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.BioMatcherSettings
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
@@ -19,6 +20,10 @@ import java.lang.Exception
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 class CaptureWorker {
+    companion object {
+        const val TAG = "CaptureWorker"
+    }
+
     // Read Preferences
     fun readPreferences(request: CaptureModels.ReadPreferences.Request): List<Any> {
         val preferenceManager = request.activity.preferenceManager
@@ -78,6 +83,7 @@ class CaptureWorker {
                 }
 
                 override fun onError(bioCaptureHandlerError: BioCaptureHandlerError) {
+                    Log.e(TAG, "createBioCaptureHandler:onError() - ${bioCaptureHandlerError}" )
                     emitter.onError(Throwable("Error creating capture handler " +
                             "(${bioCaptureHandlerError.name}, code error: ${bioCaptureHandlerError.mscValue})"))
                 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -15,6 +16,10 @@ import com.kaopiz.kprogresshud.KProgressHUD
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity: AppCompatActivity(){
+
+    companion object {
+        const val TAG = "BaseActivity"
+    }
 
     /** Preference Manager */
     lateinit var preferenceManager: SharedPreferences
@@ -52,7 +57,8 @@ abstract class BaseActivity: AppCompatActivity(){
 
     override fun onPause() {
         super.onPause()
-        DisposableManager.dispose()
+        Log.i(TAG, "onPause()")
+        DisposableManager.clear()
         loader?.dismiss()
         loader = null
     }

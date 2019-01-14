@@ -26,7 +26,6 @@ import java.lang.Exception
 class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioCaptureResultListener {
     private val worker = CaptureWorker()
     private var presenter: CapturePresentationLogic = CapturePresenter()
-    private var disposable: Disposable? = null
 
     private var captureHandler: IBioCaptureHandler? = null    // Capture handler used for handling capture
     private var matcherHandler: IBioMatcherHandler? = null      // A matcher handler used for local matching
@@ -51,7 +50,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
-        disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
+        val disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
             var mCaptureHandler: BioCaptureHandler? = null
 
             when (request.handlerType){
@@ -76,7 +75,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request) {
-        disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
+        val disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
             this.matcherHandler = matcherHandler
             val response = CaptureModels.CreateMatcherHandler.Response()
             presenter.presentCreateMatcherHandler(response)
@@ -141,7 +140,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun destroyHandlers(request: CaptureModels.DestroyHandlers.Request) {
         // Dispose everything
-        DisposableManager.dispose()
+        DisposableManager.clear()
 
         // Destroy capture handler and matcher handler
         captureHandler?.destroy()

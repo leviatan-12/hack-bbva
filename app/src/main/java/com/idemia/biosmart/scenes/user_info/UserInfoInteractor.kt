@@ -59,13 +59,12 @@ class UserInfoInteractor : UserInfoBusinessLogic {
     }
 
     override fun search(request: UserInfoModels.Search.Request) {
-        disposable = worker.search(request).subscribeOn(Schedulers.io())
+        DisposableManager.add(worker.search(request).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
                 presenter.presentSearch(response.body()!!)
-        }, { throwable ->
-            presenter.presentError(UserInfoModels.Error.Response(throwable))
-        })
-        DisposableManager.add(disposable)
+            }, { throwable ->
+                presenter.presentError(UserInfoModels.Error.Response(throwable))
+            }))
     }
 }
 
