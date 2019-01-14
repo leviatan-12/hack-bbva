@@ -2,6 +2,8 @@ package com.idemia.biosmart.scenes.welcome
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearSnapHelper
+import android.support.v7.widget.SnapHelper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -45,7 +47,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     //region On load activity
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         setSupportActionBar(bottom_app_bar)
-        text_view_license_status.text = getString(R.string.welcome_message_license_not_activated)
+        text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, "")
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
         val sdkInfo = BioSdkInfo(applicationContext)
         text_view_sdk_version.text = sdkInfo.version
@@ -74,6 +76,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         )
 
         recycle_view_menu.adapter = CardsMenuAdapter(list)
+
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recycle_view_menu)
+        snapHelper.findTargetSnapPosition(layoutManager, 100,10)
 
         //Validate or activate license
         activateLkmsLicenseOnDevice()
@@ -139,7 +145,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
         }else{
             text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
-            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+            text_view_license_status.setTextColor(resources.getColor(R.color.colorDanger))
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message), Toast.LENGTH_LONG).show()
         }
     }
@@ -157,12 +163,12 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel) {
         loader?.dismiss()
         if(viewModel.isLicenseValid){
-            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_green_light))
+            text_view_license_status.setTextColor(resources.getColor(R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
         }else {
             Log.i(TAG, getString(R.string.welcome_message_license_is_not_active))
             generateLicense()
-            text_view_license_status.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+            text_view_license_status.setTextColor(resources.getColor(R.color.colorDanger))
             // Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
         }
     }
