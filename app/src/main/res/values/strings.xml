@@ -113,6 +113,7 @@
     <string name="label_capture_left_hand">Capture Left Hand</string>
     <string name="label_capture_right_hand">Capture Right Hand</string>
     <string name="label_no_biometric_data">Biometric data has been not captured</string>
+    <string name="label_license_details">License Details</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
@@ -151,6 +152,13 @@
     <string name="userinfo_technical_details_fragment_label_encode_person_process">Encode Person Process</string>
     <string name="userinfo_technical_details_fragment_label_authenticate_person_process">Authenticate Person Process
     </string>
+
+    <!-- License Details Scene -->
+    <string name="license_details_label_license_details">License Details</string>
+    <string name="license_details_label_license_id">License ID</string>
+    <string name="license_details_label_profile_id">Profile ID</string>
+    <string name="license_details_label_status">Status</string>
+    <string name="license_details_label_features">Features</string>
 
     <!-- FATAL messages -->
     <string name="fatal_invalid_operation">[FATAL] Invalid Operation to perform</string>

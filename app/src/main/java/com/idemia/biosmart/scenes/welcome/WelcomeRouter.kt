@@ -4,7 +4,10 @@ import android.content.Intent
 import com.idemia.biosmart.scenes.authenticate.AuthenticateActivity
 import com.idemia.biosmart.scenes.enrolment.EnrolmentActivity
 import com.idemia.biosmart.scenes.identify.IdentifyActivity
+import com.idemia.biosmart.scenes.license.LicenseActivity
 import com.idemia.biosmart.scenes.settings.SettingsActivity
+import com.idemia.biosmart.utils.AppCache
+import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 
 import java.lang.ref.WeakReference
 
@@ -45,6 +48,13 @@ class WelcomeRouter : WelcomeRoutingLogic {
             activity!!.get()!!.startActivity(intent)
         }
     }
+
+    override fun routeToLicenseDetails() {
+        if (activity?.get() != null) {
+            val intent = Intent( activity!!.get()!!.applicationContext, LicenseActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
+        }
+    }
 }
 
 /**
@@ -61,4 +71,5 @@ interface WelcomeRoutingLogic {
     fun routeToAuthenticationScene()
     fun routeToIdentifyScene()
     fun routeToSettingsScene()
+    fun routeToLicenseDetails()
 }

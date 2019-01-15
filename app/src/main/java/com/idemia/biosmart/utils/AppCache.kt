@@ -1,6 +1,7 @@
 package com.idemia.biosmart.utils
 
 import com.idemia.biosmart.models.UserBiometrics
+import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -17,8 +18,11 @@ object AppCache {
     var lastName: String? = null
     var secondLastName: String? = null
 
+    // License
+    var license: ILkmsLicense? = null
+
     /** Clear Cache */
-    fun clearCache(){
+    fun clearCache(strict: Boolean = false){
         imageListLeft = null
         imageListRight = null
         facePhoto = null
@@ -27,6 +31,10 @@ object AppCache {
         name = null
         lastName = null
         secondLastName = null
+
+        if(strict){
+            license = null
+        }
     }
 
     var handsCaptureObserver: Subject<Boolean> = PublishSubject.create()

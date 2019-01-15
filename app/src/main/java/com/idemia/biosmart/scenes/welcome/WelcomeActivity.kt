@@ -14,7 +14,9 @@ import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
+import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.IDMProgress
+import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference
@@ -95,6 +97,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             R.id.menu_item_generate_license -> generateLicense()
+            R.id.menu_item_license_details -> startProcess(WelcomeModels.Operation.LICENSE_DETAILS)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -139,6 +142,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun displayCreateLKMSLicense(viewModel: WelcomeModels.ActivateBinFileLicenseToLkms.ViewModel) {
+        AppCache.license = viewModel.lkmsLicense
         loader?.dismiss()
         if(viewModel.activated){
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
@@ -165,6 +169,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         if(viewModel.isLicenseValid){
             text_view_license_status.setTextColor(resources.getColor(R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
+            AppCache.license = viewModel.lkmsLicense
         }else {
             Log.i(TAG, getString(R.string.welcome_message_license_is_not_active))
             generateLicense()
@@ -186,6 +191,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             WelcomeModels.Operation.AUTHENTICATION -> router.routeToAuthenticationScene()
             WelcomeModels.Operation.IDENTIFY -> router.routeToIdentifyScene()
             WelcomeModels.Operation.SETTINGS -> router.routeToSettingsScene()
+            WelcomeModels.Operation.LICENSE_DETAILS -> router.routeToLicenseDetails()
         }
     }
     //endregion

@@ -54,6 +54,7 @@ class WelcomeModels {
         ENROLMENT,
         AUTHENTICATION,
         IDENTIFY,
-        SETTINGS
+        SETTINGS,
+        LICENSE_DETAILS
     }
 }
