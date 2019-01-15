@@ -13,4 +13,9 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
+
+    <style name="ErrorAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorDanger</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>
