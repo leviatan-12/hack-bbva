@@ -3,6 +3,7 @@ package com.idemia.biosmart.base.android
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.preference.PreferenceManager
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
 import com.kaopiz.kprogresshud.KProgressHUD
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -93,6 +95,32 @@ abstract class BaseActivity: AppCompatActivity(){
     protected fun showToast(message: String, duration: Int = Toast.LENGTH_LONG){
         runOnUiThread {
             Toast.makeText(applicationContext, message, duration).show()
+        }
+    }
+
+    /**
+     * Countdown timer
+     * @param millisInFuture Start from
+     * @param countDownInterval Countdown interval
+     * @param updateUi A closure to update your UI
+     * @param finish A closure to call when countdown finish
+     */
+    protected fun createCountdownTimer(millisInFuture: Long,
+                                      countDownInterval: Long = 1000,
+                                      updateUi: (value: Int) -> Any ,
+                                      finish: () -> Any ): CountDownTimer{
+        var initValue= (millisInFuture / 1000).toInt()
+
+        return object : CountDownTimer(millisInFuture, countDownInterval) {
+            override fun onTick(millisUntilFinished: Long) {
+                Log.i(FingersCaptureActivity.TAG, "onTick: $millisUntilFinished - $initValue")
+                updateUi(initValue--)
+            }
+
+            override fun onFinish() {
+                Log.i(FingersCaptureActivity.TAG,"onFinish ")
+                finish()
+            }
         }
     }
 }

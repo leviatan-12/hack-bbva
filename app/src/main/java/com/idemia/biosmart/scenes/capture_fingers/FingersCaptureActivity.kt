@@ -2,6 +2,7 @@ package com.idemia.biosmart.scenes.capture_fingers
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -13,26 +14,28 @@ import kotlinx.android.synthetic.main.activity_capture_fingers.*
 
 class FingersCaptureActivity : FingersActivity() {
 
-    companion object {
-        val TAG = "FingersCaptureActivity"
-    }
+    companion object { val TAG = "FingersCaptureActivity" }
 
     override fun resourceLayoutId(): Int = R.layout.activity_capture_fingers
     override fun hideActionBar(): Boolean = true
     override fun hideNavigationBar(): Boolean = false
     override fun surfaceViewLayout(): Int = R.id.morpho_surface_view
 
+    private var countDownTimer: CountDownTimer? = null
+
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         super.onLoadActivity(savedInstanceState)
         initUi()
     }
 
-    /**
-     * When SDK is ready for capture, this method will be executed
-     */
+    override fun onPause() {
+        super.onPause()
+        stopCountdown()
+    }
+
+    /** When SDK is ready for capture, this method will be executed */
     override fun readyForCapture() {
-        // TODO: Add a countdown to start capture
-        startCapture()
+        startCountdown()
     }
 
     override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
@@ -68,6 +71,7 @@ class FingersCaptureActivity : FingersActivity() {
     }
 
     private fun initUi(){
+        tv_countdown.visibility = View.GONE
         text_view_feedback_info.visibility = View.VISIBLE
         button_finish.visibility = View.GONE
         button_finish.setOnClickListener {
@@ -85,5 +89,21 @@ class FingersCaptureActivity : FingersActivity() {
         text_view_feedback_info.visibility = View.GONE
         button_finish.visibility = View.VISIBLE
         setResult(Activity.RESULT_CANCELED)
+    }
+
+    private fun startCountdown(){
+        tv_countdown.visibility = View.VISIBLE
+        countDownTimer = createCountdownTimer(3000,1000, { tick ->
+            runOnUiThread { tv_countdown.text = "${tick}s" }
+        } ,{
+            tv_countdown.visibility = View.GONE
+            startCapture()
+        })
+        countDownTimer?.start()
+    }
+
+    private fun stopCountdown(){
+        tv_countdown.visibility = View.GONE
+        countDownTimer?.cancel()
     }
 }

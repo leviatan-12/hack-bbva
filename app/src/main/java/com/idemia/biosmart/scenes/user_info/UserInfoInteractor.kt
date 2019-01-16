@@ -13,7 +13,6 @@ import io.reactivex.schedulers.Schedulers
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class UserInfoInteractor : UserInfoBusinessLogic {
-    var disposable: Disposable? = null
     private val worker = UserInfoWorker()
     private var presenter: UserInfoPresentationLogic = UserInfoPresenter()
 

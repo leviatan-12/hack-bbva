@@ -114,6 +114,7 @@
     <string name="label_capture_right_hand">Capture Right Hand</string>
     <string name="label_no_biometric_data">Biometric data has been not captured</string>
     <string name="label_license_details">License Details</string>
+    <string name="label_countdown">%1$d s</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->
@@ -164,4 +165,5 @@
     <string name="fatal_invalid_operation">[FATAL] Invalid Operation to perform</string>
     <string name="fatal_user_biometry_info_incomplete">[FATAL] User Biometry info incomplete!</string>
     <string name="fatal_unknown_error">[FATAL] Unknown error: %1$s</string>
+    <string name="fatal_morpho_face_image_null">[FATAL] Morpho face image is null</string>
 </resources>
