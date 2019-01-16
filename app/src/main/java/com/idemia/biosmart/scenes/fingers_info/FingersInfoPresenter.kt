@@ -9,6 +9,8 @@ package com.idemia.biosmart.scenes.fingers_info
 class FingersInfoPresenter : FingersInfoPresentationLogic {
     private var activity: FingersInfoDisplayLogic? = null
 
+    companion object { private val TAG = "FingersInfoPresenter" }
+
     fun setActivity(activity: FingersInfoDisplayLogic) {
         this.activity = activity
     }
@@ -16,6 +18,11 @@ class FingersInfoPresenter : FingersInfoPresentationLogic {
     override fun presentSetDisplayThisTutorial(response: FingersInfoModels.SetDisplayThisTutorial.Response) {
         val viewModel = FingersInfoModels.SetDisplayThisTutorial.ViewModel(response.doNotShowAgain)
         activity!!.displaySetDoNotShowThisTutorialAgain(viewModel)
+    }
+
+    override fun presentSetCaptureHands(response: FingersInfoModels.SetCaptureHands.Response) {
+        val viewModel = FingersInfoModels.SetCaptureHands.ViewModel(response.captureLeftHand, response.captureRightHand)
+        activity!!.displaySetCaptureHands(viewModel)
     }
 
     override fun presentDisplayThisTutorial(response: FingersInfoModels.DisplayThisTutorial.Response) {
@@ -26,10 +33,6 @@ class FingersInfoPresenter : FingersInfoPresentationLogic {
     override fun presentGoToNextScene(response: FingersInfoModels.GoToNextScene.Response) {
         val viewModel = FingersInfoModels.GoToNextScene.ViewModel()
         activity!!.displayGoToNextScene(viewModel)
-    }
-
-    companion object {
-        private val TAG = "FingersInfoPresenter"
     }
 }
 
@@ -42,6 +45,7 @@ class FingersInfoPresenter : FingersInfoPresentationLogic {
  */
 interface FingersInfoPresentationLogic {
     fun presentSetDisplayThisTutorial(response: FingersInfoModels.SetDisplayThisTutorial.Response)
+    fun presentSetCaptureHands(response: FingersInfoModels.SetCaptureHands.Response)
     fun presentDisplayThisTutorial(response: FingersInfoModels.DisplayThisTutorial.Response)
     fun presentGoToNextScene(response: FingersInfoModels.GoToNextScene.Response)
 }

@@ -29,4 +29,11 @@ class FingersInfoModels {
         class Response(val doNotShowAgain: Boolean)
         class ViewModel(val doNotShowAgain: Boolean)
     }
+
+    // Set Capture Hands
+    class SetCaptureHands {
+        data class Request(val activity: BaseActivity, val captureLeftHand: Boolean, val captureRightHand: Boolean)
+        data class Response(val captureLeftHand: Boolean, val captureRightHand: Boolean)
+        data class ViewModel(val captureLeftHand: Boolean, val captureRightHand: Boolean)
+    }
 }

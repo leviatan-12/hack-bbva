@@ -29,6 +29,7 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
         switch_dont_show_again.setOnCheckedChangeListener { _, isChecked ->
             Log.i(TAG, "IS CHECKED? $isChecked")
             setDoNotShowThisTutorialAgain(isChecked)
+            setCaptureHands()
         }
         shouldDisplayThisTutorial()
     }
@@ -77,8 +78,23 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
     }
 
     override fun displayGoToNextScene(viewModel: FingersInfoModels.GoToNextScene.ViewModel) {
+        setCaptureHands()
         router.routeToNextScene()
         finish()
+    }
+    //endregion
+
+
+    //region USECASE - Set Capture Hands
+    private fun setCaptureHands(){
+        val left = check_box_capture_left_hand.isChecked
+        val right = check_box_capture_right_hand.isChecked
+        val request = FingersInfoModels.SetCaptureHands.Request(this@FingersInfoActivity, left, right)
+        interactor.setCaptureHands(request)
+    }
+
+    override fun displaySetCaptureHands(viewModel: FingersInfoModels.SetCaptureHands.ViewModel) {
+        Log.i(TAG, "displaySetCaptureHands: leftHand: ${viewModel.captureLeftHand}, rightHand: ${viewModel.captureRightHand}")
     }
     //endregion
 }
@@ -91,6 +107,7 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
  */
 interface FingersInfoDisplayLogic {
     fun displaySetDoNotShowThisTutorialAgain(viewModel: FingersInfoModels.SetDisplayThisTutorial.ViewModel)
+    fun displaySetCaptureHands(viewModel: FingersInfoModels.SetCaptureHands.ViewModel)
     fun displayThisTutorial(viewModel: FingersInfoModels.DisplayThisTutorial.ViewModel)
     fun displayGoToNextScene(viewModel: FingersInfoModels.GoToNextScene.ViewModel)
 }

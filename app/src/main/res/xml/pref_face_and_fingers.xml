@@ -61,6 +61,17 @@
                 android:defaultValue="false"
                 android:title="@string/pref_title_do_not_show_fingers_tutorial"
                 android:key="@string/IDEMIA_KEY_DO_NOT_SHOW_FINGERS_TUTORIAL"/>
+
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:title="@string/label_capture_left_hand"
+                android:key="@string/IDEMIA_KEY_CAPTURE_LEFT_HAND"/>
+
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:title="@string/label_capture_right_hand"
+                android:key="@string/IDEMIA_KEY_CAPTURE_RIGHT_HAND"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

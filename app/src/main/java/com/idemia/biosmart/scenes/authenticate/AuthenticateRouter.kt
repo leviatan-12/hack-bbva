@@ -3,6 +3,7 @@ package com.idemia.biosmart.scenes.authenticate
 import android.content.Intent
 import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
 import com.idemia.biosmart.scenes.face_info.FaceInfoActivity
+import com.idemia.biosmart.scenes.fingers_info.FingersInfoActivity
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.utils.AppCache
 import java.lang.ref.WeakReference
@@ -23,7 +24,7 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
 
     override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
-            val intent = Intent(activity!!.get()!!.applicationContext, FingersCaptureActivity::class.java)
+            val intent = Intent(activity!!.get()!!.applicationContext, FingersInfoActivity::class.java)
             activity!!.get()!!.startActivityForResult(intent, AuthenticateModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal)
         }
     }
