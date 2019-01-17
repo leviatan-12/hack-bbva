@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/constraint_layout_view"
         tools:context=".scenes.capture_face.FaceCaptureActivity">
 
     <morpho.urt.msc.mscengine.MorphoSurfaceView
@@ -18,6 +19,15 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
+    <com.idemia.biosmart.base.android.FaceIdMask android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:id="@+id/face_id_mask"
+                                                 app:layout_constraintEnd_toEndOf="parent"
+                                                 app:layout_constraintStart_toStartOf="parent"
+                                                 app:layout_constraintTop_toTopOf="parent"
+                                                 app:layout_constraintBottom_toBottomOf="parent"
+                                                 android:layout_marginBottom="64dp"/>
+
     <ImageView
             android:layout_width="83dp"
             android:layout_height="27dp"
@@ -25,6 +35,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/app_name"
             android:layout_marginEnd="8dp"/>
 
     <TextView android:layout_width="wrap_content"
@@ -46,7 +57,7 @@
               tools:text="Move face to right"
               app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
               app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-              android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="@+id/morpho_surface_view"/>
+              android:layout_marginTop="64dp" app:layout_constraintTop_toTopOf="@+id/morpho_surface_view"/>
 
     <android.support.design.button.MaterialButton
             android:id="@+id/button_finish"

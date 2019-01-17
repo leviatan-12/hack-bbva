@@ -39,17 +39,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".scenes.welcome.WelcomeActivity"/>
-        <activity android:name=".scenes.enrolment.EnrolmentActivity"/>
+        <activity android:name=".scenes.enrolment.EnrolmentActivity" android:label="@string/label_enrolment"/>
         <activity android:name=".scenes.user_info.UserInfoActivity"/>
-        <activity android:name=".scenes.authenticate.AuthenticateActivity">
-        </activity>
-        <activity android:name=".scenes.identify.IdentifyActivity">
-        </activity>
+        <activity android:name=".scenes.authenticate.AuthenticateActivity" android:label="@string/label_authentication"/>
+        <activity android:name=".scenes.identify.IdentifyActivity" android:label="@string/label_identify"/>
         <activity
                 android:name=".scenes.settings.SettingsActivity"
                 android:label="@string/title_activity_settings"/>
-        <activity android:name=".scenes.mso.MsoActivity">
-        </activity>
+        <activity android:name=".scenes.mso.MsoActivity"/>
+        <activity android:name=".scenes.capture_fingers.FingersCaptureActivity"/>
+        <activity android:name=".scenes.capture_face.FaceCaptureActivity"/>
+        <activity android:name=".scenes.face_info.FaceInfoActivity"/>
+        <activity android:name=".scenes.enrolment_details.EnrolmentDetailsActivity"/>
+        <activity android:name=".scenes.fingers_info.FingersInfoActivity"/>
+        <activity android:name=".scenes.license.LicenseActivity"/>
 
         <!-- The provider needs to be defined by the implementing app so as to allow multiple apps -->
         <provider
@@ -64,18 +67,5 @@
                 android:readPermission="com.idemia.biosmart.NEW_READ_LKMS_LICENSE_PROVIDER"
                 android:writePermission="com.idemia.biosmart.NEW_WRITE_LKMS_LICENSE_PROVIDER"
                 tools:replace="android:authorities, android:readPermission, android:writePermission"/>
-
-        <activity android:name=".scenes.capture_fingers.FingersCaptureActivity"/>
-        <activity android:name=".scenes.capture_face.FaceCaptureActivity">
-        </activity>
-        <activity android:name=".scenes.face_info.FaceInfoActivity">
-        </activity>
-        <activity android:name=".scenes.enrolment_details.EnrolmentDetailsActivity">
-        </activity>
-        <activity android:name=".scenes.fingers_info.FingersInfoActivity">
-        </activity>
-        <activity android:name=".scenes.license.LicenseActivity">
-        </activity>
     </application>
-
 </manifest>

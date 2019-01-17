@@ -37,7 +37,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="@string/authenticate_label_authenticate_person"
+                    app:title="@string/label_authentication"
                     app:titleTextColor="@android:color/white"
                     app:layout_collapseMode="pin" />
 

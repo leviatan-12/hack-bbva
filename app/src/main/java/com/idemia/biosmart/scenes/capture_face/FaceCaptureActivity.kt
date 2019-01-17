@@ -49,6 +49,8 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         } ?: run {
             showToast(getString(R.string.fatal_morpho_face_image_null))
         }
+        stopCapture()
+        face_id_mask.visibility = View.INVISIBLE
     }
 
     override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
@@ -66,6 +68,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
             runOnUiThread { tv_countdown.text = "${tick}s" }
         } ,{
             tv_countdown.visibility = View.GONE
+            face_id_mask.visibility = View.VISIBLE
             startCapture()
         })
         countDownTimer?.start()
@@ -77,6 +80,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     }
 
     private fun initUi(){
+        face_id_mask.visibility = View.INVISIBLE
         tv_countdown.visibility = View.GONE
         button_finish.visibility = View.GONE
         button_finish.setOnClickListener {
