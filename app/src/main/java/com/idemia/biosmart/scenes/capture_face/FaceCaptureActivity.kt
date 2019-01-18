@@ -21,6 +21,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         super.onLoadActivity(savedInstanceState)
         initUi()
+        startCountdown()
     }
 
     override fun readyForCapture() {

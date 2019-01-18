@@ -139,6 +139,7 @@
     <string name="pref_title_capture_timeout">Capture Timeout</string>
     <string name="pref_title_face_capture_mode">Face Capture Mode</string>
     <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>
+    <string name="pref_title_time_before_start_capture">Time before start capture (in seconds)</string>
 
     <!-- Fragment Person Data -->
     <string name="person_data_fragment_label_general_user_info">General User Info</string>

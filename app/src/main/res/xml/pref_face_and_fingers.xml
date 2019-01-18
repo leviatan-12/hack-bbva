@@ -27,6 +27,13 @@
                 android:singleLine="true"
                 android:title="@string/pref_title_capture_timeout"
                 android:key="@string/IDEMIA_KEY_CAPTURE_TIMEOUT"/>
+        <EditTextPreference
+                android:defaultValue="5"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:inputType="number"
+                android:title="@string/pref_title_time_before_start_capture"
+                android:key="@string/IDEMIA_KEY_TIME_BEFORE_START_CAPTURE"/>
 
 
     </PreferenceCategory>
