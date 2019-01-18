@@ -17,7 +17,7 @@ class WelcomeModels {
 
     // Generate License use case
     class GenerateLicense {
-        class Request
+        data class Request(val serviceProviderUrl: String)
         data class Response(var generated: Boolean, var activationData: ByteArray? = null)
         data class ViewModel(var generated: Boolean = false, var activationData: ByteArray? = null)
     }

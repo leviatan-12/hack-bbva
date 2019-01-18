@@ -101,6 +101,7 @@ class SettingsActivity : PreferenceActivity() {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_ip_address)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_name)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.idemia_key_middleware_port)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_SERVICE_PROVIDER_SERVER_URL)))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {

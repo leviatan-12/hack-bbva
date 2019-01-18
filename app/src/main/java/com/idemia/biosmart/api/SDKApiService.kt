@@ -18,7 +18,7 @@ interface SDKApiService {
     // Web Service endpoints
     companion object {
         /*** Create SDK API Service*/
-        fun create(withBaseUrl:String): SDKApiService{
+        fun create(withBaseUrl: String): SDKApiService{
             val gson = GsonBuilder()
                 .setLenient().create()
 

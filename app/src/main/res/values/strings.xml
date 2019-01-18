@@ -121,6 +121,8 @@
     <string name="pref_header_general">General</string>
     <string name="pref_header_lkms_server">LKMS Server</string>
     <string name="pref_title_lkms_url_server">LKMS Server URL</string>
+    <string name="pref_header_service_provider">Service Provider Server</string>
+    <string name="pref_title_service_provider">Service Provider URL</string>
     <string name="pref_header_idemia_middleware">IDEMIA Middleware Settings</string>
     <string name="pref_header_idemia_middleware_name">Middleware Endpoint Name</string>
     <string name="pref_header_idemia_middleware_port">Port</string>
@@ -141,6 +143,7 @@
     <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>
     <string name="pref_title_time_before_start_capture">Time before start capture (in seconds)</string>
     <string name="pref_title_challenge_inter_delay">Challenge inter delay (in milliseconds)</string>
+
 
     <!-- Fragment Person Data -->
     <string name="person_data_fragment_label_general_user_info">General User Info</string>

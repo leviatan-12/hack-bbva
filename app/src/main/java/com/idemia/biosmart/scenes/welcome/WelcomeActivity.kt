@@ -110,7 +110,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     private fun generateLicense() {
         loader = IDMProgress(this, "Generating License", "Please Wait...").kProgress
         loader?.show()
-        val request = WelcomeModels.GenerateLicense.Request()
+        val url = preferenceManager.getString(getString(R.string.IDEMIA_KEY_SERVICE_PROVIDER_SERVER_URL) ,getString(R.string.default_service_provider_url))
+        val request = WelcomeModels.GenerateLicense.Request(url!!)
         interactor.generateLicense(request)
     }
 

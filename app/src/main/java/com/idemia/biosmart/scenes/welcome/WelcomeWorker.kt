@@ -25,12 +25,10 @@ class WelcomeWorker {
     companion object {
         val TAG = "WelcomeWorker"
     }
-    val apiService by lazy { SDKApiService.create("http://200.66.76.220:8081/ServiceProviderLicense/") }
 
-    /**
-     * Make your WS calls here
-     */
-    fun generateLicense(): Observable<ResponseBody>{
+    /** Generate license */
+    fun generateLicense(url: String): Observable<ResponseBody>{
+        val apiService = SDKApiService.create(url)
         return apiService.generateLicenseBinFile()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
