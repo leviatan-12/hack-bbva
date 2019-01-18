@@ -67,12 +67,12 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             ),
             WelcomeModels.CardMenu(getString(R.string.label_authentication),getString(R.string.label_start_process), R.drawable.ic_apply_96, getString(R.string.authenticate_label_description),
                 View.OnClickListener {
-                startProcess(WelcomeModels.Operation.AUTHENTICATION)
+                    startProcess(WelcomeModels.Operation.AUTHENTICATION)
                 }
             ),
             WelcomeModels.CardMenu(getString(R.string.label_identify), getString(R.string.label_start_process), R.drawable.ic_more_info_96, getString(R.string.identify_label_description),
                 View.OnClickListener {
-                startProcess(WelcomeModels.Operation.IDENTIFY)
+                    startProcess(WelcomeModels.Operation.IDENTIFY)
                 }
             )
         )

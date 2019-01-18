@@ -1,15 +1,19 @@
 package com.idemia.biosmart.base.android
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 
 import android.util.AttributeSet
 import android.view.View
+import android.graphics.Bitmap
 
 class FaceIdMask: View {
-    var paint = Paint()
+    //region VARS
+    private var circleMargin = 30
+    private var cv: Canvas? = null
+    private var paint = Paint()
+    private var bm: Bitmap? = null
+    //endregion
 
     constructor(context: Context): super(context){
         init()
@@ -24,15 +28,29 @@ class FaceIdMask: View {
     }
 
     override fun onDraw(canvas: Canvas?) {
+        val w = width
+        val h = height
+        val radius = (if (w > h) h / 2 else w / 2) - circleMargin
+
+        bm!!.eraseColor(Color.TRANSPARENT)
+        cv!!.drawColor(Color.parseColor("#430099"))
+        cv!!.drawCircle((w / 2).toFloat(), (h / 2).toFloat(), radius.toFloat(), paint)
+        canvas?.drawBitmap(bm!!, 0F, 0F, null)
         super.onDraw(canvas)
-        paint.style = Paint.Style.STROKE
-        canvas?.drawCircle((width/2).toFloat(), (height/2).toFloat(), 450F, paint)
     }
 
     private fun init() {
         paint = Paint()
-        paint.color = Color.BLUE
-        paint.strokeWidth = 50F
-        paint.style = Paint.Style.STROKE
+        paint.style = Paint.Style.FILL
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        paint.isAntiAlias = true
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        if (w != oldw || h != oldh) {
+            bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888) // Create bitmap
+            cv = Canvas(bm!!)   // create canvas
+        }
+        super.onSizeChanged(w, h, oldw, oldh)
     }
 }

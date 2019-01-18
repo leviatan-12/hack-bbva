@@ -80,7 +80,8 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     }
 
     private fun initUi(){
-        face_id_mask.visibility = View.INVISIBLE
+        tv_feedback_info.text = getString(R.string.label_face_capture)
+        face_id_mask.visibility = View.VISIBLE
         tv_countdown.visibility = View.GONE
         button_finish.visibility = View.GONE
         button_finish.setOnClickListener {
