@@ -140,6 +140,7 @@
     <string name="pref_title_face_capture_mode">Face Capture Mode</string>
     <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>
     <string name="pref_title_time_before_start_capture">Time before start capture (in seconds)</string>
+    <string name="pref_title_challenge_inter_delay">Challenge inter delay (in milliseconds)</string>
 
     <!-- Fragment Person Data -->
     <string name="person_data_fragment_label_general_user_info">General User Info</string>

@@ -9,10 +9,10 @@
                 android:title="@string/pref_title_use_torch"
                 android:key="@string/IDEMIA_KEY_USE_TORCH"/>
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
                 android:defaultValue="true"
                 android:title="@string/pref_title_use_camera_rear"
-                android:key="@string/IDEMIA_KEY_USE_CAMERA_REAR"/>
+                android:key="@string/IDEMIA_KEY_USE_CAMERA_REAR"/>-->
 
 
         <CheckBoxPreference
@@ -48,6 +48,13 @@
                 android:entries="@array/face_capture_mode_values"
                 android:entryValues="@array/face_capture_mode_values"
                 android:key="@string/IDEMIA_KEY_FACE_CAPTURE_MODE"/>
+
+        <EditTextPreference
+                android:defaultValue="3000"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_title_challenge_inter_delay"
+                android:key="@string/IDEMIA_KEY_CHALLENGE_INTER_DELAY"/>
 
         <CheckBoxPreference
                 android:defaultValue="false"

@@ -125,7 +125,7 @@ class SettingsActivity : PreferenceActivity() {
             setHasOptionsMenu(true)
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_CAPTURE_TIMEOUT)))
-            bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_CAMERA_REAR)))
+            // bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_CAMERA_REAR)))
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_OVERLAY)))
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_USE_TORCH)))
             bindPreferenceBoolean(findPreference(getString(R.string.IDEMIA_KEY_DO_NOT_SHOW_FINGERS_TUTORIAL)))
@@ -133,6 +133,7 @@ class SettingsActivity : PreferenceActivity() {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FACE_CAPTURE_MODE)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_FINGERS_CAPTURE_MODE)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_TIME_BEFORE_START_CAPTURE)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.IDEMIA_KEY_CHALLENGE_INTER_DELAY)))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {

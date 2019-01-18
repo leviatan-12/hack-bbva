@@ -32,29 +32,39 @@ class CapturePresenter : CapturePresentationLogic {
         val useTorch = if (response.values[1] as Boolean) Torch.ON else Torch.OFF
         val useOverlay = if (response.values[2] as Boolean) Overlay.ON else Overlay.OFF
         val captureTimeout = response.values[3] as Long
-        val captureMode = response.values.last() as BioCaptureMode
+        val captureMode = response.values[4] as BioCaptureMode
+        val challengeInterDelay = (response.values[5] as String).toInt()
 
         val appCaptureOptions = CaptureModels.AppCaptureOptions(
             useCameraRear,
             useTorch,
             captureMode,
             captureTimeout,
-            useOverlay
+            useOverlay,
+            challengeInterDelay
         )
 
-        val viewModel = CaptureModels.ReadPreferences.ViewModel(appCaptureOptions)
+        val viewModel = CaptureModels.ReadPreferences.ViewModel(appCaptureOptions, response.timeBeforeStartCapture)
         activity!!.displayReadPreferences(viewModel)
     }
 
     override fun presentRequestCaptureOptions(response: CaptureModels.RequestCaptureOptions.Response) {
-        val capturingOptions: ICaptureOptions = CaptureOptions()
+        val capturingOptions: ICaptureOptions
+        if(response.handlerType == CaptureModels.CaptureHanlderType.FACIAL){
+            capturingOptions = FaceCaptureOptions()
+            capturingOptions.challengeInterDelay = response.options.challengeInterDelay
+            capturingOptions.camera = Camera.FRONT
+        }else {
+            capturingOptions  = FingerCaptureOptions()
+            capturingOptions.camera = Camera.REAR
+        }
         capturingOptions.bioCaptureMode = response.options.captureMode
-        capturingOptions.camera = response.options.camera
         capturingOptions.torch = response.options.torch
         capturingOptions.captureTimeout = response.options.timeout
         capturingOptions.captureImageTimeout = response.options.timeout
         capturingOptions.overlay = response.options.overlay
         capturingOptions.logLevel = LogLevel.DEBUG
+
         val viewModel = CaptureModels.RequestCaptureOptions.ViewModel(capturingOptions)
         activity!!.displayCaptureOptions(viewModel)
     }

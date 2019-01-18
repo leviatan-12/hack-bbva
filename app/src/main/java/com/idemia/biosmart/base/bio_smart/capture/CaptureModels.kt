@@ -21,7 +21,8 @@ class CaptureModels {
                             val torch: Torch,
                             val captureMode: BioCaptureMode,
                             val timeout: Long = 30,
-                            val overlay: Overlay = Overlay.ON)
+                            val overlay: Overlay = Overlay.ON,
+                            val challengeInterDelay: Int = 3000)
 
 
     enum class CaptureHanlderType {
@@ -33,14 +34,14 @@ class CaptureModels {
     // Read Preferences
     class ReadPreferences {
         data class Request(val activity: BaseActivity, val handlerType: CaptureHanlderType)
-        class Response(val values: List<Any>)
-        data class ViewModel(val appCaptureOptions: CaptureModels.AppCaptureOptions)
+        data class Response(val values: List<Any>,val timeBeforeStartCapture: Int)
+        data class ViewModel(val appCaptureOptions: CaptureModels.AppCaptureOptions, val timeBeforeStartCapture: Int)
     }
 
     // Request Capture Options
     class RequestCaptureOptions {
-        data class Request(val options: CaptureModels.AppCaptureOptions)
-        data class Response(val options: CaptureModels.AppCaptureOptions)
+        data class Request(val options: CaptureModels.AppCaptureOptions, val handlerType: CaptureModels.CaptureHanlderType)
+        data class Response(val options: CaptureModels.AppCaptureOptions,  val handlerType: CaptureModels.CaptureHanlderType)
         data class ViewModel(val options: ICaptureOptions)
     }
 

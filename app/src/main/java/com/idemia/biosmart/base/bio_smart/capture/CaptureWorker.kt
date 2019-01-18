@@ -33,6 +33,7 @@ class CaptureWorker {
         val timeout = preferenceManager.getString("IDEMIA_KEY_CAPTURE_TIMEOUT", "10")
         val faceCaptureMode = preferenceManager.getString("IDEMIA_KEY_FACE_CAPTURE_MODE","")
         val fingersCaptureMode = preferenceManager.getString("IDEMIA_KEY_FINGERS_CAPTURE_MODE","")
+        val challengeInterDelay = preferenceManager.getString("IDEMIA_KEY_CHALLENGE_INTER_DELAY", "3000")
         var captureMode: BioCaptureMode? = null
         when(request.handlerType){
             CaptureModels.CaptureHanlderType.FACIAL -> {
@@ -42,7 +43,14 @@ class CaptureWorker {
                 captureMode = selectFingersCaptureMode(fingersCaptureMode!!)
             }
         }
-        return listOf(camera, torch, overlay, timeout!!.toLong() , captureMode)
+        return listOf(camera, torch, overlay, timeout!!.toLong() , captureMode, challengeInterDelay)
+    }
+
+
+    fun readTimeBeforeStartCapture(request: CaptureModels.ReadPreferences.Request): Int {
+        val preferenceManager = request.activity.preferenceManager
+        val timeBeforeStartCapture = preferenceManager.getString("IDEMIA_KEY_TIME_BEFORE_START_CAPTURE","5")
+        return timeBeforeStartCapture!!.toInt()
     }
 
 

@@ -25,6 +25,8 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     private lateinit var interactor: CaptureBusinessLogic    // Interactor
     private lateinit var router: CaptureRoutingLogic         // Router
 
+    protected var timeBeforeStartCapture = 5
+
     companion object {
         private const val TAG = "CaptureActivity"
     }
@@ -132,6 +134,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     override fun displayReadPreferences(viewModel: CaptureModels.ReadPreferences.ViewModel) {
         appCaptureOptions = viewModel.appCaptureOptions
+        timeBeforeStartCapture = viewModel.timeBeforeStartCapture
     }
     //endregion
 
@@ -140,7 +143,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
         // Read capturing options from settings
         readPreferences()
         appCaptureOptions?.let {
-            val request = CaptureModels.RequestCaptureOptions.Request(it)
+            val request = CaptureModels.RequestCaptureOptions.Request(it, handlerType)
             interactor.requestCaptureOptions(request)
         }
     }

@@ -18,6 +18,7 @@
     <string name="IDEMIA_KEY_CAPTURE_LEFT_HAND">IDEMIA_KEY_CAPTURE_LEFT_HAND</string>
     <string name="IDEMIA_KEY_CAPTURE_RIGHT_HAND">IDEMIA_KEY_CAPTURE_RIGHT_HAND</string>
     <string name="IDEMIA_KEY_TIME_BEFORE_START_CAPTURE">IDEMIA_KEY_TIME_BEFORE_START_CAPTURE</string>
+    <string name="IDEMIA_KEY_CHALLENGE_INTER_DELAY">IDEMIA_KEY_CHALLENGE_INTER_DELAY</string>
 
     <string-array name="face_capture_mode_values">
         <item>TRACK_FACE_CHALLENGE_VERY_LOW</item>

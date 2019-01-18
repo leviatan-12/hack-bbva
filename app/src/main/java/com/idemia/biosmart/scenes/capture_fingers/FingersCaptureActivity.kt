@@ -33,7 +33,6 @@ class FingersCaptureActivity : FingersActivity() {
         super.onLoadActivity(savedInstanceState)
         whichHandsToCapture()   // Load which hands to capture?
         initUi()                // init ui
-        startCountdown()
     }
 
     override fun onPause() {
@@ -134,10 +133,11 @@ class FingersCaptureActivity : FingersActivity() {
 
     //region UI - Start Countdown
     private fun startCountdown(){
+        val startAt = (timeBeforeStartCapture * 1000).toLong()
         if(!leftHandTaken){
             capturingLeftHand = true
             tv_countdown.visibility = View.VISIBLE
-            countDownTimer = createCountdownTimer(3000,1000, { tick ->
+            countDownTimer = createCountdownTimer(startAt,1000, { tick ->
                 runOnUiThread { tv_countdown.text = "${tick}s to capture left hand" }
             } ,{
                 tv_countdown.visibility = View.GONE
@@ -147,7 +147,7 @@ class FingersCaptureActivity : FingersActivity() {
         }else if(!rightHandTaken){
             capturingLeftHand = false
             tv_countdown.visibility = View.VISIBLE
-            countDownTimer = createCountdownTimer(3000,1000, { tick ->
+            countDownTimer = createCountdownTimer(startAt,1000, { tick ->
                 runOnUiThread { tv_countdown.text = "${tick}s to capture right hand" }
             } ,{
                 tv_countdown.visibility = View.GONE

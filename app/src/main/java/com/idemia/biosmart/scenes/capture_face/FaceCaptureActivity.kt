@@ -21,7 +21,6 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         super.onLoadActivity(savedInstanceState)
         initUi()
-        startCountdown()
     }
 
     override fun readyForCapture() {
@@ -65,7 +64,8 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     private fun startCountdown(){
         tv_countdown.visibility = View.VISIBLE
-        countDownTimer = createCountdownTimer(10000,1000, { tick ->
+        val startAt = (timeBeforeStartCapture * 1000).toLong()
+        countDownTimer = createCountdownTimer(startAt ,1000, { tick ->
             runOnUiThread { tv_countdown.text = "${tick}s" }
         } ,{
             tv_countdown.visibility = View.GONE

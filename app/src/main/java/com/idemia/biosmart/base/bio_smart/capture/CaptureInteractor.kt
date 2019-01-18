@@ -40,12 +40,13 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun readPreferences(request: CaptureModels.ReadPreferences.Request) {
         val values = worker.readPreferences(request)
-        val response = CaptureModels.ReadPreferences.Response(values)
+        val timeBeforeStartCapture = worker.readTimeBeforeStartCapture(request)
+        val response = CaptureModels.ReadPreferences.Response(values, timeBeforeStartCapture)
         presenter.presentReadPreferences(response)
     }
 
     override fun requestCaptureOptions(request: CaptureModels.RequestCaptureOptions.Request) {
-        val response = CaptureModels.RequestCaptureOptions.Response(request.options)
+        val response = CaptureModels.RequestCaptureOptions.Response(request.options, request.handlerType)
         presenter.presentRequestCaptureOptions(response)
     }
 
