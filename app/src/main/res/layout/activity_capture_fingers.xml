@@ -22,7 +22,7 @@
             android:layout_width="155dp"
             android:layout_height="32dp"
             android:src="@drawable/idemia_logo_white_500px"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:id="@+id/imageView"/>
 
@@ -39,7 +39,7 @@
               app:layout_constraintStart_toStartOf="parent"/>
 
 
-    <android.support.design.button.MaterialButton
+    <!--<android.support.design.button.MaterialButton
             android:id="@+id/button_finish"
             android:text="@string/label_finish_process"
             android:textSize="12sp"
@@ -52,7 +52,18 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_feedback_info"
             android:elevation="8dp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"/>-->
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_finish"
+            android:backgroundTint="@android:color/white"
+            app:fabSize="normal"
+            android:src="@drawable/ic_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginBottom="24dp" app:layout_constraintBottom_toBottomOf="@+id/text_view_feedback_info"/>
 
 
     <TextView android:layout_width="wrap_content"

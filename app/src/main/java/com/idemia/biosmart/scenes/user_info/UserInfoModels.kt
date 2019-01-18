@@ -16,9 +16,6 @@ class UserInfoModels {
     class SearchPersonDb(val code: Int, val message: String, val user: User?)
     class SearchPersonRequest(val username:String, val os_type: Int, val encrypted: Boolean = false)
 
-
-
-
     // Authenticate user
     class AuthenticateUser {
         class Request(val activity: BaseActivity)
@@ -45,7 +42,6 @@ class UserInfoModels {
 
         class ViewModel(val userFound: Boolean, val user: User? = null)
     }
-
 
     class Error {
         class Response(val throwable: Throwable, val errorCode: Int = -1)

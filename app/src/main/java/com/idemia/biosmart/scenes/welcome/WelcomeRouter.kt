@@ -23,6 +23,7 @@ class WelcomeRouter : WelcomeRoutingLogic {
 
     override fun routeToEnrolmentScene() {
         if (activity?.get() != null) {
+            AppCache.clearCache()
             val intent = Intent( activity!!.get()!!.applicationContext, EnrolmentActivity::class.java)
             activity!!.get()!!.startActivity(intent)
         }
@@ -30,6 +31,7 @@ class WelcomeRouter : WelcomeRoutingLogic {
 
     override fun routeToAuthenticationScene() {
         if (activity?.get() != null) {
+            AppCache.clearCache()
             val intent = Intent( activity!!.get()!!.applicationContext, AuthenticateActivity::class.java)
             activity!!.get()!!.startActivity(intent)
         }
@@ -37,6 +39,7 @@ class WelcomeRouter : WelcomeRoutingLogic {
 
     override fun routeToIdentifyScene() {
         if (activity?.get() != null) {
+            AppCache.clearCache()
             val intent = Intent( activity!!.get()!!.applicationContext, IdentifyActivity::class.java)
             activity!!.get()!!.startActivity(intent)
         }
@@ -64,9 +67,6 @@ class WelcomeRouter : WelcomeRoutingLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface WelcomeRoutingLogic {
-    /**
-     * Route to Next Scene
-     */
     fun routeToEnrolmentScene()
     fun routeToAuthenticationScene()
     fun routeToIdentifyScene()

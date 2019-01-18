@@ -1,12 +1,13 @@
 package com.idemia.biosmart.utils
 
+import android.util.Log
 import com.idemia.biosmart.models.UserBiometrics
 import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
-import io.reactivex.subjects.PublishSubject
-import io.reactivex.subjects.Subject
 
 object AppCache {
+    private const val TAG ="AppCache"
+
     // Face and fingers
     var imageListLeft: List<MorphoImage>? = null
     var imageListRight: List<MorphoImage>? = null
@@ -35,12 +36,7 @@ object AppCache {
         if(strict){
             license = null
         }
-    }
-
-    var handsCaptureObserver: Subject<Boolean> = PublishSubject.create()
-
-    fun addImageListLeft(){
-        handsCaptureObserver.onNext(true)
+        Log.i(TAG, "App Cache cleared!")
     }
 
     val userBiometrics: UserBiometrics?
