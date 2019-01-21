@@ -6,6 +6,14 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.graphics.Bitmap
+import android.graphics.DashPathEffect
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+
+
+
+
 
 class FaceIdMask: View {
     //region VARS
@@ -33,7 +41,7 @@ class FaceIdMask: View {
         val radius = (if (w > h) h / 2 else w / 2) - circleMargin
 
         bm!!.eraseColor(Color.TRANSPARENT)
-        cv!!.drawColor(Color.parseColor("#430099"))
+        cv!!.drawColor(Color.parseColor("#000000"))
         cv!!.drawCircle((w / 2).toFloat(), (h / 2).toFloat(), radius.toFloat(), paint)
         canvas?.drawBitmap(bm!!, 0F, 0F, null)
         super.onDraw(canvas)
@@ -44,6 +52,8 @@ class FaceIdMask: View {
         paint.style = Paint.Style.FILL
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
         paint.isAntiAlias = true
+        //val dashPath = DashPathEffect(floatArrayOf(5f, 5f), 1.0.toFloat())
+        //paint.pathEffect = dashPath
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

@@ -40,10 +40,16 @@ class FingersCaptureActivity : FingersActivity() {
         stopCountdown()
     }
 
-    //region CAPTURE ACTIVITY - Ready for capture
+    //region CAPTURE - Ready for capture
     /** When SDK is ready for capture, this method will be executed */
     override fun readyForCapture() {
         startCountdown()
+    }
+    //endregion
+
+    //region CAPTURE - Use Torch
+    override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel) {
+        displayTorchEnabled(viewModel.isTorchOn)
     }
     //endregion
 
@@ -108,9 +114,12 @@ class FingersCaptureActivity : FingersActivity() {
     private fun initUi(){
         tv_countdown.visibility = View.GONE
         text_view_feedback_info.visibility = View.VISIBLE
-        button_finish.visibility = View.GONE
+        button_finish.hide()
         button_finish.setOnClickListener {
             finish()
+        }
+        switch_torch.setOnCheckedChangeListener { buttonView, isChecked ->
+            useTorch()
         }
     }
     //endregion
@@ -118,7 +127,7 @@ class FingersCaptureActivity : FingersActivity() {
     //region UI - Ui on success
     private fun uiOnSuccess(){
         text_view_feedback_info.visibility = View.GONE
-        button_finish.visibility = View.VISIBLE
+        button_finish.show()
         setResult(Activity.RESULT_OK)
     }
     //endregion
@@ -126,7 +135,7 @@ class FingersCaptureActivity : FingersActivity() {
     //region UI - Ui on error
     private fun uiOnError(){
         text_view_feedback_info.visibility = View.GONE
-        button_finish.visibility = View.VISIBLE
+        button_finish.show()
         setResult(Activity.RESULT_CANCELED)
     }
     //endregion
@@ -164,6 +173,17 @@ class FingersCaptureActivity : FingersActivity() {
     private fun stopCountdown(){
         tv_countdown.visibility = View.GONE
         countDownTimer?.cancel()
+    }
+    //endregion
+
+    //region UI - Display torch enabled
+    /**
+     * If torch is on, should display a button with torch off image,
+     * otherwise should display a torch on button
+     * @param isTorchOn True if torch is on
+     */
+    private fun displayTorchEnabled(isTorchOn: Boolean){
+
     }
     //endregion
 }

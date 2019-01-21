@@ -230,6 +230,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region Use Torch
     protected fun useTorch(){
+        Log.i(TAG, "useTorch()")
         val request = CaptureModels.UseTorch.Request()
         interactor.useTorch(request)
     }
