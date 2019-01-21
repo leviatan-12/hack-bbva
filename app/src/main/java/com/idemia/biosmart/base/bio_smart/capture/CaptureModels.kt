@@ -80,6 +80,13 @@ class CaptureModels {
         class ViewModel
     }
 
+    // Switch Camera
+    class SwitchCamera {
+        class Request
+        data class Response(val camera: Camera)
+        data class ViewModel(val isFront: Boolean)
+    }
+
     // Capture Info
     class CaptureInfo {
         data class Response(val captureInfo: BioCaptureInfo?, val bundle: Bundle?)

@@ -10,6 +10,7 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
@@ -151,6 +152,19 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
         presenter.presentDestroyHandlers(response)
     }
 
+    //region Switch camera
+    override fun switchCamera(request: CaptureModels.SwitchCamera.Request) {
+        var camera = Camera.REAR
+        when(captureHandler?.captureOptions?.camera){
+            Camera.FRONT -> camera = Camera.REAR
+            Camera.REAR -> camera = Camera.FRONT
+        }
+        captureHandler?.switchCamera(camera)
+        val response = CaptureModels.SwitchCamera.Response(camera)
+        presenter.presentSwitchCamera(response)
+    }
+    //endregion
+
     override fun showError(request: CaptureModels.Error.Request) {
         Log.e(TAG, "showError: An error was happened", request.exception)
         val response = CaptureModels.Error.Response(Throwable(request.exception))
@@ -186,6 +200,9 @@ interface CaptureBusinessLogic {
 
     // Destroy Handlers
     fun destroyHandlers(request: CaptureModels.DestroyHandlers.Request)
+
+    // Switch Camera
+    fun switchCamera(request: CaptureModels.SwitchCamera.Request)
 
     // Show Error
     fun showError(request: CaptureModels.Error.Request)

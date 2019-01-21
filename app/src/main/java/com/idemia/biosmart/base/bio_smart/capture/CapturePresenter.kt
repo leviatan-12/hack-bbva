@@ -85,6 +85,16 @@ class CapturePresenter : CapturePresentationLogic {
         activity!!.displayDestroyHandlers(viewModel)
     }
 
+    override fun presentSwitchCamera(response: CaptureModels.SwitchCamera.Response) {
+        var isFront = false
+        when(response.camera){
+            Camera.REAR -> isFront = false
+            Camera.FRONT -> isFront = true
+        }
+        val viewModel = CaptureModels.SwitchCamera.ViewModel(isFront)
+        activity!!.displaySwitchCamera(viewModel)
+    }
+
     override fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response) {
         val message = response.captureInfo.toString()
         val viewModel = CaptureModels.CaptureInfo.ViewModel(message)
@@ -129,6 +139,8 @@ interface CapturePresentationLogic {
     fun presentCreateMatcherHandler(response: CaptureModels.CreateMatcherHandler.Response)
 
     fun presentDestroyHandlers(response: CaptureModels.DestroyHandlers.Response)
+
+    fun presentSwitchCamera(response: CaptureModels.SwitchCamera.Response)
 
     fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response)
 

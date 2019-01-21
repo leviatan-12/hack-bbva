@@ -22,16 +22,18 @@ import java.lang.Exception
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
+
+    companion object { private const val TAG = "CaptureActivity"  }
     private lateinit var interactor: CaptureBusinessLogic    // Interactor
     private lateinit var router: CaptureRoutingLogic         // Router
 
+    /**
+     * Time before start capture: By default use 5 seconds,
+     * this should be modified in app settings
+     */
     protected var timeBeforeStartCapture = 5
 
-    companion object {
-        private const val TAG = "CaptureActivity"
-    }
-
-    //region A "Dependency Injection"
+    //region BASE ACTIVITY - A "Dependency Injection"
     override fun inject() {
         val activity = this
         this.interactor = CaptureInteractor()
@@ -43,13 +45,24 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Morpho Finger Capture Variables
+    //region BASE ACTIVITY - On Load Activity (called within "onCreate() method")
+    override fun onLoadActivity(savedInstanceState: Bundle?) {
+        try{
+            val surfaceViewResource = surfaceViewLayout()
+            surfaceView = findViewById(surfaceViewResource)
+        }catch (e: Exception){
+            Log.e(TAG, "Error: ", e)
+        }
+    }
+    //endregion
+
+    //region CAPTURE ACTIVITY - Morpho Finger Capture Variables
     private lateinit var surfaceView: MorphoSurfaceView                           // Morpho surface view is "the surface" where preview displays
     private lateinit var captureOptions: ICaptureOptions                          // Used to set capture options like capture mode, timeout, etc...
     private var appCaptureOptions: CaptureModels.AppCaptureOptions? = null        // To store local capture options
     //endregion
 
-    //region Mandatory methods to implement
+    //region CAPTURE ACTIVITY - Mandatory methods to implement
     /**
      * Use this method to select your Surface Ui
      * @return The surface ui Resource (ex: R.id.morphoSurfaceView)
@@ -68,18 +81,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     protected abstract val handlerType: CaptureModels.CaptureHanlderType
     //endregion
 
-    //region On Load Activity (called within "onCreate() method")
-    override fun onLoadActivity(savedInstanceState: Bundle?) {
-        try{
-            val surfaceViewResource = surfaceViewLayout()
-            surfaceView = findViewById(surfaceViewResource)
-        }catch (e: Exception){
-            Log.e(TAG, "Error: ", e)
-        }
-    }
-    //endregion
-
-    //region Listener for permission
+    //region UI - Listener for permission
     private val listener = object : PermissionListener {
         override fun onPermissionGranted(response: PermissionGrantedResponse) {
             // 1.- Request for capturing Options
@@ -103,7 +105,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Android Lifecycle
+    //region ANDROID - onResume
     override fun onResume() {
         super.onResume()
         Dexter.withActivity(this@CaptureActivity)
@@ -112,12 +114,16 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
                 Log.e(TAG, "Error with camera permission: ${error.name}")
             }.check()
     }
+    //endregion
 
+    //region ANDROID - onPause
     override fun onPause() {
         super.onPause()
         destroyHandlers()
     }
+    //endregion
 
+    //region ANDROID - onDestroy
     override fun onDestroy() {
         super.onDestroy()
         destroyHandlers()
@@ -126,7 +132,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Read Preferences
+    //region USE CASE - Read Preferences
     private fun readPreferences(){
         val request = CaptureModels.ReadPreferences.Request(this@CaptureActivity, handlerType)
         interactor.readPreferences(request)
@@ -138,7 +144,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Request for capturing options
+    //region USE CASE - Request for capture options
     open fun requestCaptureOptions(){
         // Read capturing options from settings
         readPreferences()
@@ -153,7 +159,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Create Capture Handler
+    //region USE CASE - Create Capture Handler
     private fun createCaptureHandler(){
         val request = CaptureModels.CreateCaptureHandler.Request(handlerType, this@CaptureActivity, captureOptions)
         interactor.createCaptureHandler(request)
@@ -165,7 +171,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Create Matcher Handler
+    //region USE CASE - Create Matcher Handler
     private fun createMatcherHandler(){
         val request = CaptureModels.CreateMatcherHandler.Request(this@CaptureActivity)
         interactor.createMatcherHandler(request)
@@ -177,7 +183,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Start Capture
+    //region USE CASE - Start Capture
     /**
      * Use this method to start a new capture
      */
@@ -187,7 +193,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion}
 
-    //region Stop Capture
+    //region USE CASE - Stop Capture
     /**
      * Use this method to stop a capture
      */
@@ -197,7 +203,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Destroy Handlers
+    //region USE CASE - Destroy Handlers
     private fun destroyHandlers(){
         val request = CaptureModels.DestroyHandlers.Request()
         interactor.destroyHandlers(request)
@@ -205,6 +211,20 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     override fun displayDestroyHandlers(viewModel: CaptureModels.DestroyHandlers.ViewModel) {
         Log.i(TAG, "Handlers destroyed!")
+    }
+    //endregion
+
+    //region USE CASE - Switch camera
+    protected fun switchCamera(){
+        val request = CaptureModels.SwitchCamera.Request()
+        interactor.switchCamera(request)
+    }
+
+    override fun displaySwitchCamera(viewModel: CaptureModels.SwitchCamera.ViewModel) {
+        if(viewModel.isFront)
+            Log.i(TAG, "Camera switched to front")
+        else
+            Log.i(TAG, "Camera switched to rear")
     }
     //endregion
 
@@ -218,7 +238,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     abstract override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
     //endregion
 
-    //region Display Error
+    //region LISTENER - Display Error
     abstract override fun displayError(viewModel: CaptureModels.Error.ViewModel)
     //endregion
 }
@@ -230,23 +250,32 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 interface CaptureDisplayLogic {
+    // Read Preferences
     fun displayReadPreferences(viewModel: CaptureModels.ReadPreferences.ViewModel)
 
+    // Request for capture options
     fun displayCaptureOptions(viewModel: CaptureModels.RequestCaptureOptions.ViewModel)
 
+    // Create capture handler
     fun displayCreateCaptureHandler(viewModel: CaptureModels.CreateCaptureHandler.ViewModel)
 
+    // Create matcher handler
     fun displayCreateMatcherHandler(viewModel: CaptureModels.CreateMatcherHandler.ViewModel)
 
+    // Destroy handlers
     fun displayDestroyHandlers(viewModel: CaptureModels.DestroyHandlers.ViewModel)
 
+    // Switch camera
+    fun displaySwitchCamera(viewModel: CaptureModels.SwitchCamera.ViewModel)
+
+    // BioCapture feedback listener - Capture info
     fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)
 
+    // BioCapture Result
     fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel)
-
     fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel)
-
     fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
 
+    // Display error
     fun displayError(viewModel: CaptureModels.Error.ViewModel)
 }
