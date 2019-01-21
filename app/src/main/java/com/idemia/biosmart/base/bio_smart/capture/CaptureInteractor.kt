@@ -12,6 +12,7 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.Torch
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
@@ -159,9 +160,24 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             Camera.FRONT -> camera = Camera.REAR
             Camera.REAR -> camera = Camera.FRONT
         }
+        captureHandler?.captureOptions?.camera = camera
         captureHandler?.switchCamera(camera)
         val response = CaptureModels.SwitchCamera.Response(camera)
         presenter.presentSwitchCamera(response)
+    }
+    //endregion
+
+    //region Use Torch
+    override fun useTorch(request: CaptureModels.UseTorch.Request) {
+        var torch = Torch.ON
+        when(captureHandler?.captureOptions?.torch){
+            Torch.ON -> torch = Torch.OFF
+            Torch.OFF -> torch = Torch.ON
+        }
+        captureHandler?.captureOptions?.torch = torch
+        captureHandler?.setTorch(torch)
+        val response = CaptureModels.UseTorch.Response(torch)
+        presenter.presentUseTorch(response)
     }
     //endregion
 
@@ -203,6 +219,9 @@ interface CaptureBusinessLogic {
 
     // Switch Camera
     fun switchCamera(request: CaptureModels.SwitchCamera.Request)
+
+    // Use Torch
+    fun useTorch(request: CaptureModels.UseTorch.Request)
 
     // Show Error
     fun showError(request: CaptureModels.Error.Request)

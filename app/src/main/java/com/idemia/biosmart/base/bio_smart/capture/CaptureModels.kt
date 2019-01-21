@@ -87,6 +87,13 @@ class CaptureModels {
         data class ViewModel(val isFront: Boolean)
     }
 
+    // Use Torch
+    class UseTorch {
+        class Request
+        data class Response(val torch: Torch)
+        data class ViewModel(val isTorchOn: Boolean)
+    }
+
     // Capture Info
     class CaptureInfo {
         data class Response(val captureInfo: BioCaptureInfo?, val bundle: Bundle?)

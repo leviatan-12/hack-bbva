@@ -228,6 +228,16 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
+    //region Use Torch
+    protected fun useTorch(){
+        Log.i(TAG, "useTorch()")
+        val request = CaptureModels.UseTorch.Request()
+        interactor.useTorch(request)
+    }
+
+    abstract override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel)
+    //endregion
+
     //region LISTENER - BioCaptureFeedbackListener
     abstract override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)
     //endregion
@@ -267,6 +277,9 @@ interface CaptureDisplayLogic {
 
     // Switch camera
     fun displaySwitchCamera(viewModel: CaptureModels.SwitchCamera.ViewModel)
+
+    // Use Torch
+    fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel)
 
     // BioCapture feedback listener - Capture info
     fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)
