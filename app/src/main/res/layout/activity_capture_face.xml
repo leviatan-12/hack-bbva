@@ -44,9 +44,8 @@
               android:layout_height="wrap_content"
               android:id="@+id/tv_countdown"
               android:textColor="@color/colorSuccess"
-              android:textSize="50sp"
-              android:textStyle="bold
-"
+              android:textSize="70sp"
+              android:textStyle="bold"
               tools:text="5s"
               android:layout_marginBottom="8dp"
               app:layout_constraintBottom_toBottomOf="@+id/morpho_surface_view" android:layout_marginEnd="8dp"

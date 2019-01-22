@@ -25,6 +25,10 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     private lateinit var interactor: IdentifyBusinessLogic    // Interactor
     private lateinit var router: IdentifyRoutingLogic         // Router
 
+    companion object {
+        private val TAG = "IdentifyActivity"
+    }
+
     override fun resourceLayoutId(): Int = R.layout.activity_identify
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
@@ -33,11 +37,10 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
         float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }
         button_start_process.setOnClickListener { goToNextScene(IdentifyModels.Operation.START_PROCESS) }
         button_capture_fingers.setOnClickListener {
-            if(switch_enable_contactless.isChecked){
+            if(switch_enable_contactless.isChecked)
                 goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS_CONTACTLESS)
-            }else{
+            else
                 goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS)
-            }
         }
     }
 
@@ -49,10 +52,6 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
         (this.interactor as IdentifyInteractor).setPresenter(presenter)
         presenter.setActivity(activity)
         (router as IdentifyRouter).setActivity(this)
-    }
-
-    companion object {
-        private val TAG = "IdentifyActivity"
     }
 
     //region USECASE - Go to next scene

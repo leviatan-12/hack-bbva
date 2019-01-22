@@ -26,7 +26,7 @@ class IdentifyRouter : IdentifyRoutingLogic {
     override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
             val intent = Intent(activity!!.get()!!.applicationContext, FingersInfoActivity::class.java)
-            activity!!.get()!!.startActivityForResult(intent, IdentifyModels.RequestCode.REQUEST_CODE_HAND_LETT.ordinal)
+            activity!!.get()!!.startActivityForResult(intent, IdentifyModels.RequestCode.REQUEST_CODE_HAND_LEFT.ordinal)
         }
     }
 

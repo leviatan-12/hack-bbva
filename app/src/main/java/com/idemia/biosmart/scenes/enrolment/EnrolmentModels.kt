@@ -1,4 +1,4 @@
-package com.idemia.biosmart.scenes.enrolment;
+package com.idemia.biosmart.scenes.enrolment
 
 /**
  *  Enrolment Models
@@ -8,9 +8,9 @@ package com.idemia.biosmart.scenes.enrolment;
  */
 class EnrolmentModels {
 
-    enum class RequestCode(value: Int){
+    enum class RequestCode(val value: Int){
         REQUEST_CODE_FACE(0x64),
-        REQUEST_CODE_HAND_LETT(0xC8),
+        REQUEST_CODE_HAND_LEFT(0xC8),
         REQUEST_CODE_HAND_RIGHT(0x12C)
     }
 

@@ -1,6 +1,7 @@
 package com.idemia.biosmart.scenes.welcome
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.SnapHelper
@@ -150,7 +151,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
         }else{
             text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
-            text_view_license_status.setTextColor(resources.getColor(R.color.colorDanger))
+            text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDanger))
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message), Toast.LENGTH_LONG).show()
         }
     }
@@ -168,13 +169,13 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun displayActivateLkmsLicenseOnDevice(viewModel: WelcomeModels.ActivateLkmsLicenseOnDevice.ViewModel) {
         loader?.dismiss()
         if(viewModel.isLicenseValid){
-            text_view_license_status.setTextColor(resources.getColor(R.color.colorSuccess))
+            text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             AppCache.license = viewModel.lkmsLicense
         }else {
             Log.i(TAG, getString(R.string.welcome_message_license_is_not_active))
             generateLicense()
-            text_view_license_status.setTextColor(resources.getColor(R.color.colorDanger))
+            text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDanger))
             // Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
         }
     }

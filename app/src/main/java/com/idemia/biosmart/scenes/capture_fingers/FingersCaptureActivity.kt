@@ -35,10 +35,12 @@ class FingersCaptureActivity : FingersActivity() {
         initUi()                // init ui
     }
 
+    //region ANDROID - OnPause
     override fun onPause() {
         super.onPause()
         stopCountdown()
     }
+    //endregion
 
     //region CAPTURE - Ready for capture
     /** When SDK is ready for capture, this method will be executed */
@@ -118,7 +120,7 @@ class FingersCaptureActivity : FingersActivity() {
         button_finish.setOnClickListener {
             finish()
         }
-        switch_torch.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_torch.setOnCheckedChangeListener { _, _ ->
             useTorch()
         }
     }
@@ -183,7 +185,7 @@ class FingersCaptureActivity : FingersActivity() {
      * @param isTorchOn True if torch is on
      */
     private fun displayTorchEnabled(isTorchOn: Boolean){
-
+        Log.i(TAG, "Is torch on: $isTorchOn")
     }
     //endregion
 }

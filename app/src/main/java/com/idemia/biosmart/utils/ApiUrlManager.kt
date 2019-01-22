@@ -2,6 +2,9 @@ package com.idemia.biosmart.utils
 
 import com.idemia.biosmart.base.android.BaseActivity
 
+/**
+ * Api Url Manager
+ */
 class ApiUrlManager {
     companion object {
         fun url(activity: BaseActivity): String {
@@ -17,18 +20,25 @@ class ApiUrlManager {
             // Middleware name
             val middlewareNameValue = activity.preferenceManager.getString("IDEMIA_KEY_MIDDLEWARE_NAME","idemia")
 
-            val url = generateUrl(
+            return generateUrl(
                 middlewareHttpsValue,
                 middlewareIpValue!!,
                 middlewarePortValue!!,
                 middlewareNameValue!!
             )
-            return url
         }
 
-
-        private fun generateUrl(useHttps: Boolean, ip: String, port: String, name: String): String{
-            if (useHttps ){ return "https://$ip:$port/$name/" }
+        /**
+         * Generate URL
+         * @param useHttps True to use https
+         * @param ip IP address or domain name
+         * @param port Port
+         * @param name Middleware name
+         * @return URL generated
+         */
+        private fun generateUrl(useHttps: Boolean, ip: String, port: String, name: String): String {
+            if (useHttps)
+                return "https://$ip:$port/$name/"
             return  "http://$ip:$port/$name/"
         }
     }

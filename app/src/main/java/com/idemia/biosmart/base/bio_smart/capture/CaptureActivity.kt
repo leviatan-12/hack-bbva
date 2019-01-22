@@ -23,7 +23,10 @@ import java.lang.Exception
  */
 abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
-    companion object { private const val TAG = "CaptureActivity"  }
+    companion object {
+        private const val TAG = "CaptureActivity"
+    }
+
     private lateinit var interactor: CaptureBusinessLogic    // Interactor
     private lateinit var router: CaptureRoutingLogic         // Router
 
@@ -47,10 +50,10 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region BASE ACTIVITY - On Load Activity (called within "onCreate() method")
     override fun onLoadActivity(savedInstanceState: Bundle?) {
-        try{
+        try {
             val surfaceViewResource = surfaceViewLayout()
             surfaceView = findViewById(surfaceViewResource)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e(TAG, "Error: ", e)
         }
     }
@@ -92,15 +95,19 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
         }
 
         override fun onPermissionDenied(response: PermissionDeniedResponse) {
-            Toast.makeText(applicationContext,
+            Toast.makeText(
+                applicationContext,
                 "A Required permission was denied by user: ${response.permissionName}",
-                Toast.LENGTH_LONG).show()
+                Toast.LENGTH_LONG
+            ).show()
         }
 
         override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
-            Toast.makeText(applicationContext,
+            Toast.makeText(
+                applicationContext,
                 "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.",
-                Toast.LENGTH_LONG).show()
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
     //endregion
@@ -109,8 +116,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     override fun onResume() {
         super.onResume()
         Dexter.withActivity(this@CaptureActivity)
-            .withPermission(Manifest.permission.CAMERA).
-                withListener(listener).withErrorListener { error ->
+            .withPermission(Manifest.permission.CAMERA).withListener(listener).withErrorListener { error ->
                 Log.e(TAG, "Error with camera permission: ${error.name}")
             }.check()
     }
@@ -133,7 +139,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region USE CASE - Read Preferences
-    private fun readPreferences(){
+    private fun readPreferences() {
         val request = CaptureModels.ReadPreferences.Request(this@CaptureActivity, handlerType)
         interactor.readPreferences(request)
     }
@@ -145,7 +151,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region USE CASE - Request for capture options
-    open fun requestCaptureOptions(){
+    open fun requestCaptureOptions() {
         // Read capturing options from settings
         readPreferences()
         appCaptureOptions?.let {
@@ -160,7 +166,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region USE CASE - Create Capture Handler
-    private fun createCaptureHandler(){
+    private fun createCaptureHandler() {
         val request = CaptureModels.CreateCaptureHandler.Request(handlerType, this@CaptureActivity, captureOptions)
         interactor.createCaptureHandler(request)
     }
@@ -172,7 +178,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region USE CASE - Create Matcher Handler
-    private fun createMatcherHandler(){
+    private fun createMatcherHandler() {
         val request = CaptureModels.CreateMatcherHandler.Request(this@CaptureActivity)
         interactor.createMatcherHandler(request)
     }
@@ -187,7 +193,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     /**
      * Use this method to start a new capture
      */
-    protected fun startCapture(){
+    protected fun startCapture() {
         val request = CaptureModels.StartCapture.Request()
         interactor.startCapture(request)
     }
@@ -197,14 +203,14 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     /**
      * Use this method to stop a capture
      */
-    protected fun stopCapture(){
+    protected fun stopCapture() {
         val request = CaptureModels.StopCapture.Request()
         interactor.stopCapture(request)
     }
     //endregion
 
     //region USE CASE - Destroy Handlers
-    private fun destroyHandlers(){
+    private fun destroyHandlers() {
         val request = CaptureModels.DestroyHandlers.Request()
         interactor.destroyHandlers(request)
     }
@@ -215,13 +221,13 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region USE CASE - Switch camera
-    protected fun switchCamera(){
+    protected fun switchCamera() {
         val request = CaptureModels.SwitchCamera.Request()
         interactor.switchCamera(request)
     }
 
     override fun displaySwitchCamera(viewModel: CaptureModels.SwitchCamera.ViewModel) {
-        if(viewModel.isFront)
+        if (viewModel.isFront)
             Log.i(TAG, "Camera switched to front")
         else
             Log.i(TAG, "Camera switched to rear")
@@ -229,7 +235,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region Use Torch
-    protected fun useTorch(){
+    protected fun useTorch() {
         Log.i(TAG, "useTorch()")
         val request = CaptureModels.UseTorch.Request()
         interactor.useTorch(request)
@@ -244,6 +250,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region LISTENER - BioCaptureResultListener
     abstract override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel)
+
     abstract override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel)
     abstract override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
     //endregion
@@ -286,6 +293,7 @@ interface CaptureDisplayLogic {
 
     // BioCapture Result
     fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel)
+
     fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel)
     fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel)
 

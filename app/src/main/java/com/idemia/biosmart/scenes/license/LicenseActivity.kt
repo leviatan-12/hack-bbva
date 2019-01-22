@@ -20,7 +20,6 @@ class LicenseActivity : BaseActivity(), LicenseDisplayLogic {
     private lateinit var interactor: LicenseBusinessLogic    // Interactor
     private lateinit var router: LicenseRoutingLogic         // Router
 
-
     companion object {
         private const val TAG = "LicenseActivity"
     }
@@ -47,7 +46,6 @@ class LicenseActivity : BaseActivity(), LicenseDisplayLogic {
         (router as LicenseRouter).setActivity(this)
     }
     //endregion
-
 
     //region USECASE - Do something
     private fun licenseDetails() {

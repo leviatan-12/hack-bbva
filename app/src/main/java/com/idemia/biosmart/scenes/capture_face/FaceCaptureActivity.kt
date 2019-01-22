@@ -9,10 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.face.FaceCaptureActivity
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.utils.AppCache
-import com.jakewharton.rxbinding2.view.touches
-import com.jakewharton.rxbinding2.widget.checked
 import kotlinx.android.synthetic.main.activity_capture_face.*
 
 class FaceCaptureActivity : FaceCaptureActivity() {
@@ -28,29 +25,40 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         initUi()
     }
 
+    //region CAPTURE - Ready for capture
     override fun readyForCapture() {
         startCountdown()
     }
+    //endregion
 
+    //region CAPURE - Use torch
     override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel) {
         displayTorchEnabled(viewModel.isTorchOn)
     }
+    //endregion
 
+    //region ANDROD - OnPause
     override fun onPause() {
         super.onPause()
         stopCountdown()
     }
+    //endregion
 
+    //region USE CASE - Capture Info
     override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
         tv_feedback_info.text = viewModel.message
     }
+    //endregion
 
+    //region USE CASE - Capture finish
     override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel) {
         Log.i(TAG, "displayCaptureFinish()")
         showToast(getString(R.string.label_capture_finished))
         button_finish.show()
     }
+    //endregion
 
+    //region USE CASE - Capture success
     override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel) {
         // Retrieve face image
         viewModel.morphoImages?.let { list ->
@@ -61,16 +69,22 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         stopCapture()
         face_id_mask.visibility = View.INVISIBLE
     }
+    //endregion
 
+    //region USECASE - Capture failed
     override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
         showToast("Capture failed due ${viewModel.captureError?.name}")
     }
+    //endregion
 
+    //region USE CASE - Error
     override fun displayError(viewModel: CaptureModels.Error.ViewModel) {
         showToast("Error due: ${viewModel.throwable.localizedMessage}")
         button_finish.show()
     }
+    //endregion
 
+    //region USE CASE - Start Countdown
     private fun startCountdown(){
         tv_countdown.visibility = View.VISIBLE
         val startAt = (timeBeforeStartCapture * 1000).toLong()
@@ -83,11 +97,14 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         })
         countDownTimer?.start()
     }
+    //endregion
 
+    //region USE CASE - Stop countdown
     private fun stopCountdown(){
         tv_countdown.visibility = View.GONE
         countDownTimer?.cancel()
     }
+    //endregion
 
     //region UI - Init UI
     private fun initUi(){
@@ -99,7 +116,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
             finish()
         }
         addAnimationToFaceIdMask(3)
-        switch_torch.setOnCheckedChangeListener { buttonView, isChecked ->
+        switch_torch.setOnCheckedChangeListener { _, _ ->
             useTorch()
         }
     }
@@ -122,11 +139,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
      * @param isTorchOn True if torch is on
      */
     private fun displayTorchEnabled(isTorchOn: Boolean){
-        if(isTorchOn){
-
-        }else{
-
-        }
+        Log.i(TAG, "Is torch on: $isTorchOn")
     }
     //endregion
 }

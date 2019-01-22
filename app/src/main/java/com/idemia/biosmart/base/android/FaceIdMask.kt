@@ -6,14 +6,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.graphics.Bitmap
-import android.graphics.DashPathEffect
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-
-
-
-
 
 class FaceIdMask: View {
     //region VARS
