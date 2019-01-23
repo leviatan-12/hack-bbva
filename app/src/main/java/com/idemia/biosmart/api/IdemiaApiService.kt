@@ -20,19 +20,7 @@ import retrofit2.http.POST
  */
 interface IdemiaApiService {
 
-    @POST("api/users/search")
-    fun search(@Body request: UserInfoModels.SearchPersonRequest): Observable<Response<UserInfoModels.Search.Response>>
-
-    @POST("api/users/enrolment")
-    fun enrolment(@Body request: UserBiometrics): Observable<Response<EnrolmentResponse>>
-
-    @POST("api/users/authenticate")
-    fun authenticate(@Body request: UserBiometrics): Observable<Response<AuthenticationResponse>>
-
-    @POST("api/users/identify")
-    fun identify(@Body request: UserBiometrics): Observable<Response<IdentifyResponse>>
-
-    // Web Service endpoints
+    //region IDEMIA API SERVICE OBJ
     companion object {
         /**
          * Create Idemia API Service
@@ -50,4 +38,19 @@ interface IdemiaApiService {
             return retrofit.create(IdemiaApiService::class.java)
         }
     }
+    //endregion
+
+    //region Web Service endpoints
+    @POST("api/users/search")
+    fun search(@Body request: UserInfoModels.SearchPersonRequest): Observable<Response<UserInfoModels.Search.Response>>
+
+    @POST("api/users/enrolment")
+    fun enrolment(@Body request: UserBiometrics): Observable<Response<EnrolmentResponse>>
+
+    @POST("api/users/authenticate")
+    fun authenticate(@Body request: UserBiometrics): Observable<Response<AuthenticationResponse>>
+
+    @POST("api/users/identify")
+    fun identify(@Body request: UserBiometrics): Observable<Response<IdentifyResponse>>
+    //endregion
 }

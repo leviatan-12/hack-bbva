@@ -34,12 +34,12 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     override fun resourceLayoutId(): Int = R.layout.activity_userinfo
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
-    val viewPageUserInfoAdapter = ViewPageUserInfoAdapter(supportFragmentManager)
 
     //region VARS - Local variables
     private val userInfoDataFragment = UserInfoDataFragment()
     private val userInfoTechnicalDetailsFragment = UserInfoTechnicalDetailsFragment()
     private val matchPersonToPersonDataFragment = MatchPersonToPersonDataFragment()
+    private val viewPageUserInfoAdapter = ViewPageUserInfoAdapter(supportFragmentManager)
     //endregion
 
     //region BASE ACTIVITY - On load activity
@@ -61,7 +61,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
-    //region USECASE - Authenticate user
+    //region USE CASE - Authenticate user
     private fun authenticateUser(){
         loader = IDMProgress(this, "Authenticating Person", getString(R.string.label_please_wait)).kProgress
         loader?.show()
@@ -97,7 +97,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
-    //region USECASE - Identify User
+    //region USE CASE - Identify User
     private fun identifyUser(){
         loader = IDMProgress(this, "Identifying Person", getString(R.string.label_please_wait)).kProgress
         loader?.show()
@@ -132,7 +132,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
-    //region USECASE - Search User in DB
+    //region USE CASE - Search User in DB
     /**
      * Search User in DB
      */
@@ -172,7 +172,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
-    //region USECASE - Display Error
+    //region USE CASE - Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
         Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
         loader?.dismiss()
@@ -181,6 +181,10 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     //endregion
 
     //region UI - Init view pager
+    /**
+     * View pager initialization
+     * @param withMatchPersonToPersonTab True to show "Match person to person tab"
+     */
     private fun initViewPager(withMatchPersonToPersonTab: Boolean){
         viewPageUserInfoAdapter.addFragment(userInfoDataFragment, getString(R.string.user_info_label_user_info))
         viewPageUserInfoAdapter.addFragment(userInfoTechnicalDetailsFragment, getString(R.string.user_info_label_technical_details))
@@ -192,6 +196,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
     //endregion
 
+    //region VERIFY OPERATION TYPE
+    /**
+     * Verify operation
+     * @param type Operation Type
+     */
     private fun verifyOperationType(type: Int){
         when(type){
             AUTHENTICATE_USER -> {
@@ -205,6 +214,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
             else -> showToast(getString(R.string.fatal_invalid_operation))
         }
     }
+    //endregion
 }
 
 /**

@@ -11,9 +11,9 @@ import com.morpho.mph_bio_sdk.android.sdk.licence.async.BioSdkLicenceAsyncCallba
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.internal.operators.single.SingleObserveOn
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
+import java.lang.Exception
 
 /**
  *  Welcome Worker
@@ -24,14 +24,21 @@ import okhttp3.ResponseBody
 class WelcomeWorker {
     companion object {
         val TAG = "WelcomeWorker"
+        var throwable: Throwable? = null
     }
 
     /** Generate license */
-    fun generateLicense(url: String): Observable<ResponseBody>{
-        val apiService = SDKApiService.create(url)
-        return apiService.generateLicenseBinFile()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun generateLicense(url: String): Observable<ResponseBody>?{
+        try {
+            val apiService = SDKApiService.create(url)
+            return apiService.generateLicenseBinFile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }catch(e: Exception){
+            Log.e(TAG, "Error due: ", e)
+            throwable = e
+            return null
+        }
     }
 
     /** Create LKMS License */

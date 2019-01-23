@@ -120,7 +120,7 @@ class FingersCaptureActivity : FingersActivity() {
         button_finish.setOnClickListener {
             finish()
         }
-        switch_torch.setOnCheckedChangeListener { _, _ ->
+        switch_torch.setOnCheckedChangeListener { _ , _ ->
             useTorch()
         }
     }

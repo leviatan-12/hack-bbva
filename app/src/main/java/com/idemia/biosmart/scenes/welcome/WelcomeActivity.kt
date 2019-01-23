@@ -123,7 +123,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             text_view_license_status.text = getString(R.string.welcome_message_license_bin_file_generated)
             createLKMSLicense(viewModel.activationData!!)
         }else{
-            val message = getString(R.string.welcome_message_license_bin_file_not_generated)
+            val message = getString(R.string.label_error_due, viewModel.message)
             text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, message)
             Toast.makeText(applicationContext, message , Toast.LENGTH_LONG).show()
         }

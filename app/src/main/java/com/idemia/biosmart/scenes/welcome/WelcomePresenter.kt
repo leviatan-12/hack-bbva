@@ -16,8 +16,13 @@ class WelcomePresenter @Inject constructor(val activity: WelcomeDisplayLogic) : 
 
     override fun presentGenerateLicense(response: WelcomeModels.GenerateLicense.Response) {
         val viewModel = WelcomeModels.GenerateLicense.ViewModel()
-        viewModel.generated = response.generated
-        viewModel.activationData = response.activationData
+        viewModel.apply {
+            generated = response.generated
+            activationData = response.activationData
+            response.throwable?.message?.let {
+                message = it
+            }
+        }
         activity.displayGenerateLicense(viewModel)
     }
 

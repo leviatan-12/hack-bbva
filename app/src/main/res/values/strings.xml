@@ -116,6 +116,7 @@
     <string name="label_license_details">License Details</string>
     <string name="label_countdown">%1$d s</string>
     <string name="label_flash_on">Flash On</string>
+    <string name="label_error_due">Error due: %1$s</string>
 
     <!-- Settings Scene -->
     <!-- Example General settings -->

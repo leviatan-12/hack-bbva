@@ -15,7 +15,7 @@ class IDMProgress(context: Context, label: String, details: String) {
         }
     }
 
-    private fun create(context: Context, label: String, details: String): KProgressHUD{
+    private fun create(context: Context, label: String, details: String): KProgressHUD {
         return KProgressHUD.create(context)
             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
             .setLabel(label)

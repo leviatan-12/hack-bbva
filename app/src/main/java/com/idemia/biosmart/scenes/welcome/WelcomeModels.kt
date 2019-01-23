@@ -18,8 +18,8 @@ class WelcomeModels {
     // Generate License use case
     class GenerateLicense {
         data class Request(val serviceProviderUrl: String)
-        data class Response(var generated: Boolean, var activationData: ByteArray? = null)
-        data class ViewModel(var generated: Boolean = false, var activationData: ByteArray? = null)
+        data class Response(var generated: Boolean, var activationData: ByteArray? = null, val throwable: Throwable?= null)
+        data class ViewModel(var generated: Boolean = false, var activationData: ByteArray? = null, var message: String = "General Error")
     }
 
     // Activate Bin File License to LKMS

@@ -22,16 +22,24 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
 
     override fun generateLicense(request: WelcomeModels.GenerateLicense.Request) {
         // Call WS to generate license file bin (Service Provider)
-        val disposable = worker.generateLicense(request.serviceProviderUrl).subscribe({ response ->
-            val activationData = response.bytes()
-            val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
-            presenter.presentGenerateLicense(mResponse)
-        },{ throwable ->
-            val response = WelcomeModels.GenerateLicense.Response(false)
+        worker.generateLicense(request.serviceProviderUrl)?.let { observable ->
+            DisposableManager.add(
+                observable.subscribe({ response ->
+                    val activationData = response.bytes()
+                    val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
+                    presenter.presentGenerateLicense(mResponse)
+                },{ throwable ->
+                    val response = WelcomeModels.GenerateLicense.Response(false)
+                    Log.e(TAG,"Error generating BIN File License due: ", throwable)
+                    presenter.presentGenerateLicense(response)
+                })
+            )
+        } ?: run {
+            val throwable = WelcomeWorker.throwable
+            val response = WelcomeModels.GenerateLicense.Response(false, null, throwable)
             Log.e(TAG,"Error generating BIN File License due: ", throwable)
             presenter.presentGenerateLicense(response)
-        })
-        DisposableManager.add(disposable)
+        }
     }
 
     override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
