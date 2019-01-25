@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.enrolment
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
@@ -50,6 +51,13 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     override fun onResume() {
         super.onResume()
         addObservables()
+
+        // TODO: Create a use case "retrieve selfie"
+        AppCache.facePhoto?.let { photo ->
+            val data = photo.jpegImage
+            val bmp = BitmapFactory.decodeByteArray(data, 0, data!!.size)
+            image_view_selfie.setImageBitmap(bmp)
+        }
     }
 
     //region A "dependency injection"

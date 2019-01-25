@@ -101,9 +101,27 @@ class CapturePresenter : CapturePresentationLogic {
         activity!!.displayUseTorch(viewModel)
     }
 
+    override fun presentStartPreview(response: CaptureModels.StartPreview.Response) {
+        val vm = CaptureModels.StartPreview.ViewModel()
+        activity!!.displayStartPreview(vm)
+    }
+
     override fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response) {
-        val message = response.captureInfo.toString()
-        val viewModel = CaptureModels.CaptureInfo.ViewModel(message)
+        // Message pasring info
+        var message = response.captureInfo.toString()
+        var hasCustomMessage = true
+        when(response.captureInfo){
+            BioCaptureInfo.FACE_INFO_GET_OUT_FIELD -> message = "Please move out to the camera"
+            BioCaptureInfo.FACE_INFO_COME_BACK_FIELD -> message = "Please move into the camera"
+            BioCaptureInfo.FACE_INFO_TURN_LEFT -> message = "Turn head left"
+            BioCaptureInfo.FACE_INFO_TURN_RIGHT -> message = "Turn head right"
+            BioCaptureInfo.FACE_INFO_TURN_DOWN -> message = "Turn head down"
+            BioCaptureInfo.FACE_INFO_CENTER_LOOK_FRONT_OF_CAMERA -> message = "Please look in front of the camera"
+            BioCaptureInfo.FACE_INFO_CENTER_LOOK_CAMERA_WITH_LESS_MOVEMENT -> message = "Please look at the camera with less movement"
+            BioCaptureInfo.FACE_INFO_TURN_LEFTRIGHT -> message = "Turn your head left to right or right to left"
+            else -> hasCustomMessage = false
+        }
+        val viewModel = CaptureModels.CaptureInfo.ViewModel(hasCustomMessage, message)
         activity!!.displayCaptureInfo(viewModel)
     }
 
@@ -118,7 +136,23 @@ class CapturePresenter : CapturePresentationLogic {
     }
 
     override fun presentCaptureFailure(response: CaptureModels.CaptureFailure.Response) {
-        val viewModel = CaptureModels.CaptureFailure.ViewModel(response.captureError, response.biometricInfo, response.bundle)
+        var hasMessage = true
+        var message = ""
+        when(response.captureError){
+            CaptureError.UNKNOWN -> message = "Unknown Error!"
+            CaptureError.LOW_RESOLUTION -> message = "Low resolution"
+            CaptureError.TOO_FAST -> message = "Capture too fast"
+            CaptureError.HINT_UNKNOWN -> message = "Hit value is unknown"
+            CaptureError.CAPTURE_TIMEOUT -> message = "Capture timeout!"
+            CaptureError.CAPTURE_DELAYED ->  message = "Capture delayed due to liveness challenge failures"
+            CaptureError.BAD_CAPTURE -> message = "Bad capture"
+            CaptureError.BAD_CAPTURE_FINGERS -> message = "Capture of the fingers went wrong!"
+            CaptureError.BAD_CAPTURE_FACE -> message = "Capture if the face went wrong!"
+            CaptureError.BAD_CAPTURE_HAND -> message = "Capture of the hand went wrong!"
+            CaptureError.LIVENESS_CHECK -> message = "Liveness check has failed"
+            else -> hasMessage = false
+        }
+        val viewModel = CaptureModels.CaptureFailure.ViewModel(response.captureError, response.biometricInfo, response.bundle, hasMessage, message)
         activity!!.displayCaptureFailure(viewModel)
     }
 
@@ -149,6 +183,8 @@ interface CapturePresentationLogic {
     fun presentSwitchCamera(response: CaptureModels.SwitchCamera.Response)
 
     fun presentUseTorch(response: CaptureModels.UseTorch.Response)
+
+    fun presentStartPreview(response: CaptureModels.StartPreview.Response)
 
     fun presentCaptureInfo(response: CaptureModels.CaptureInfo.Response)
 

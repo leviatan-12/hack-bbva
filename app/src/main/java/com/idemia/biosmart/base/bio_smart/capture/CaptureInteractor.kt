@@ -9,14 +9,10 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureInfo
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Camera
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureError
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.Torch
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
-import io.reactivex.disposables.Disposable
 import java.lang.Exception
 
 /**
@@ -59,6 +55,10 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             when (request.handlerType){
                 CaptureModels.CaptureHanlderType.FACIAL -> {
                     mCaptureHandler = (captureHandler as FaceCaptureHandler)
+
+                    // Capture delayed configuration disabled, to enable change [totalNumberOfCapturesBeforeDelay] > 0
+                    mCaptureHandler.totalNumberOfCapturesBeforeDelay = -1 // Disabled
+                    mCaptureHandler.setTimeCaptureDelay(1500)
                 }
                 CaptureModels.CaptureHanlderType.FINGERS -> {
                     mCaptureHandler = (captureHandler as FingerCaptureHandler)
@@ -68,6 +68,8 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             this.captureHandler = mCaptureHandler
             this.captureHandler!!.setBioCaptureResultListener(this)
             this.captureHandler!!.setBioCaptureFeedbackListener(this)
+            // Start preview now...
+            this.captureHandler!!.startPreview()
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
@@ -92,7 +94,9 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     override fun startCapture(request: CaptureModels.StartCapture.Request) {
         captureHandler?.let {
             try {
-                it.startPreview()
+                if(it.captureStatus == CaptureHandlerStatus.STOP){
+                    it.startPreview()
+                }
                 it.startCapture()
             }catch (e: Exception){
                 val response = CaptureModels.Error.Request(e)
@@ -181,6 +185,12 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
     //endregion
 
+    override fun startPreview(request: CaptureModels.StartPreview.Request) {
+        captureHandler?.startPreview()
+        val response = CaptureModels.StartPreview.Response()
+        presenter.presentStartPreview(response)
+    }
+
     override fun showError(request: CaptureModels.Error.Request) {
         Log.e(TAG, "showError: An error was happened", request.exception)
         val response = CaptureModels.Error.Response(Throwable(request.exception))
@@ -222,6 +232,9 @@ interface CaptureBusinessLogic {
 
     // Use Torch
     fun useTorch(request: CaptureModels.UseTorch.Request)
+
+    // Start Preview
+    fun startPreview(request: CaptureModels.StartPreview.Request)
 
     // Show Error
     fun showError(request: CaptureModels.Error.Request)

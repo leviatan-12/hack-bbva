@@ -79,6 +79,10 @@
     <string name="enrolment_details_user_biometry_info_incomplete">User Biometry info incomplete!</string>
     <string name="enrolment_details_trying_enroll_new_user">Trying to enrol as new user on MBSS</string>
 
+
+    <!-- Face Capture -->
+    <string name="face_capture_please_wait_for_next_challenge">Waiting for next challenge&#8230;</string>
+
     <!-- General Labels -->
     <string name="label_NA">N/A</string>
     <string name="label_name">Name(s)</string>

@@ -122,13 +122,6 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region ANDROID - onPause
-    override fun onPause() {
-        super.onPause()
-        destroyHandlers()
-    }
-    //endregion
-
     //region ANDROID - onDestroy
     override fun onDestroy() {
         super.onDestroy()
@@ -234,7 +227,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
     //endregion
 
-    //region Use Torch
+    //region USE CASE - Use Torch
     protected fun useTorch() {
         Log.i(TAG, "useTorch()")
         val request = CaptureModels.UseTorch.Request()
@@ -242,6 +235,17 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     }
 
     abstract override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel)
+    //endregion
+
+    //region USE CASE - Start Preview
+    protected fun startPreview(){
+        val request = CaptureModels.StartPreview.Request()
+        interactor.startPreview(request)
+    }
+
+    override fun displayStartPreview(viewModel: CaptureModels.StartPreview.ViewModel) {
+        Log.i(TAG, "displayStartPreview()")
+    }
     //endregion
 
     //region LISTENER - BioCaptureFeedbackListener
@@ -287,6 +291,9 @@ interface CaptureDisplayLogic {
 
     // Use Torch
     fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel)
+
+    // Start Preview
+    fun displayStartPreview(viewModel: CaptureModels.StartPreview.ViewModel)
 
     // BioCapture feedback listener - Capture info
     fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel)

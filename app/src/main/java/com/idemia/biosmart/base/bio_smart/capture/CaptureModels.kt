@@ -94,10 +94,17 @@ class CaptureModels {
         data class ViewModel(val isTorchOn: Boolean)
     }
 
+    // Start Preview
+    class StartPreview {
+        class Request
+        class Response
+        class ViewModel
+    }
+
     // Capture Info
     class CaptureInfo {
         data class Response(val captureInfo: BioCaptureInfo?, val bundle: Bundle?)
-        class ViewModel(val message: String)
+        class ViewModel(val hasMessage: Boolean, val message: String)
     }
 
     // Capture Finish
@@ -112,8 +119,8 @@ class CaptureModels {
     }
 
     class CaptureFailure {
-        data class Response(val captureError: CaptureError?,val biometricInfo: IBiometricInfo?,val bundle: Bundle?)
-        data class ViewModel(val captureError: CaptureError?,val biometricInfo: IBiometricInfo?,val bundle: Bundle?)
+        data class Response(val captureError: CaptureError?, val biometricInfo: IBiometricInfo?, val bundle: Bundle?)
+        data class ViewModel(val captureError: CaptureError?, val biometricInfo: IBiometricInfo?, val bundle: Bundle?, val hasMessage: Boolean, val message: String)
     }
 
     // Error

@@ -1,11 +1,13 @@
 package com.idemia.biosmart.scenes.capture_face
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.face.FaceCaptureActivity
@@ -22,7 +24,9 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         super.onLoadActivity(savedInstanceState)
+        addAnimationToFaceIdMask(3)
         initUi()
+        addListeners()
     }
 
     //region CAPTURE - Ready for capture
@@ -45,16 +49,18 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     //endregion
 
     //region USE CASE - Capture Info
-    override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
-        tv_feedback_info.text = viewModel.message
+    override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel){
+        if(viewModel.hasMessage)
+            tv_feedback_info.text = viewModel.message
+        else
+            tv_feedback_info.text = getString(R.string.face_capture_please_wait_for_next_challenge)
     }
     //endregion
 
     //region USE CASE - Capture finish
     override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel) {
         Log.i(TAG, "displayCaptureFinish()")
-        showToast(getString(R.string.label_capture_finished))
-        button_finish.show()
+        // showToast(getString(R.string.label_capture_finished))
     }
     //endregion
 
@@ -62,25 +68,35 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel) {
         // Retrieve face image
         viewModel.morphoImages?.let { list ->
-            if(list.isNotEmpty()){ AppCache.facePhoto = list[0] }
+            if(list.isNotEmpty()){
+                AppCache.facePhoto = list[0]
+                showImageCaptured()
+            }
         } ?: run {
             showToast(getString(R.string.fatal_morpho_face_image_null))
         }
         stopCapture()
-        face_id_mask.visibility = View.INVISIBLE
+        successUi()
     }
     //endregion
 
     //region USECASE - Capture failed
     override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
-        showToast("Capture failed due ${viewModel.captureError?.name}")
+        if(viewModel.hasMessage) {
+            showToast("Capture Failed due: ${viewModel.message}")
+            tv_feedback_info.text = "Capture Failed due: ${viewModel.message}"
+        } else{
+            showToast("Capture failed due: ${viewModel.captureError?.name}")
+            tv_feedback_info.text = "Capture failed due: ${viewModel.captureError?.name}"
+        }
+        errorUi()
     }
     //endregion
 
     //region USE CASE - Error
     override fun displayError(viewModel: CaptureModels.Error.ViewModel) {
         showToast("Error due: ${viewModel.throwable.localizedMessage}")
-        button_finish.show()
+        errorUi()
     }
     //endregion
 
@@ -106,19 +122,71 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     }
     //endregion
 
+    //region USE CASE - Show image captured
+    private fun showImageCaptured(){
+        // TODO: Create a use case "retrieve selfie"
+        AppCache.facePhoto?.let { photo ->
+            val data = photo.jpegImage
+            val bmp = BitmapFactory.decodeByteArray(data, 0, data!!.size)
+            iv_selfie.setImageBitmap(bmp)
+        }
+    }
+    //endregion
+
     //region UI - Init UI
     private fun initUi(){
+        switch_torch.visibility = View.VISIBLE
         tv_feedback_info.text = getString(R.string.label_face_capture)
+        tv_feedback_info.visibility = View.VISIBLE
         face_id_mask.visibility = View.VISIBLE
+        face_id_mask.animate()
         tv_countdown.visibility = View.GONE
-        button_finish.hide()
-        button_finish.setOnClickListener {
-            finish()
-        }
-        addAnimationToFaceIdMask(3)
+        button_finish.visibility = View.GONE
+        button_restart.visibility = View.GONE
+        iv_selfie.scaleType = ImageView.ScaleType.CENTER_CROP
+        iv_selfie.visibility = View.GONE
+    }
+    //endregion
+
+    //region UI - Add listeners
+    private fun addListeners(){
         switch_torch.setOnCheckedChangeListener { _, _ ->
             useTorch()
         }
+        button_finish.setOnClickListener {
+            finish()
+        }
+        button_restart.setOnClickListener {
+            startPreview()
+            initUi()
+            startCountdown()
+        }
+    }
+    //endregion
+
+    //region UI - Success Ui
+    private fun successUi(){
+        iv_selfie.visibility = View.VISIBLE
+        switch_torch.visibility = View.GONE
+        tv_feedback_info.visibility = View.GONE
+        face_id_mask.visibility = View.INVISIBLE
+        button_restart.show()
+        button_finish.show()
+    }
+    //endregion
+
+    //region UI - Error Ui
+    private fun errorUi(){
+       runOnUiThread {
+           switch_torch.visibility = View.GONE
+           face_id_mask.visibility = View.VISIBLE
+           tv_feedback_info.visibility = View.VISIBLE
+           iv_selfie.scaleType = ImageView.ScaleType.CENTER_INSIDE
+           iv_selfie.setImageDrawable(getDrawable(R.drawable.ic_failed))
+           iv_selfie.visibility = View.VISIBLE
+           button_restart.show()
+           button_finish.show()
+       }
     }
     //endregion
 
@@ -128,7 +196,6 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         fadeIn.interpolator = DecelerateInterpolator() //add this
         fadeIn.duration = (seconds * 1000).toLong()
         face_id_mask.animation = fadeIn
-        face_id_mask.animate()
     }
     //endregion
 
