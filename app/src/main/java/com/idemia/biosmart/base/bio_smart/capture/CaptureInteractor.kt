@@ -97,10 +97,12 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
                     it.startPreview()
                 }
                 it.startCapture()
+                //it.forceCapture()
             }catch (e: Exception){
                 val response = CaptureModels.Error.Request(e)
                 showError(response)
             }
+            Log.i(TAG, "CAPTURE STATUS: ${it.captureStatus}")
         }
     }
 

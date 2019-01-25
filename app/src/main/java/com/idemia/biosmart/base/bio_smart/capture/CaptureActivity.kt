@@ -6,10 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.base.android.BaseActivity
 import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
 import morpho.urt.msc.mscengine.MorphoSurfaceView
@@ -85,29 +87,23 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     //endregion
 
     //region UI - Listener for permission
-    private val listener = object : PermissionListener {
-        override fun onPermissionGranted(response: PermissionGrantedResponse) {
+    private val listener = object : MultiplePermissionsListener {
+        override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+            Log.i(TAG, "onPermissionGranted")
             // 1.- Request for capturing Options
             requestCaptureOptions()
-
-            // 2.- Create Capture Handler
-            createCaptureHandler()
         }
 
-        override fun onPermissionDenied(response: PermissionDeniedResponse) {
-            Toast.makeText(
-                applicationContext,
-                "A Required permission was denied by user: ${response.permissionName}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-        override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
-            Toast.makeText(
-                applicationContext,
-                "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.",
-                Toast.LENGTH_LONG
-            ).show()
+        override fun onPermissionRationaleShouldBeShown(
+            permissions: MutableList<PermissionRequest>?,
+            token: PermissionToken?) {
+            permissions?.forEach {permission ->
+                Toast.makeText(
+                    applicationContext,
+                    "Permission ${permission.name} was denied. To enable please go to Applications and allow camera permissions.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
     //endregion
@@ -116,7 +112,11 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     override fun onResume() {
         super.onResume()
         Dexter.withActivity(this@CaptureActivity)
-            .withPermission(Manifest.permission.CAMERA).withListener(listener).withErrorListener { error ->
+            .withPermissions(arrayListOf(Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            .withListener(listener)
+            .withErrorListener { error ->
                 Log.e(TAG, "Error with camera permission: ${error.name}")
             }.check()
     }
@@ -155,6 +155,9 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     override fun displayCaptureOptions(viewModel: CaptureModels.RequestCaptureOptions.ViewModel) {
         captureOptions = viewModel.options
+
+        // 2.- Create Capture Handler
+        createCaptureHandler()
     }
     //endregion
 

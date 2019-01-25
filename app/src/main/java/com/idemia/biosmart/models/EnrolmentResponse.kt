@@ -3,6 +3,18 @@ package com.idemia.biosmart.models
 import com.google.gson.annotations.SerializedName
 
 //region POJO Classes
+
+data class CreatePersonResponse(
+    @SerializedName("code")
+    val code: Int,
+    @SerializedName("request_type")
+    val requestType: String,
+    @SerializedName("message")
+    val message: String,
+    @SerializedName("code_response")
+    val codeResponse: String
+)
+
 data class EnrolmentResponse(
     @SerializedName("code")
     val code: Int,

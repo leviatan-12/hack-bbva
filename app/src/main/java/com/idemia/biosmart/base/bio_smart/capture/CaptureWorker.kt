@@ -9,7 +9,7 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.async.MscAsyncCallbacks
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.BioCaptureMode
 import com.morpho.mph_bio_sdk.android.sdk.msc.error.BioCaptureHandlerError
-import io.reactivex.Observable
+import io.reactivex.Single
 import java.lang.Error
 import java.lang.Exception
 
@@ -46,13 +46,11 @@ class CaptureWorker {
         return listOf(camera, torch, overlay, timeout!!.toLong() , captureMode, challengeInterDelay)
     }
 
-
     fun readTimeBeforeStartCapture(request: CaptureModels.ReadPreferences.Request): Int {
         val preferenceManager = request.activity.preferenceManager
         val timeBeforeStartCapture = preferenceManager.getString("IDEMIA_KEY_TIME_BEFORE_START_CAPTURE","5")
         return timeBeforeStartCapture!!.toInt()
     }
-
 
     private fun selectFaceCaptureMode(mode: String): BioCaptureMode {
         when(mode){
@@ -79,15 +77,14 @@ class CaptureWorker {
     }
 
     // Create Bio Capture Handler
-    fun createBioCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request): Observable<IBioCaptureHandler> {
-        return Observable.create<IBioCaptureHandler>{ emitter ->
+    fun createBioCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request): Single<IBioCaptureHandler> {
+        return Single.create<IBioCaptureHandler>{ emitter ->
             BioSdk.createBioCaptureHandler(request.activity, request.captureOptions, object :
                 MscAsyncCallbacks<IBioCaptureHandler> {
                 override fun onPreExecute() {}
 
                 override fun onSuccess(iBioCaptureHandler: IBioCaptureHandler) {
-                    emitter.onNext(iBioCaptureHandler)
-                    emitter.onComplete()
+                    emitter.onSuccess(iBioCaptureHandler)
                 }
 
                 override fun onError(bioCaptureHandlerError: BioCaptureHandlerError) {
@@ -99,15 +96,14 @@ class CaptureWorker {
         }
     }
 
-    fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request): Observable<IBioMatcherHandler>{
-        return Observable.create<IBioMatcherHandler>{ emitter ->
+    fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request): Single<IBioMatcherHandler>{
+        return Single.create<IBioMatcherHandler>{ emitter ->
             BioSdk.createBioMatcherHandler(request.activity, BioMatcherSettings(),
                 object: BioMatcherAsyncCallbacks<IBioMatcherHandler> {
 
                     override fun onSuccess(p0: IBioMatcherHandler?) {
                         p0?.let {
-                            emitter.onNext(it)
-                            emitter.onComplete()
+                            emitter.onSuccess(p0)
                         }?: run {
                             emitter.onError(Error("Matcher Handler was null on creation"))
                         }

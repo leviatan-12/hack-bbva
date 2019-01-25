@@ -60,9 +60,13 @@ abstract class BaseActivity: AppCompatActivity(){
     override fun onPause() {
         super.onPause()
         Log.i(TAG, "onPause()")
-        DisposableManager.clear()
         loader?.dismiss()
         loader = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DisposableManager.clear()
     }
 
     /**

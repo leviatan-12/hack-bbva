@@ -46,6 +46,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // Bio Smart SDK
     implementation(name: "AndroidBiometricSDK-4.7.0-biometry_document", ext: "aar")
+    //implementation(name: "biosmartsdk-release", ext: "aar")
     implementation(name: "lkms_core-1.2.5", ext: "aar")
     implementation 'net.zetetic:android-database-sqlcipher:3.5.2'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'

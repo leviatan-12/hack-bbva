@@ -31,6 +31,7 @@
             android:largeHeap="true"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:hardwareAccelerated="true"
             android:usesCleartextTraffic="true">
         <activity android:name=".scenes.splash.SplashActivity">
             <intent-filter>

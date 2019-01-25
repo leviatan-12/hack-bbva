@@ -49,7 +49,7 @@ class CapturePresenter : CapturePresentationLogic {
     }
 
     override fun presentRequestCaptureOptions(response: CaptureModels.RequestCaptureOptions.Response) {
-        val capturingOptions: ICaptureOptions
+        var capturingOptions: ICaptureOptions
         if(response.handlerType == CaptureModels.CaptureHanlderType.FACIAL){
             capturingOptions = FaceCaptureOptions()
             capturingOptions.challengeInterDelay = response.options.challengeInterDelay
@@ -63,7 +63,7 @@ class CapturePresenter : CapturePresentationLogic {
         capturingOptions.captureTimeout = response.options.timeout
         capturingOptions.captureImageTimeout = response.options.timeout
         capturingOptions.overlay = response.options.overlay
-        capturingOptions.logLevel = LogLevel.DEBUG
+        capturingOptions.logLevel = LogLevel.DISABLE
 
         val viewModel = CaptureModels.RequestCaptureOptions.ViewModel(capturingOptions)
         activity!!.displayCaptureOptions(viewModel)

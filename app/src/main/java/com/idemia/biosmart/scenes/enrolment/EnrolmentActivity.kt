@@ -34,6 +34,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
+    //region ANDROID - onLoadActivity()
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         button_start_process.setOnClickListener { goToNextScene(EnrolmentModels.Operation.START_PROCESS) }
         float_button_selfie.setOnClickListener{ goToNextScene(EnrolmentModels.Operation.CAPTURE_FACE) }
@@ -48,6 +49,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
     //endregion
 
+    //region ANDROID - onResume()
     override fun onResume() {
         super.onResume()
         addObservables()
@@ -59,6 +61,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
             image_view_selfie.setImageBitmap(bmp)
         }
     }
+    //endregion
 
     //region A "dependency injection"
     override fun inject() {
@@ -72,7 +75,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
     //endregion
 
-    //region USECASE - Save user info
+    //region USE CASE - Save user info
     private fun saveUserInfo(){
         val username = edit_text_username.text.toString()
         val name = edit_text_name.text.toString()
@@ -87,7 +90,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
     //endregion
 
-    //region USECASE- Go to next scene
+    //region USE CASE- Go to next scene
     /**
      * Go To Next Scene
      */
@@ -112,7 +115,7 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     }
     //endregion
 
-    //region Local UI elements
+    //region UI - Local UI elements
     private fun addObservables(){
         DisposableManager.add(edit_text_name.textChanges().subscribe{
             isNameValid = Validator.validateName(edit_text_name)
@@ -134,8 +137,8 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
 
     private fun isDataValid(): Boolean {
         val dataInfoValid = (isUsernameValid && isLastNameValid && isSecondLastNameValid && isUsernameValid && isNameValid)
-        //return (dataInfoValid && (AppCache.facePhoto != null)) || (dataInfoValid && (AppCache.imageListLeft!=null)) || (dataInfoValid && (AppCache.imageListRight!=null))
-        return (dataInfoValid)
+        return (dataInfoValid && (AppCache.facePhoto != null)) || (dataInfoValid && (AppCache.imageListLeft!=null)) || (dataInfoValid && (AppCache.imageListRight!=null))
+        //return (dataInfoValid)
     }
     //endregion
 }
