@@ -59,17 +59,16 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
                     // Capture delayed configuration disabled, to enable change [totalNumberOfCapturesBeforeDelay] > 0
                     mCaptureHandler.totalNumberOfCapturesBeforeDelay = -1 // Disabled
                     mCaptureHandler.setTimeCaptureDelay(1500)
+                    this.captureHandler = mCaptureHandler
                 }
                 CaptureModels.CaptureHanlderType.FINGERS -> {
                     mCaptureHandler = (captureHandler as FingerCaptureHandler)
+                    this.captureHandler = mCaptureHandler
                 }
             }
-
-            this.captureHandler = mCaptureHandler
             this.captureHandler!!.setBioCaptureResultListener(this)
             this.captureHandler!!.setBioCaptureFeedbackListener(this)
-            // Start preview now...
-            this.captureHandler!!.startPreview()
+            this.captureHandler!!.startPreview()    // Start preview now...
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
@@ -107,12 +106,14 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun stopCapture(request: CaptureModels.StopCapture.Request) {
         captureHandler?.let {
-            try {
-                it.stopCapture()
-                it.stopPreview()
-            }catch (e: Exception){
-                val response = CaptureModels.Error.Request(e)
-                showError(response)
+            if(it.captureStatus == CaptureHandlerStatus.CAPTURE || it.captureStatus ==  CaptureHandlerStatus.PREVIEW){
+                try {
+                    it.stopCapture()
+                    it.stopPreview()
+                }catch (e: Exception){
+                    val response = CaptureModels.Error.Request(e)
+                    showError(response)
+                }
             }
         }
     }

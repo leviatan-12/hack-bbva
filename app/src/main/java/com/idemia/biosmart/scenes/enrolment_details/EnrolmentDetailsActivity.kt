@@ -113,7 +113,12 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     private fun onEnrolmentFailed(enrolmentResponse: EnrolmentResponse){
         Toast.makeText(applicationContext, enrolmentResponse.message, Toast.LENGTH_LONG).show()
         when(enrolmentResponse.code){
-            409 -> personDataFragment.bind(enrolmentResponse)
+            409 -> {
+                personDataFragment.bind(enrolmentResponse)
+                enrolmentResponse.matchPersonToPerson?.let { matchPersonToPerson ->
+                    matchPersonToPersonDataFragment.bind(matchPersonToPerson.candidates, matchPersonToPerson.noHitRank)
+                }
+            }
             else -> finish()
         }
     }

@@ -34,10 +34,11 @@ class PersonDataFragment: Fragment() {
     }
 
     fun bind(enrolmentResponse: EnrolmentResponse){
-        text_view_enrol_error_code.text = enrolmentResponse.enrollPerson?.errorCode
-        text_view_enrol_message.text = enrolmentResponse.enrollPerson?.message
-        text_view_enrol_duration.text = getString(R.string.label_ms, enrolmentResponse.enrollPerson?.duration)
-
+        enrolmentResponse.enrollPerson?.let{ enrollPerson ->
+            text_view_enrol_error_code.text = enrollPerson.errorCode
+            text_view_enrol_message.text = enrollPerson.message
+            text_view_enrol_duration.text = getString(R.string.label_ms, enrollPerson.duration)
+        }
         text_view_encode_error_code.text = enrolmentResponse.encodePerson.errorCode
         text_view_encode_message.text = enrolmentResponse.encodePerson.message
         text_view_encode_duration.text = getString(R.string.label_ms, enrolmentResponse.encodePerson.duration)
