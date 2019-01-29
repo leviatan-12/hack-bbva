@@ -61,7 +61,7 @@ class CapturePresenter : CapturePresentationLogic {
         capturingOptions.bioCaptureMode = response.options.captureMode
         capturingOptions.torch = response.options.torch
         capturingOptions.captureTimeout = response.options.timeout
-        capturingOptions.captureImageTimeout = response.options.timeout
+        capturingOptions.captureImageTimeout = -1
         capturingOptions.overlay = response.options.overlay
         capturingOptions.logLevel = LogLevel.DISABLE
 

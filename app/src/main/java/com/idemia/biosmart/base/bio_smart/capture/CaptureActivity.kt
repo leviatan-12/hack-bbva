@@ -8,11 +8,8 @@ import com.idemia.biosmart.base.android.BaseActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.karumi.dexter.listener.single.PermissionListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
 import morpho.urt.msc.mscengine.MorphoSurfaceView
 import java.lang.Exception

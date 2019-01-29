@@ -32,6 +32,7 @@ class MatchPersonToPersonDataFragment: Fragment(){
     }
 
     private fun initRecyclerView(){
+        text_view_no_hit_rank.text = getString(R.string.person_to_person_data_fragment_no_hit_rank, 0)
         val recyclerView = recycle_view
         adapter.canditates = arrayListOf()
         recyclerView.adapter = adapter

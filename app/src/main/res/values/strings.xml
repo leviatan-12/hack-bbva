@@ -78,6 +78,7 @@
     <!-- Enrolment Details -->
     <string name="enrolment_details_user_biometry_info_incomplete">User Biometry info incomplete!</string>
     <string name="enrolment_details_trying_enroll_new_user">Trying to enrol as new user on MBSS</string>
+    <string name="enrolment_details_trying_enroll_in_db">Saving user info in DB</string>
 
 
     <!-- Face Capture -->

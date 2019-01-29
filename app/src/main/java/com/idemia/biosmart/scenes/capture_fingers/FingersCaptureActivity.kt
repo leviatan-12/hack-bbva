@@ -10,6 +10,7 @@ import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.fingers.FingersActivity
 import com.idemia.biosmart.utils.AppCache
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.activity_capture_fingers.*
 
 class FingersCaptureActivity : FingersActivity() {
@@ -45,39 +46,65 @@ class FingersCaptureActivity : FingersActivity() {
     //region CAPTURE - Ready for capture
     /** When SDK is ready for capture, this method will be executed */
     override fun readyForCapture() {
+        Log.i(TAG, "readyForCapture(): BioSmart SDK is ready to start capture!")
         startCountdown()
     }
     //endregion
 
     //region CAPTURE - Use Torch
     override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel) {
+        Log.i(TAG, "displayUseTorch: Is torch on? ->${viewModel.isTorchOn}")
         displayTorchEnabled(viewModel.isTorchOn)
     }
     //endregion
 
     //region USECASE - Display Capture Info
     override fun displayCaptureInfo(viewModel: CaptureModels.CaptureInfo.ViewModel) {
+        Log.i(TAG, "displayCaptureInfo: ${viewModel.message}")
         text_view_feedback_info.text = viewModel.message
     }
     //endregion
 
     //region USECASE - Display Capture Finish
     override fun displayCaptureFinish(viewModel: CaptureModels.CaptureFinish.ViewModel) {
+        Log.i(TAG, "displayCaptureFinish()")
         Toast.makeText(applicationContext, getString(R.string.label_capture_finished) ,Toast.LENGTH_LONG).show()
         uiOnSuccess()
-        // Verify if app needs to capture other hand!
-        startCountdown()
+        stopCapture()
+        // TODO: Verify if app needs to capture other hand!
+        // startCountdown()
     }
     //endregion
 
     //region USECASE - Display Capture Success
     override fun displayCaptureSuccess(viewModel: CaptureModels.CaptureSuccess.ViewModel) {
+        Log.i(TAG, "displayCaptureSuccess()")
         viewModel.morphoImages?.let { imageList ->
-            if(capturingLeftHand){
-                AppCache.imageListLeft = imageList
-            }else if(!capturingLeftHand){
-                AppCache.imageListRight = imageList
-            }else{
+            if(capturingLeftHand) {
+                if(imageList.size == 4){
+                    AppCache.imageListLeft = ArrayList()
+                    (AppCache.imageListLeft as ArrayList).add(imageList[0])
+                    (AppCache.imageListLeft as ArrayList).add(imageList[1])
+                    (AppCache.imageListLeft as ArrayList).add(imageList[2])
+                    (AppCache.imageListLeft as ArrayList).add(imageList[3])
+                    leftHandTaken = true
+                    startCountdown()    // FIX FOR NOW...
+                }else{
+                    AppCache.imageListLeft = null
+                }
+            }else if(!capturingLeftHand) {
+                if(imageList.size == 4) {
+                    AppCache.imageListRight = ArrayList()
+                    (AppCache.imageListRight as ArrayList).add(imageList[0])
+                    (AppCache.imageListRight as ArrayList).add(imageList[1])
+                    (AppCache.imageListRight as ArrayList).add(imageList[2])
+                    (AppCache.imageListRight as ArrayList).add(imageList[3])
+                    rightHandTaken = true
+                    startCountdown()    // FIX FOR NOW...
+                }else{
+                    AppCache.imageListRight = null
+                }
+            }else {
                 Log.e(TAG, "No left/right hand to retrieve images")
             }
         }
@@ -144,8 +171,10 @@ class FingersCaptureActivity : FingersActivity() {
 
     //region UI - Start Countdown
     private fun startCountdown(){
+        Log.i(TAG, "startCountdown()")
         val startAt = (timeBeforeStartCapture * 1000).toLong()
         if(!leftHandTaken){
+            Log.i(TAG, "startCountdown: Capture Left Hand")
             capturingLeftHand = true
             tv_countdown.visibility = View.VISIBLE
             countDownTimer = createCountdownTimer(startAt,1000, { tick ->
@@ -156,6 +185,7 @@ class FingersCaptureActivity : FingersActivity() {
             })
             countDownTimer?.start()
         }else if(!rightHandTaken){
+            Log.i(TAG, "startCountdown: Capture Right Hand")
             capturingLeftHand = false
             tv_countdown.visibility = View.VISIBLE
             countDownTimer = createCountdownTimer(startAt,1000, { tick ->
@@ -173,6 +203,7 @@ class FingersCaptureActivity : FingersActivity() {
 
     //region UI - Stop Countdown
     private fun stopCountdown(){
+        Log.i(TAG, "stopCountdown()")
         tv_countdown.visibility = View.GONE
         countDownTimer?.cancel()
     }
@@ -185,7 +216,7 @@ class FingersCaptureActivity : FingersActivity() {
      * @param isTorchOn True if torch is on
      */
     private fun displayTorchEnabled(isTorchOn: Boolean){
-        Log.i(TAG, "Is torch on: $isTorchOn")
+        Log.i(TAG, "Torch status: $isTorchOn")
     }
     //endregion
 }

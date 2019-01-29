@@ -10,9 +10,11 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoBioTraking
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
+import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureTrackingListener
 import java.lang.Exception
 
 /**
@@ -21,7 +23,7 @@ import java.lang.Exception
  *  Created by alfredo on 1/2/19.
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
-class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioCaptureResultListener {
+class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioCaptureResultListener, BioCaptureTrackingListener {
     private val worker = CaptureWorker()
     private var presenter: CapturePresentationLogic = CapturePresenter()
 
@@ -50,8 +52,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
         val disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
-            var mCaptureHandler: BioCaptureHandler? = null
-
+            val mCaptureHandler: BioCaptureHandler?
             when (request.handlerType){
                 CaptureModels.CaptureHanlderType.FACIAL -> {
                     mCaptureHandler = (captureHandler as FaceCaptureHandler)
@@ -59,15 +60,18 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
                     // Capture delayed configuration disabled, to enable change [totalNumberOfCapturesBeforeDelay] > 0
                     mCaptureHandler.totalNumberOfCapturesBeforeDelay = -1 // Disabled
                     mCaptureHandler.setTimeCaptureDelay(1500)
+                    mCaptureHandler.setBioCaptureResultListener(this)
+                    mCaptureHandler.setBioCaptureFeedbackListener(this)
                     this.captureHandler = mCaptureHandler
                 }
                 CaptureModels.CaptureHanlderType.FINGERS -> {
                     mCaptureHandler = (captureHandler as FingerCaptureHandler)
+                    mCaptureHandler.setBioCaptureResultListener(this)
+                    mCaptureHandler.setBioCaptureFeedbackListener(this)
+                    mCaptureHandler.setBioTrackingListener(this)
                     this.captureHandler = mCaptureHandler
                 }
             }
-            this.captureHandler!!.setBioCaptureResultListener(this)
-            this.captureHandler!!.setBioCaptureFeedbackListener(this)
             this.captureHandler!!.startPreview()    // Start preview now...
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
@@ -97,7 +101,6 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
                     it.startPreview()
                 }
                 it.startCapture()
-                //it.forceCapture()
             }catch (e: Exception){
                 val response = CaptureModels.Error.Request(e)
                 showError(response)
@@ -120,7 +123,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
         }
     }
 
-    //region Bio Capture Feedback listener
+    //region BIO SMART - Bio Capture Feedback listener
     override fun onCaptureInfo(bioCaptureInfo: BioCaptureInfo?, bundle: Bundle?) {
         Log.i(TAG, "onCaptureInfo: name -> ${bioCaptureInfo?.name}")
         val response = CaptureModels.CaptureInfo.Response(bioCaptureInfo, bundle)
@@ -128,7 +131,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
     //endregion
 
-    //region Bio Capture Result Listener
+    //region BIO SMART - Bio Capture Result Listener
     override fun onCaptureFinish() {
         Log.i(TAG, "onCaptureFinish: Capture finished")
         val response = CaptureModels.CaptureFinish.Response()
@@ -145,6 +148,15 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
         Log.i(TAG, "onCaptureFailure: An error was happened")
         val response = CaptureModels.CaptureFailure.Response(captureError, biometricInfo, bundle)
         presenter.presentCaptureFailure(response)
+    }
+    //endregion
+
+    //region BIO SMART - Bio Tracking Listener
+    override fun onTracking(p0: MutableList<MorphoBioTraking>?) {
+        Log.i(TAG, "onTracking Biometric Location: ${p0?.first()?.biometricLocation}" )
+        Log.i(TAG, "onTracking: Rect: ${p0?.first()?.rect}" )
+        Log.i(TAG, "onTracking: Preview Rect: ${p0?.first()?.previewRect}")
+        Log.i(TAG, "====================")
     }
     //endregion
 

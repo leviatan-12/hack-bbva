@@ -64,11 +64,6 @@ abstract class BaseActivity: AppCompatActivity(){
         loader = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        DisposableManager.clear()
-    }
-
     /**
      * Attach Base Context
      */
@@ -112,7 +107,7 @@ abstract class BaseActivity: AppCompatActivity(){
     protected fun createCountdownTimer(millisInFuture: Long,
                                       countDownInterval: Long = 1000,
                                       updateUi: (value: Int) -> Any ,
-                                      finish: () -> Any ): CountDownTimer{
+                                      finish: () -> Any ): CountDownTimer {
         var initValue= (millisInFuture / 1000).toInt()
 
         return object : CountDownTimer(millisInFuture, countDownInterval) {

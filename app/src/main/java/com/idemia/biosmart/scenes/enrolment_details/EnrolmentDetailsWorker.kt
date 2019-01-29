@@ -2,6 +2,7 @@ package com.idemia.biosmart.scenes.enrolment_details;
 
 import com.idemia.biosmart.api.IdemiaApiService
 import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.biosmart.models.CreatePersonResponse
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.utils.ApiUrlManager
@@ -25,12 +26,15 @@ class EnrolmentDetailsWorker {
         return IdemiaApiService.create(url)
     }
 
-    fun retrieveUserInfo(): UserBiometrics{
+    //region Retrieve user info
+    fun retrieveUserInfo(): UserBiometrics {
         val userBiometrics = AppCache.userBiometrics
         return userBiometrics!!
     }
+    //endregion
 
-    fun retrieveUserPhoto(): Single<ByteArray>{
+    //region Retrieve user photo
+    fun retrieveUserPhoto(): Single<ByteArray> {
         return Single.create<ByteArray> { emitter ->
             AppCache.facePhoto?.let {
                 emitter.onSuccess(it.jpegImage)
@@ -39,13 +43,22 @@ class EnrolmentDetailsWorker {
             }
         }
     }
+    //endregion
 
-    /**
-     * Enrol Person
-     */
+    //region Enrol Person
     fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request): Observable<Response<EnrolmentResponse>> {
         return apiService(request.activity).enrolment(request.userBiometrics)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+    //endregion
+
+    //region Create Person
+    fun createPerson(request: EnrolmentDetailsModels.CreatePerson.Request): Observable<Response<CreatePersonResponse>> {
+        return apiService(request.activity)
+            .create(request.userData)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+    //endregion
 }

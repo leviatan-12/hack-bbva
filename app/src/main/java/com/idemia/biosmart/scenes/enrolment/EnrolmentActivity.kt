@@ -138,7 +138,6 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
     private fun isDataValid(): Boolean {
         val dataInfoValid = (isUsernameValid && isLastNameValid && isSecondLastNameValid && isUsernameValid && isNameValid)
         return (dataInfoValid && (AppCache.facePhoto != null)) || (dataInfoValid && (AppCache.imageListLeft!=null)) || (dataInfoValid && (AppCache.imageListRight!=null))
-        //return (dataInfoValid)
     }
     //endregion
 }

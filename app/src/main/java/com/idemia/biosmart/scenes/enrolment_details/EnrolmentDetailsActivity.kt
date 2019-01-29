@@ -7,6 +7,7 @@ import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
+import com.idemia.biosmart.models.UserData
 import com.idemia.biosmart.scenes.enrolment_details.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonToPersonDataFragment
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.PersonDataFragment
@@ -30,6 +31,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     // Local Variables
     var userBiometrics: UserBiometrics? = null
+    var userData: UserData? = null
 
     // Fragments
     private val personDataFragment = PersonDataFragment()
@@ -59,12 +61,13 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     //region USECASE - Retrive user info
     private fun retrieveUserInfo(){
+        Log.i(TAG, "retrieveUserInfo()")
         val request = EnrolmentDetailsModels.RetrieveUserInfo.Request()
         interactor.retrieveUserInfo(request)
     }
 
     override fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetrieveUserInfo.ViewModel) {
-        Log.i(TAG, "User Biometrics info loaded from App Cache")
+        Log.i(TAG, "displayRetrieveUserInfo: User Biometrics info loaded from App Cache")
         userBiometrics = viewModel.userBiometrics
     }
     //endregion
@@ -77,6 +80,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     override fun displayUserPhoto(viewModel: EnrolmentDetailsModels.DisplayUserPhoto.ViewModel) {
         if(viewModel.photoAvailable){
+            Log.i(TAG, "displayUserPhoto: Displaying user photo")
             image_view_photo.setImageBitmap(viewModel.bitmap)
         }
     }
@@ -85,6 +89,7 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     //region USECASE - Enrol Person
     /** Enrol Person */
     private fun enrolPerson() {
+        Log.i(TAG, "enrolPerson()")
         userBiometrics?.let { biometryInfo ->
             loader = IDMProgress(this, getString(R.string.enrolment_details_trying_enroll_new_user), getString(R.string.label_please_wait)).kProgress
             loader?.show()
@@ -98,16 +103,18 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     override fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel) {
         Log.i(TAG, "displayEnrolPerson: ${viewModel.enrolmentResponse.message}")
         if(viewModel.enrolmentResponse.code == 200){
+            loader?.dismiss()
             onEnrolmentSuccess(viewModel.enrolmentResponse)
         }else {
             onEnrolmentFailed(viewModel.enrolmentResponse)
+            loader?.dismiss()
         }
-        loader?.dismiss()
     }
 
     private fun onEnrolmentSuccess(enrolmentResponse: EnrolmentResponse){
         Toast.makeText(applicationContext, "Person Enrolled Successfully", Toast.LENGTH_LONG).show()
         personDataFragment.bind(enrolmentResponse)
+        createPerson()  // Create user in database
     }
 
     private fun onEnrolmentFailed(enrolmentResponse: EnrolmentResponse){
@@ -121,6 +128,45 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
             }
             else -> finish()
         }
+    }
+    //endregion
+
+
+    //region USE CASE - Retrieve user data
+    private fun retrieveUserData(){
+        val request = EnrolmentDetailsModels.RetrieveUserData.Request()
+        interactor.retrieveUserData(request)
+    }
+
+    override fun displayRetrieveUserData(viewModel: EnrolmentDetailsModels.RetrieveUserData.ViewModel) {
+        Log.i(TAG, "displayRetrieveUserData: Username -> ${viewModel.userData.username}")
+        userData = viewModel.userData
+    }
+    //endregion
+
+    //region USE CASE - Create Person
+    private fun createPerson(){
+        loader = IDMProgress(this, getString(R.string.enrolment_details_trying_enroll_in_db), getString(R.string.label_please_wait)).kProgress
+        loader?.show()
+        retrieveUserData()  // Retrieve user data from app cache
+        Log.i(TAG, "createPerson()")
+        userData?.let {
+            Log.i(TAG, "createPerson: User data is completed!")
+            val request = EnrolmentDetailsModels.CreatePerson.Request(this@EnrolmentDetailsActivity, it)
+            interactor.createPerson(request)
+        }
+    }
+
+    override fun displayCreatePerson(viewModel: EnrolmentDetailsModels.CreatePerson.ViewModel) {
+        Log.i(TAG, "displayCreatePerson: Response code: ${viewModel.createPersonResponse.code}")
+        when(viewModel.createPersonResponse.code){
+            200 -> showToast(viewModel.createPersonResponse.message)
+            else -> {
+                Log.i(TAG, "displayCreatePerson: ${viewModel.createPersonResponse.codeResponse}")
+                showToast("Error creating user on DB: ${viewModel.createPersonResponse.message}")
+            }
+        }
+        loader?.dismiss()
     }
     //endregion
 
@@ -152,5 +198,7 @@ interface EnrolmentDetailsDisplayLogic {
     fun displayRetrieveUserInfo(viewModel: EnrolmentDetailsModels.RetrieveUserInfo.ViewModel)
     fun displayUserPhoto(viewModel: EnrolmentDetailsModels.DisplayUserPhoto.ViewModel)
     fun displayEnrolPerson(viewModel: EnrolmentDetailsModels.EnrolPerson.ViewModel)
+    fun displayRetrieveUserData(viewModel: EnrolmentDetailsModels.RetrieveUserData.ViewModel)
+    fun displayCreatePerson(viewModel: EnrolmentDetailsModels.CreatePerson.ViewModel)
     fun displayError(viewModel: EnrolmentDetailsModels.Error.ViewModel)
 }

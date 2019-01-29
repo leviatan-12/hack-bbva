@@ -81,7 +81,7 @@ class CaptureWorker {
         return Single.create<IBioCaptureHandler>{ emitter ->
             BioSdk.createBioCaptureHandler(request.activity, request.captureOptions, object :
                 MscAsyncCallbacks<IBioCaptureHandler> {
-                override fun onPreExecute() {}
+                override fun onPreExecute() { }
 
                 override fun onSuccess(iBioCaptureHandler: IBioCaptureHandler) {
                     emitter.onSuccess(iBioCaptureHandler)

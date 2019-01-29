@@ -41,6 +41,16 @@ class EnrolmentDetailsPresenter : EnrolmentDetailsPresentationLogic {
         activity!!.displayEnrolPerson(viewModel)
     }
 
+    override fun presentRetrieveUserData(response: EnrolmentDetailsModels.RetrieveUserData.Response) {
+        val vm = EnrolmentDetailsModels.RetrieveUserData.ViewModel(response.userData)
+        activity!!.displayRetrieveUserData(vm)
+    }
+
+    override fun presentCreatePerson(response: EnrolmentDetailsModels.CreatePerson.Response) {
+        val viewModel = EnrolmentDetailsModels.CreatePerson.ViewModel(response.createPersonResponse)
+        activity!!.displayCreatePerson(viewModel)
+    }
+
     override fun presentError(response: EnrolmentDetailsModels.Error.Response) {
         when(response.errorCode){
             -1 -> {
@@ -69,5 +79,7 @@ interface EnrolmentDetailsPresentationLogic {
     fun presentRetrieveUserInfo(response: EnrolmentDetailsModels.RetrieveUserInfo.Response)
     fun presentDisplayUserPhoto(response: EnrolmentDetailsModels.DisplayUserPhoto.Response)
     fun presentEnrolPerson(response: EnrolmentDetailsModels.EnrolPerson.Response)
+    fun presentRetrieveUserData(response: EnrolmentDetailsModels.RetrieveUserData.Response)
+    fun presentCreatePerson(response: EnrolmentDetailsModels.CreatePerson.Response)
     fun presentError(response: EnrolmentDetailsModels.Error.Response)
 }
