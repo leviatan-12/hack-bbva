@@ -1,18 +1,11 @@
 package com.idemia.biosmart.scenes.identify
 
-import android.app.Activity
-import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.utils.AppCache
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.PublishSubject
-import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.activity_identify.*
 
 /**
@@ -32,6 +25,17 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     override fun resourceLayoutId(): Int = R.layout.activity_identify
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
+
+    override fun onResume() {
+        super.onResume()
+
+        // TODO: Create a use case "retrieve selfie"
+        AppCache.facePhoto?.let { photo ->
+            val data = photo.jpegImage
+            val bmp = BitmapFactory.decodeByteArray(data, 0, data!!.size)
+            image_view_selfie.setImageBitmap(bmp)
+        }
+    }
 
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }

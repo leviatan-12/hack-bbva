@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.authenticate
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.android.BaseActivity
@@ -40,6 +41,13 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     override fun onResume() {
         super.onResume()
         addObservableToUsernameTextField()
+
+        // TODO: Create a use case "retrieve selfie"
+        AppCache.facePhoto?.let { photo ->
+            val data = photo.jpegImage
+            val bmp = BitmapFactory.decodeByteArray(data, 0, data!!.size)
+            image_view_selfie.setImageBitmap(bmp)
+        }
     }
     //endregion
 
@@ -106,8 +114,7 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     }
 
     private fun isDataValid(): Boolean{
-        // return (usernameIsValid && (AppCache.facePhoto != null)) || (usernameIsValid && (AppCache.imageListLeft!=null)) || (usernameIsValid && (AppCache.imageListRight!=null))
-        return (usernameIsValid)
+        return (usernameIsValid && (AppCache.facePhoto != null)) || (usernameIsValid && (AppCache.imageListLeft!=null)) || (usernameIsValid && (AppCache.imageListRight!=null))
     }
     //endregion
 }

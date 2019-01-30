@@ -1,8 +1,10 @@
 package com.idemia.biosmart.scenes.capture_face
 
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.HandlerThread
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -24,7 +26,6 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         super.onLoadActivity(savedInstanceState)
-        addAnimationToFaceIdMask(3)
         initUi()
         addListeners()
     }
@@ -135,6 +136,7 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     //region UI - Init UI
     private fun initUi(){
+        addFadeInAnimationToFaceIdMask(3)
         switch_torch.visibility = View.VISIBLE
         tv_feedback_info.text = getString(R.string.label_face_capture)
         tv_feedback_info.visibility = View.VISIBLE
@@ -157,8 +159,8 @@ class FaceCaptureActivity : FaceCaptureActivity() {
             finish()
         }
         button_restart.setOnClickListener {
-            startPreview()
             initUi()
+            startPreview()
             startCountdown()
         }
     }
@@ -166,12 +168,15 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     //region UI - Success Ui
     private fun successUi(){
-        iv_selfie.visibility = View.VISIBLE
-        switch_torch.visibility = View.GONE
-        tv_feedback_info.visibility = View.GONE
-        face_id_mask.visibility = View.INVISIBLE
-        button_restart.show()
-        button_finish.show()
+        runOnUiThread {
+            iv_selfie.visibility = View.VISIBLE
+            switch_torch.visibility = View.GONE
+            tv_feedback_info.text = getString(R.string.face_capture_face_capture_scan_id_completed)
+            tv_feedback_info.visibility = View.VISIBLE
+            face_id_mask.visibility = View.INVISIBLE
+            button_restart.show()
+            button_finish.show()
+        }
     }
     //endregion
 
@@ -179,7 +184,9 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     private fun errorUi(){
        runOnUiThread {
            switch_torch.visibility = View.GONE
-           face_id_mask.visibility = View.VISIBLE
+           // face_id_mask.visibility = View.VISIBLE
+           addFadeOutAnimationToFaceIdMask(3)
+           face_id_mask.animate()
            tv_feedback_info.visibility = View.VISIBLE
            iv_selfie.scaleType = ImageView.ScaleType.CENTER_INSIDE
            iv_selfie.setImageDrawable(getDrawable(R.drawable.ic_failed))
@@ -190,12 +197,21 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     }
     //endregion
 
-    //region UI - Add animation to face ID mask
-    private fun addAnimationToFaceIdMask(seconds: Int){
+    //region UI - Add Fade In animation to face ID mask
+    private fun addFadeInAnimationToFaceIdMask(seconds: Int){
         val fadeIn = AlphaAnimation(0f, 1f)
-        fadeIn.interpolator = DecelerateInterpolator() //add this
+        fadeIn.interpolator = DecelerateInterpolator()
         fadeIn.duration = (seconds * 1000).toLong()
         face_id_mask.animation = fadeIn
+    }
+    //endregion
+
+    //region UI - Add Fade Out animation to face ID mask
+    private fun addFadeOutAnimationToFaceIdMask(seconds: Int){
+        val fadeOut = AlphaAnimation(1f, 0f)
+        fadeOut.interpolator = DecelerateInterpolator()
+        fadeOut.duration = (seconds * 1000).toLong()
+        face_id_mask.animation = fadeOut
     }
     //endregion
 

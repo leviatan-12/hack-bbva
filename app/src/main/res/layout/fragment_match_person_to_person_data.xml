@@ -12,7 +12,8 @@
               android:text="@string/person_to_person_data_fragment_no_hit_rank"
               android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-              app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:id="@+id/text_view_no_hit_rank"/>
+              app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+              android:id="@+id/text_view_no_hit_rank"/>
 
 
     <android.support.v7.widget.RecyclerView android:id="@+id/recycle_view"

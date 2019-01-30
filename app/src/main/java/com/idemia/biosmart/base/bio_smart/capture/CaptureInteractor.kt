@@ -1,5 +1,6 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.base.utils.DisposableManager
@@ -15,6 +16,8 @@ import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureFeedbackListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureResultListener
 import com.morpho.mph_bio_sdk.android.sdk.msc.listeners.BioCaptureTrackingListener
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 
 /**
@@ -51,7 +54,9 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
-        val disposable = worker.createBioCaptureHandler(request).subscribe ({ captureHandler ->
+        val disposable = worker.createBioCaptureHandler(request).subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ captureHandler ->
             val mCaptureHandler: BioCaptureHandler?
             when (request.handlerType){
                 CaptureModels.CaptureHanlderType.FACIAL -> {
@@ -83,7 +88,9 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request) {
-        val disposable = worker.createMatcherHandler(request).subscribe({ matcherHandler ->
+        val disposable = worker.createMatcherHandler(request).subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ matcherHandler ->
             this.matcherHandler = matcherHandler
             val response = CaptureModels.CreateMatcherHandler.Response()
             presenter.presentCreateMatcherHandler(response)
@@ -201,7 +208,10 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     //endregion
 
     override fun startPreview(request: CaptureModels.StartPreview.Request) {
-        captureHandler?.startPreview()
+        AsyncTask.execute {
+            Log.i(TAG, "startPreview: Running on background")
+            captureHandler?.startPreview()
+        }
         val response = CaptureModels.StartPreview.Response()
         presenter.presentStartPreview(response)
     }

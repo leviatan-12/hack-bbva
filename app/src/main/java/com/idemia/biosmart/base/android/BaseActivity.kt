@@ -12,7 +12,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
 import com.kaopiz.kprogresshud.KProgressHUD
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper

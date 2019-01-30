@@ -205,11 +205,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         when(type){
             AUTHENTICATE_USER -> {
                 authenticateUser()
-                initViewPager(true)
+                initViewPager(false)
             }
             IDENTIFY_USER -> {
                 identifyUser()
-                initViewPager(false)
+                initViewPager(true)
             }
             else -> showToast(getString(R.string.fatal_invalid_operation))
         }

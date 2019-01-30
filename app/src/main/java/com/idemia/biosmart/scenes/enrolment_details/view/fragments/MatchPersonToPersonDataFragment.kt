@@ -47,6 +47,6 @@ class MatchPersonToPersonDataFragment: Fragment(){
         adapter.canditates.clear()
         adapter.canditates.addAll(candidates)
         adapter.notifyDataSetChanged()
-        text_view_no_hit_rank.text = getString(R.string.person_to_person_data_fragment_no_hit_rank, noHitRank)
+        text_view_no_hit_rank?.text = getString(R.string.person_to_person_data_fragment_no_hit_rank, noHitRank)
     }
 }

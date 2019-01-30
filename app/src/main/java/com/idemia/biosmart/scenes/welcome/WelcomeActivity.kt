@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
-import android.support.v7.widget.SnapHelper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -17,7 +16,6 @@ import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.IDMProgress
-import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference
@@ -47,7 +45,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     override fun hideActionBar(): Boolean = true
     override fun hideNavigationBar(): Boolean = false
 
-    //region On load activity
+    //region BASE - On load activity
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         setSupportActionBar(bottom_app_bar)
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, "")
@@ -89,7 +87,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
     //endregion
 
-    //region Action Bar / Menu
+    //region ANDROID - Action Bar / Menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_app_bar, menu)
         return true
@@ -97,14 +95,14 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
-            R.id.menu_item_generate_license -> generateLicense()
+            R.id.menu_item_generate_license -> activateLkmsLicenseOnDevice()
             R.id.menu_item_license_details -> startProcess(WelcomeModels.Operation.LICENSE_DETAILS)
         }
         return super.onOptionsItemSelected(item)
     }
     //endregion
 
-    //region USECASE: Generate License
+    //region USE CASE - Generate License
     /**
      * Generate License Use Case
      */
@@ -131,7 +129,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //endregion
 
-    //region USECASE: Create LKMS License on Server
+    //region USE CASE - Create LKMS License on Server
     private fun createLKMSLicense(activationData: ByteArray){
         val lkmsUrlKey = getString(R.string.idemia_key_lkms_url)
         val defaultLkmsUrl = getString(R.string.default_lkms_server_url)
@@ -158,7 +156,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
 
     //endregion
 
-    //region USECASE: Activate Lkms License On Device
+    //region USE CASE - Activate Lkms License On Device
     private fun activateLkmsLicenseOnDevice(){
         loader = IDMProgress(this, "Activating License", "Please Wait...").kProgress
         loader?.show()
@@ -172,16 +170,17 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
             text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             AppCache.license = viewModel.lkmsLicense
+            showToast(getString(R.string.welcome_message_license_activated))
         }else {
             Log.i(TAG, getString(R.string.welcome_message_license_is_not_active))
             generateLicense()
             text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDanger))
-            // Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
+            //Toast.makeText(applicationContext, getString(R.string.welcome_message_license_is_not_active), Toast.LENGTH_LONG).show()
         }
     }
     //endregion
 
-    //region USECASE: Start Process
+    //region USE CASE - Start Process
     private fun startProcess(operation: WelcomeModels.Operation){
         val request = WelcomeModels.StartEnrollment.Request(operation)
         interactor.startProcess(request)

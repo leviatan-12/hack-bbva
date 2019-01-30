@@ -46,6 +46,7 @@ class AuthenticateRouter : AuthenticateRoutingLogic {
             AppCache.username = username
             intent.putExtra(UserInfoActivity.KEY_OPERATION_TYPE, operation)
             activity!!.get()!!.startActivity(intent)
+            activity!!.get()!!.finish()
         }
     }
 }

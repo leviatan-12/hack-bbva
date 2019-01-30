@@ -33,7 +33,7 @@ class FaceIdMask: View {
         val radius = (if (w > h) h / 2 else w / 2) - circleMargin
 
         bm!!.eraseColor(Color.TRANSPARENT)
-        cv!!.drawColor(Color.parseColor("#000000"))
+        cv!!.drawColor(Color.parseColor("#C8000000"))
         cv!!.drawCircle((w / 2).toFloat(), (h / 2).toFloat(), radius.toFloat(), paint)
         canvas?.drawBitmap(bm!!, 0F, 0F, null)
         super.onDraw(canvas)

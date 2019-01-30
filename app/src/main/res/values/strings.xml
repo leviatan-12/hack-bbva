@@ -83,6 +83,7 @@
 
     <!-- Face Capture -->
     <string name="face_capture_please_wait_for_next_challenge">Waiting for next challenge&#8230;</string>
+    <string name="face_capture_face_capture_scan_id_completed">Face Capture Scan ID Completed</string>
 
     <!-- General Labels -->
     <string name="label_NA">N/A</string>
