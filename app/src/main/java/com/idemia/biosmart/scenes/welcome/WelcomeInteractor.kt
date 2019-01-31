@@ -3,7 +3,6 @@ package com.idemia.biosmart.scenes.welcome
 import android.util.Log
 import com.idemia.biosmart.base.utils.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 

@@ -75,7 +75,9 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
             200 -> {
                 val candidateId = viewModel.authenticationResponse.personId
                 userInfoTechnicalDetailsFragment.bind(viewModel.authenticationResponse)
-                matchPersonToPersonDataFragment.bind(viewModel.authenticationResponse.authenticatePerson!!.candidates, viewModel.authenticationResponse.authenticatePerson.noHitRank)
+                matchPersonToPersonDataFragment.bind(
+                    viewModel.authenticationResponse.authenticatePerson!!.candidates,
+                    viewModel.authenticationResponse.authenticatePerson.noHitRank)
                 loader?.dismiss()
                 search(candidateId!!)
             }
@@ -111,7 +113,9 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
             200 -> {
                 val candidateId = viewModel.identifyResponse.matchPersonToPerson!!.candidates[0].id
                 userInfoTechnicalDetailsFragment.bind(viewModel.identifyResponse)
-                matchPersonToPersonDataFragment.bind(viewModel.identifyResponse.matchPersonToPerson.candidates, viewModel.identifyResponse.matchPersonToPerson.noHitRank)
+                matchPersonToPersonDataFragment.bind(
+                    viewModel.identifyResponse.matchPersonToPerson.candidates,
+                    viewModel.identifyResponse.matchPersonToPerson.noHitRank)
                 search(candidateId)
             }
             400 -> {

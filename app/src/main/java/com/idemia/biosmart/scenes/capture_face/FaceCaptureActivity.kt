@@ -76,7 +76,6 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         } ?: run {
             showToast(getString(R.string.fatal_morpho_face_image_null))
         }
-        stopCapture()
         successUi()
     }
     //endregion
@@ -160,7 +159,6 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         }
         button_restart.setOnClickListener {
             initUi()
-            startPreview()
             startCountdown()
         }
     }

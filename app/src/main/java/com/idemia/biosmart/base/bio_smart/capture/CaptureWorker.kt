@@ -2,6 +2,7 @@ package com.idemia.biosmart.base.bio_smart.capture;
 
 import android.util.Log
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
+import com.morpho.mph_bio_sdk.android.sdk.common.LogLevel
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.BioMatcherSettings
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.async.BioMatcherAsyncCallbacks
@@ -66,7 +67,7 @@ class CaptureWorker {
         }
     }
 
-    private fun selectFingersCaptureMode(mode: String): BioCaptureMode{
+    private fun selectFingersCaptureMode(mode: String): BioCaptureMode {
         when(mode){
             "FINGERPRINT_RIGHT_HAND" -> return BioCaptureMode.FINGERPRINT_RIGHT_HAND
             "FINGERPRINT_LEFT_HAND" -> return BioCaptureMode.FINGERPRINT_LEFT_HAND
@@ -98,7 +99,11 @@ class CaptureWorker {
 
     fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request): Single<IBioMatcherHandler>{
         return Single.create<IBioMatcherHandler>{ emitter ->
-            BioSdk.createBioMatcherHandler(request.activity, BioMatcherSettings(),
+            val matcherSettings = BioMatcherSettings()
+            matcherSettings.logLevel = LogLevel.DEBUG
+            matcherSettings.dumpFileFolder = null
+            matcherSettings.isDumpFileEnable = false
+            BioSdk.createBioMatcherHandler(request.activity, matcherSettings,
                 object: BioMatcherAsyncCallbacks<IBioMatcherHandler> {
 
                     override fun onSuccess(p0: IBioMatcherHandler?) {

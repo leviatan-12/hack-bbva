@@ -10,7 +10,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.ICaptureOptions
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.CaptureOptions
 import morpho.urt.msc.mscengine.MorphoSurfaceView
 import java.lang.Exception
 
@@ -60,7 +60,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region CAPTURE ACTIVITY - Morpho Finger Capture Variables
     private lateinit var surfaceView: MorphoSurfaceView                           // Morpho surface view is "the surface" where preview displays
-    private lateinit var captureOptions: ICaptureOptions                          // Used to set capture options like capture mode, timeout, etc...
+    private lateinit var captureOptions: CaptureOptions                          // Used to set capture options like capture mode, timeout, etc...
     private var appCaptureOptions: CaptureModels.AppCaptureOptions? = null        // To store local capture options
     //endregion
 
@@ -237,11 +237,11 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     abstract override fun displayUseTorch(viewModel: CaptureModels.UseTorch.ViewModel)
     //endregion
 
-    //region USE CASE - Start Preview
-    protected fun startPreview(){
+    //region USE CASE - Start Preview (Will be deleted)
+    /*protected fun startPreview(){
         val request = CaptureModels.StartPreview.Request()
         interactor.startPreview(request)
-    }
+    }*/
 
     override fun displayStartPreview(viewModel: CaptureModels.StartPreview.ViewModel) {
         Log.i(TAG, "displayStartPreview()")

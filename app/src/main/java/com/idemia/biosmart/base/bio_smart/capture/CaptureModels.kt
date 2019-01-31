@@ -42,7 +42,7 @@ class CaptureModels {
     class RequestCaptureOptions {
         data class Request(val options: CaptureModels.AppCaptureOptions, val handlerType: CaptureModels.CaptureHanlderType)
         data class Response(val options: CaptureModels.AppCaptureOptions,  val handlerType: CaptureModels.CaptureHanlderType)
-        data class ViewModel(val options: ICaptureOptions)
+        data class ViewModel(val options: CaptureOptions)
     }
 
     // Create Capture Handler

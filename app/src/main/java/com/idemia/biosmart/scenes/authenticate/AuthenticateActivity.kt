@@ -24,7 +24,9 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     // To check if data is completed
     private var usernameIsValid = false
 
-    companion object { private val TAG = "AuthenticateActivity" }
+    companion object {
+        private val TAG = "AuthenticateActivity"
+    }
 
     override fun resourceLayoutId(): Int  = R.layout.activity_authenticate
     override fun hideActionBar(): Boolean = false
@@ -114,7 +116,9 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     }
 
     private fun isDataValid(): Boolean{
-        return (usernameIsValid && (AppCache.facePhoto != null)) || (usernameIsValid && (AppCache.imageListLeft!=null)) || (usernameIsValid && (AppCache.imageListRight!=null))
+        return (usernameIsValid && (AppCache.facePhoto != null))
+                || (usernameIsValid && (AppCache.imageListLeft!=null))
+                || (usernameIsValid && (AppCache.imageListRight!=null))
     }
     //endregion
 }

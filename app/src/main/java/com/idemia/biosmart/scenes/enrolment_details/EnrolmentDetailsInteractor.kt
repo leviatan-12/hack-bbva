@@ -5,7 +5,6 @@ import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.models.UserData
 import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.Base64
-import com.morpho.mph_bio_sdk.android.sdk.msc.data.App
 
 /**
  *  EnrolmentDetails Interactor

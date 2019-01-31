@@ -107,7 +107,7 @@
     <string name="label_fingers_capture">Fingers Capture</string>
     <string name="label_dont_show_again">Don\'t show again</string>
     <string name="label_capture_finished">Capture Finished</string>
-    <string name="label_error">An error happened: %1$s</string>
+    <string name="label_error">ERROR: %1$s</string>
     <string name="label_please_wait">Please Wait</string>
     <string name="label_duration">Duration</string>
     <string name="label_error_code">Error Code</string>

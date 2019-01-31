@@ -1,15 +1,14 @@
 package com.idemia.biosmart.base.bio_smart.capture
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.base.utils.DisposableManager
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBioMatcherHandler
 import com.morpho.mph_bio_sdk.android.sdk.morpholite.IBiometricInfo
-import com.morpho.mph_bio_sdk.android.sdk.msc.BioCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FaceCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.FingerCaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.IBioCaptureHandler
+import com.morpho.mph_bio_sdk.android.sdk.msc.ICaptureHandler
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.*
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoBioTraking
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
@@ -30,6 +29,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     private val worker = CaptureWorker()
     private var presenter: CapturePresentationLogic = CapturePresenter()
 
+    private lateinit var handlerType: CaptureModels.CaptureHanlderType
     private var captureHandler: IBioCaptureHandler? = null    // Capture handler used for handling capture
     private var matcherHandler: IBioMatcherHandler? = null      // A matcher handler used for local matching
 
@@ -54,30 +54,17 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
-        val disposable = worker.createBioCaptureHandler(request).subscribeOn(Schedulers.newThread())
+        handlerType = request.handlerType
+        val disposable = worker.createBioCaptureHandler(request)
+            .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({ captureHandler ->
-            val mCaptureHandler: BioCaptureHandler?
-            when (request.handlerType){
-                CaptureModels.CaptureHanlderType.FACIAL -> {
-                    mCaptureHandler = (captureHandler as FaceCaptureHandler)
-
-                    // Capture delayed configuration disabled, to enable change [totalNumberOfCapturesBeforeDelay] > 0
-                    mCaptureHandler.totalNumberOfCapturesBeforeDelay = -1 // Disabled
-                    mCaptureHandler.setTimeCaptureDelay(1500)
-                    mCaptureHandler.setBioCaptureResultListener(this)
-                    mCaptureHandler.setBioCaptureFeedbackListener(this)
-                    this.captureHandler = mCaptureHandler
-                }
-                CaptureModels.CaptureHanlderType.FINGERS -> {
-                    mCaptureHandler = (captureHandler as FingerCaptureHandler)
-                    mCaptureHandler.setBioCaptureResultListener(this)
-                    mCaptureHandler.setBioCaptureFeedbackListener(this)
-                    mCaptureHandler.setBioTrackingListener(this)
-                    this.captureHandler = mCaptureHandler
-                }
+            .subscribe ({ mCaptureHandler ->
+            when (handlerType){
+                CaptureModels.CaptureHanlderType.FACIAL ->
+                    captureHandler = createFaceCaptureHandler(mCaptureHandler)
+                CaptureModels.CaptureHanlderType.FINGERS ->
+                    captureHandler = createFingersCaptureHandler(mCaptureHandler)
             }
-            this.captureHandler!!.startPreview()    // Start preview now...
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
@@ -85,6 +72,26 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             presenter.presentError(response)
         })
         DisposableManager.add(disposable)
+    }
+
+    private fun createFaceCaptureHandler(mCaptureHandler: ICaptureHandler): FaceCaptureHandler {
+        val faceCaptureHandler: FaceCaptureHandler = (mCaptureHandler as FaceCaptureHandler)
+        Log.i(TAG, "Capture options: ${faceCaptureHandler.captureOptions}")
+        // Capture delayed configuration disabled, to enable change [totalNumberOfCapturesBeforeDelay] > 0
+        faceCaptureHandler.totalNumberOfCapturesBeforeDelay = -1 // Disabled
+        faceCaptureHandler.setTimeCaptureDelay(1500)
+        faceCaptureHandler.setBioCaptureResultListener(this)
+        faceCaptureHandler.setBioCaptureFeedbackListener(this)
+        return faceCaptureHandler
+    }
+
+    private fun createFingersCaptureHandler(mCaptureHandler: ICaptureHandler): FingerCaptureHandler {
+        val fingersCaptureHandler: FingerCaptureHandler = (mCaptureHandler as FingerCaptureHandler)
+        Log.i(TAG, "Capture options: ${fingersCaptureHandler.captureOptions}")
+        fingersCaptureHandler.setBioCaptureResultListener(this)
+        fingersCaptureHandler.setBioCaptureFeedbackListener(this)
+        fingersCaptureHandler.setBioTrackingListener(this)
+        return fingersCaptureHandler
     }
 
     override fun createMatcherHandler(request: CaptureModels.CreateMatcherHandler.Request) {
@@ -102,17 +109,15 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun startCapture(request: CaptureModels.StartCapture.Request) {
-        captureHandler?.let {
+        captureHandler?.let { captureHandler ->
             try {
-                if(it.captureStatus == CaptureHandlerStatus.STOP){
-                    it.startPreview()
-                }
-                it.startCapture()
+                captureHandler.startPreview()
+                captureHandler.startCapture()
             }catch (e: Exception){
                 val response = CaptureModels.Error.Request(e)
                 showError(response)
             }
-            Log.i(TAG, "CAPTURE STATUS: ${it.captureStatus}")
+            Log.i(TAG, "CAPTURE STATUS: ${captureHandler.captureStatus}")
         }
     }
 
@@ -141,6 +146,8 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     //region BIO SMART - Bio Capture Result Listener
     override fun onCaptureFinish() {
         Log.i(TAG, "onCaptureFinish: Capture finished")
+        captureHandler?.stopCapture()   // Stop Capture on finish
+        captureHandler?.stopPreview()   // Stop preview on finish
         val response = CaptureModels.CaptureFinish.Response()
         presenter.presentCaptureFinish(response)
     }
@@ -152,9 +159,11 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
 
     override fun onCaptureFailure(captureError: CaptureError?, biometricInfo: IBiometricInfo?, bundle: Bundle?) {
-        Log.i(TAG, "onCaptureFailure: An error was happened")
-        val response = CaptureModels.CaptureFailure.Response(captureError, biometricInfo, bundle)
-        presenter.presentCaptureFailure(response)
+        captureError?.let { error ->
+            Log.e(TAG, "onCaptureFailure: ${error.name} - ${error.ordinal}")
+            val response = CaptureModels.CaptureFailure.Response(captureError, biometricInfo, bundle)
+            presenter.presentCaptureFailure(response)
+        }
     }
     //endregion
 
@@ -207,14 +216,14 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     }
     //endregion
 
-    override fun startPreview(request: CaptureModels.StartPreview.Request) {
+    /*override fun startPreview(request: CaptureModels.StartPreview.Request) {
         AsyncTask.execute {
             Log.i(TAG, "startPreview: Running on background")
             captureHandler?.startPreview()
         }
         val response = CaptureModels.StartPreview.Response()
         presenter.presentStartPreview(response)
-    }
+    }*/
 
     override fun showError(request: CaptureModels.Error.Request) {
         Log.e(TAG, "showError: An error was happened", request.exception)
@@ -259,7 +268,7 @@ interface CaptureBusinessLogic {
     fun useTorch(request: CaptureModels.UseTorch.Request)
 
     // Start Preview
-    fun startPreview(request: CaptureModels.StartPreview.Request)
+    //fun startPreview(request: CaptureModels.StartPreview.Request)
 
     // Show Error
     fun showError(request: CaptureModels.Error.Request)

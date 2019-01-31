@@ -49,7 +49,7 @@ class CapturePresenter : CapturePresentationLogic {
     }
 
     override fun presentRequestCaptureOptions(response: CaptureModels.RequestCaptureOptions.Response) {
-        var capturingOptions: ICaptureOptions
+        val capturingOptions: CaptureOptions
         if(response.handlerType == CaptureModels.CaptureHanlderType.FACIAL){
             capturingOptions = FaceCaptureOptions()
             capturingOptions.challengeInterDelay = response.options.challengeInterDelay
@@ -61,9 +61,9 @@ class CapturePresenter : CapturePresentationLogic {
         capturingOptions.bioCaptureMode = response.options.captureMode
         capturingOptions.torch = response.options.torch
         capturingOptions.captureTimeout = response.options.timeout
-        capturingOptions.captureImageTimeout = -1
+        capturingOptions.captureImageTimeout = response.options.timeout - 3
         capturingOptions.overlay = response.options.overlay
-        capturingOptions.logLevel = LogLevel.DISABLE
+        capturingOptions.logLevel = LogLevel.DEBUG
 
         val viewModel = CaptureModels.RequestCaptureOptions.ViewModel(capturingOptions)
         activity!!.displayCaptureOptions(viewModel)
@@ -150,6 +150,7 @@ class CapturePresenter : CapturePresentationLogic {
             CaptureError.BAD_CAPTURE_FACE -> message = "Capture if the face went wrong!"
             CaptureError.BAD_CAPTURE_HAND -> message = "Capture of the hand went wrong!"
             CaptureError.LIVENESS_CHECK -> message = "Liveness check has failed"
+            CaptureError.NOT_ENOUGH_MOVEMENT -> message = "Not enough movement"
             else -> hasMessage = false
         }
         val viewModel = CaptureModels.CaptureFailure.ViewModel(response.captureError, response.biometricInfo, response.bundle, hasMessage, message)

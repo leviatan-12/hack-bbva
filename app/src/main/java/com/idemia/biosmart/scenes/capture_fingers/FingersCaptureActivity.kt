@@ -70,9 +70,6 @@ class FingersCaptureActivity : FingersActivity() {
         Log.i(TAG, "displayCaptureFinish()")
         Toast.makeText(applicationContext, getString(R.string.label_capture_finished) ,Toast.LENGTH_LONG).show()
         uiOnSuccess()
-        stopCapture()
-        // TODO: Verify if app needs to capture other hand!
-        // startCountdown()
     }
     //endregion
 
