@@ -145,9 +145,11 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     //region BIO SMART - Bio Capture Result Listener
     override fun onCaptureFinish() {
-        Log.i(TAG, "onCaptureFinish: Capture finished")
-        captureHandler?.stopCapture()   // Stop Capture on finish
-        captureHandler?.stopPreview()   // Stop preview on finish
+        Log.i(TAG, "onCaptureFinish: Capture finished with status -> ${captureHandler?.captureStatus}")
+        if(captureHandler?.captureStatus != CaptureHandlerStatus.STOP){
+            captureHandler?.stopCapture()   // Stop Capture on finish
+            captureHandler?.stopPreview()   // Stop preview on finish
+        }
         val response = CaptureModels.CaptureFinish.Response()
         presenter.presentCaptureFinish(response)
     }
@@ -177,12 +179,14 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     //endregion
 
     override fun destroyHandlers(request: CaptureModels.DestroyHandlers.Request) {
-        // Dispose everything
-        DisposableManager.clear()
-
         // Destroy capture handler and matcher handler
-        captureHandler?.destroy()
-        matcherHandler?.destroy()
+        Log.i(TAG, "destroyHandlers: Capture status is -> ${captureHandler?.captureStatus}")
+        try {
+            matcherHandler?.destroy()
+            captureHandler?.destroy()
+        }catch (e: Exception){
+            Log.e(TAG, "destroyHandlers: ${e.message} - ${e.localizedMessage}")
+        }
 
         val response = CaptureModels.DestroyHandlers.Response()
         presenter.presentDestroyHandlers(response)

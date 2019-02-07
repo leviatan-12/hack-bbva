@@ -116,6 +116,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
                 matchPersonToPersonDataFragment.bind(
                     viewModel.identifyResponse.matchPersonToPerson.candidates,
                     viewModel.identifyResponse.matchPersonToPerson.noHitRank)
+                loader?.dismiss()
                 search(candidateId)
             }
             400 -> {
@@ -141,7 +142,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
      * Search User in DB
      */
     private fun search(username: String) {
-        loader = IDMProgress(this, "Getting User Info", "Please Wait...").kProgress
+        loader = IDMProgress(this, "Getting User Info", getString(R.string.label_please_wait)).kProgress
         loader?.show()
         val searchPersonRequest = UserInfoModels.SearchPersonRequest(username, 1)
         val request = UserInfoModels.Search.Request(this@UserInfoActivity, searchPersonRequest)

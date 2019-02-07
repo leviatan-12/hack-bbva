@@ -121,10 +121,9 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region ANDROID - onDestroy
     override fun onDestroy() {
+        destroyHandlers()           // Destroy handlers
+        surfaceView.onDestroy()     // Destroy surface view
         super.onDestroy()
-        destroyHandlers()
-        // Destroy surface view
-        surfaceView.onDestroy()
     }
     //endregion
 
@@ -204,6 +203,7 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
 
     //region USE CASE - Destroy Handlers
     private fun destroyHandlers() {
+        Log.i(TAG, "destroyHandlers()")
         val request = CaptureModels.DestroyHandlers.Request()
         interactor.destroyHandlers(request)
     }

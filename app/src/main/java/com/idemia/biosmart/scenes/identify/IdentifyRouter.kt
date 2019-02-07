@@ -47,6 +47,7 @@ class IdentifyRouter : IdentifyRoutingLogic {
             AppCache.username = UUID.randomUUID().toString() // RANDOM USER ID
             intent.putExtra(UserInfoActivity.KEY_OPERATION_TYPE, operation)
             activity!!.get()!!.startActivity(intent)
+            activity!!.get()!!.finish()
         }
     }
 }

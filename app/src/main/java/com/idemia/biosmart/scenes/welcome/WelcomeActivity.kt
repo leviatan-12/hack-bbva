@@ -16,7 +16,7 @@ import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.IDMProgress
-import com.morpho.mph_bio_sdk.android.sdk.common.BioSdkInfo
+import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -50,7 +50,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         setSupportActionBar(bottom_app_bar)
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, "")
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
-        val sdkInfo = BioSdkInfo(applicationContext)
+        val sdkInfo = BioSdk.getInfo(applicationContext)
         text_view_sdk_version.text = sdkInfo.version
 
         // Linear Layout

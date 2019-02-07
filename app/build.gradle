@@ -45,11 +45,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // Bio Smart SDK
-    implementation(name: "AndroidBiometricSDK-4.7.0-biometry_document", ext: "aar")
-    //implementation(name: "AndroidBiometricSDK-lkms-biometry-release", ext: "aar")
+    implementation(name: "AndroidBiometricSDK-4.13.0-biometry_document", ext: "aar")
     implementation(name: "lkms_core-1.2.5", ext: "aar")
     implementation 'net.zetetic:android-database-sqlcipher:3.5.2'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
     // Third Party Dependencies
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
