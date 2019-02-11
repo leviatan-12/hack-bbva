@@ -30,7 +30,7 @@ class CaptureWorker {
         val preferenceManager = request.activity.preferenceManager
         val camera = preferenceManager.getBoolean("IDEMIA_KEY_USE_CAMERA_REAR", true)
         val torch = preferenceManager.getBoolean("IDEMIA_KEY_USE_TORCH", true)
-        val overlay = preferenceManager.getBoolean("IDEMIA_KEY_USE_OVERLAY", true)
+        var overlay = preferenceManager.getBoolean("IDEMIA_KEY_USE_OVERLAY", true)
         val timeout = preferenceManager.getString("IDEMIA_KEY_CAPTURE_TIMEOUT", "10")
         val faceCaptureMode = preferenceManager.getString("IDEMIA_KEY_FACE_CAPTURE_MODE","")
         val fingersCaptureMode = preferenceManager.getString("IDEMIA_KEY_FINGERS_CAPTURE_MODE","")
@@ -39,6 +39,7 @@ class CaptureWorker {
         when(request.handlerType){
             CaptureModels.CaptureHanlderType.FACIAL -> {
                 captureMode = selectFaceCaptureMode(faceCaptureMode!!)
+                overlay = false // Overlay for face is always disabled!
             }
             CaptureModels.CaptureHanlderType.FINGERS -> {
                 captureMode = selectFingersCaptureMode(fingersCaptureMode!!)
@@ -55,14 +56,22 @@ class CaptureWorker {
 
     private fun selectFaceCaptureMode(mode: String): BioCaptureMode {
         when(mode){
+            // Challenge
+            "TRACK_FACE_DEFAULT" -> return BioCaptureMode.TRACK_FACE_DEFAULT
             "TRACK_FACE_CHALLENGE_VERY_LOW" -> return BioCaptureMode.TRACK_FACE_CHALLENGE_VERY_LOW
             "TRACK_FACE_CHALLENGE_LOW" -> return BioCaptureMode.TRACK_FACE_CHALLENGE_LOW
             "TRACK_FACE_CHALLENGE_MEDIUM" -> return BioCaptureMode.TRACK_FACE_CHALLENGE_MEDIUM
             "TRACK_FACE_CHALLENGE_HIGH" -> return BioCaptureMode.TRACK_FACE_CHALLENGE_HIGH
             "TRACK_FACE_CHALLENGE_VERY_HIGH" -> return BioCaptureMode.TRACK_FACE_CHALLENGE_VERY_HIGH
+            // Liveness
             "TRACK_FACE_LIVENESS_LOW" -> return BioCaptureMode.TRACK_FACE_LIVENESS_LOW
             "TRACK_FACE_LIVENESS_MEDIUM" -> return BioCaptureMode.TRACK_FACE_LIVENESS_MEDIUM
             "TRACK_FACE_LIVENESS_HIGH" -> return BioCaptureMode.TRACK_FACE_LIVENESS_HIGH
+            // CDR2
+            "TRACK_FACE_CR2D_LOW" -> return BioCaptureMode.TRACK_FACE_CR2D_LOW
+            "TRACK_FACE_CR2D_MEDIUM" -> return BioCaptureMode.TRACK_FACE_CR2D_MEDIUM
+            "TRACK_FACE_CR2D_HIGH" -> return BioCaptureMode.TRACK_FACE_CR2D_HIGH
+            // Default
             else -> return BioCaptureMode.TRACK_FACE_DEFAULT
         }
     }

@@ -44,7 +44,9 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region BASE ACTIVITY - On load activity
     override fun onLoadActivity(savedInstanceState: Bundle?) {
-        val operation = intent.getIntExtra(KEY_OPERATION_TYPE, 0x00)
+        initButton()    // Init ui button
+
+        val operation = intent.getIntExtra(KEY_OPERATION_TYPE, 0x00)    // Select operation type
         verifyOperationType(operation)
     }
     //endregion
@@ -82,17 +84,23 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
                 search(candidateId!!)
             }
             400 -> {
-                showToast(getString(R.string.fatal_user_biometry_info_incomplete))
+                val message = getString(R.string.fatal_user_biometry_info_incomplete)
+                showToast(message)
+                tv_message_response.text = message
                 loader?.dismiss()
                 finish()
             }
             404 -> {
-                showToast(viewModel.authenticationResponse.authenticatePerson!!.message)
+                val message = viewModel.authenticationResponse.authenticatePerson!!.message
+                showToast(message)
+                tv_message_response.text = message
                 userInfoTechnicalDetailsFragment.bind(viewModel.authenticationResponse)
                 loader?.dismiss()
             }
             else -> {
-                showToast(getString(R.string.fatal_unknown_error, "Error on displayAuthenticateUser() method"))
+                val message = getString(R.string.fatal_unknown_error, "Error on displayAuthenticateUser() method")
+                showToast(message)
+                tv_message_response.text = message
                 loader?.dismiss()
             }
         }
@@ -120,17 +128,23 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
                 search(candidateId)
             }
             400 -> {
-                showToast(getString(R.string.fatal_user_biometry_info_incomplete))
+                val message = getString(R.string.fatal_user_biometry_info_incomplete)
+                showToast(message)
+                tv_message_response.text = message
                 loader?.dismiss()
                 finish()
             }
             404 -> {
-                showToast(viewModel.identifyResponse.message)
+                val message = viewModel.identifyResponse.message
+                showToast(message)
+                tv_message_response.text = message
                 userInfoTechnicalDetailsFragment.bind(viewModel.identifyResponse)
                 loader?.dismiss()
             }
             else -> {
-                showToast(getString(R.string.fatal_unknown_error, "Error on displayIdentifyUser() method"))
+                val message = getString(R.string.fatal_unknown_error, "Error on displayIdentifyUser() method")
+                showToast(message)
+                tv_message_response.text = message
                 loader?.dismiss()
             }
         }
@@ -151,9 +165,13 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     override fun displaySearch(viewModel: UserInfoModels.Search.ViewModel) {
         if(viewModel.userFound){
-            displaySearchSuccess(getString(R.string.message_user_found), viewModel.user!!)
+            val message = getString(R.string.message_user_found)
+            displaySearchSuccess(message , viewModel.user!!)
+            tv_message_response.text = getString(R.string.message_user_found)
         }else{
-            displaySearchNotFound(getString(R.string.message_user_not_found))
+            val message = getString(R.string.message_user_not_found)
+            displaySearchNotFound(message)
+            tv_message_response.text = message
         }
     }
 
@@ -171,6 +189,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
     }
 
     private fun displaySearchNotFound(message: String){
+        tv_message_response.text = message
         Toast.makeText(applicationContext, message.toLowerCase().capitalize(), Toast.LENGTH_LONG).show()
         userInfoDataFragment.dataBinding(null)
         loader?.dismiss()
@@ -179,7 +198,9 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region USE CASE - Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
-        Toast.makeText(applicationContext, viewModel.throwable.localizedMessage, Toast.LENGTH_LONG).show()
+        val message = viewModel.throwable.localizedMessage
+        tv_message_response.text = message
+        Toast.makeText(applicationContext, message , Toast.LENGTH_LONG).show()
         loader?.dismiss()
         finish()
     }
@@ -198,6 +219,14 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
         }
         view_pager.adapter = viewPageUserInfoAdapter
         tab_layout.setupWithViewPager(view_pager)
+    }
+    //endregion
+
+    //region UI - Init ui button
+    private fun initButton(){
+        button_finish.setOnClickListener {
+            finish()
+        }
     }
     //endregion
 

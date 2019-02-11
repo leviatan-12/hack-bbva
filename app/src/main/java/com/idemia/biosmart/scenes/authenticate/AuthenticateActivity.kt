@@ -42,6 +42,7 @@ class AuthenticateActivity : BaseActivity(), AuthenticateDisplayLogic {
     //region ANDROID - On Resume
     override fun onResume() {
         super.onResume()
+        DisposableManager.clear()                   // Dispose all
         addObservableToUsernameTextField()
 
         // TODO: Create a use case "retrieve selfie"

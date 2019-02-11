@@ -65,6 +65,9 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
                 CaptureModels.CaptureHanlderType.FINGERS ->
                     captureHandler = createFingersCaptureHandler(mCaptureHandler)
             }
+            if(handlerType == CaptureModels.CaptureHanlderType.FACIAL) { // Start preview only for face
+                captureHandler?.startPreview()  // Start preview after create handler
+            }
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
@@ -111,7 +114,9 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     override fun startCapture(request: CaptureModels.StartCapture.Request) {
         captureHandler?.let { captureHandler ->
             try {
-                captureHandler.startPreview()
+                if(captureHandler.captureStatus != CaptureHandlerStatus.PREVIEW){
+                    captureHandler.startPreview()
+                }
                 captureHandler.startCapture()
             }catch (e: Exception){
                 val response = CaptureModels.Error.Request(e)
@@ -123,7 +128,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
 
     override fun stopCapture(request: CaptureModels.StopCapture.Request) {
         captureHandler?.let {
-            if(it.captureStatus == CaptureHandlerStatus.CAPTURE || it.captureStatus ==  CaptureHandlerStatus.PREVIEW){
+            if(it.captureStatus == CaptureHandlerStatus.CAPTURE || it.captureStatus ==  CaptureHandlerStatus.PREVIEW) {
                 try {
                     it.stopCapture()
                     it.stopPreview()
@@ -147,11 +152,18 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     override fun onCaptureFinish() {
         Log.i(TAG, "onCaptureFinish: Capture finished with status -> ${captureHandler?.captureStatus}")
         if(captureHandler?.captureStatus != CaptureHandlerStatus.STOP){
-            captureHandler?.stopCapture()   // Stop Capture on finish
-            captureHandler?.stopPreview()   // Stop preview on finish
+            try{
+                captureHandler?.stopCapture()   // Stop Capture on finish
+                Log.i(TAG, "onCaptureFinish: Capture handler status -> ${captureHandler?.captureStatus}")
+                captureHandler?.stopPreview()   // Stop preview on finish
+
+                val response = CaptureModels.CaptureFinish.Response()
+                presenter.presentCaptureFinish(response)
+            }catch (e: Exception){
+                val response = CaptureModels.Error.Request(e)
+                showError(response)
+            }
         }
-        val response = CaptureModels.CaptureFinish.Response()
-        presenter.presentCaptureFinish(response)
     }
 
     override fun onCaptureSuccess(morphoImages: MutableList<MorphoImage>?) {
@@ -183,11 +195,12 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
         Log.i(TAG, "destroyHandlers: Capture status is -> ${captureHandler?.captureStatus}")
         try {
             matcherHandler?.destroy()
+            matcherHandler = null
             captureHandler?.destroy()
+            captureHandler = null
         }catch (e: Exception){
             Log.e(TAG, "destroyHandlers: ${e.message} - ${e.localizedMessage}")
         }
-
         val response = CaptureModels.DestroyHandlers.Response()
         presenter.presentDestroyHandlers(response)
     }

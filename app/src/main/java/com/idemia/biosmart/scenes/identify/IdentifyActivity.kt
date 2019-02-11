@@ -39,7 +39,13 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
 
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }
-        button_start_process.setOnClickListener { goToNextScene(IdentifyModels.Operation.START_PROCESS) }
+        button_start_process.setOnClickListener {
+            if(isDataValid()){
+                goToNextScene(IdentifyModels.Operation.START_PROCESS)
+            }else{
+                showToast(getString(R.string.label_no_biometric_data))
+            }
+        }
         button_capture_fingers.setOnClickListener {
             if(switch_enable_contactless.isChecked)
                 goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS_CONTACTLESS)
@@ -60,12 +66,8 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
 
     //region USECASE - Go to next scene
     private fun goToNextScene(operation: IdentifyModels.Operation){
-        if(isDataValid()){
-            val request = IdentifyModels.GoToNextScene.Request(operation)
-            interactor.goToNextScene(request)
-        }else{
-            showToast(getString(R.string.label_no_biometric_data))
-        }
+        val request = IdentifyModels.GoToNextScene.Request(operation)
+        interactor.goToNextScene(request)
     }
 
     override fun displayGoToNextScene(viewModel: IdentifyModels.GoToNextScene.ViewModel) {
@@ -79,8 +81,7 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     //endregion
 
     private fun isDataValid(): Boolean {
-        // return (AppCache.facePhoto != null || AppCache.imageListLeft!=null || AppCache.imageListRight!=null)
-        return true
+        return (AppCache.facePhoto != null || AppCache.imageListLeft!=null || AppCache.imageListRight!=null)
     }
 }
 

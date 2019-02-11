@@ -21,6 +21,7 @@
     <string name="IDEMIA_KEY_CHALLENGE_INTER_DELAY">IDEMIA_KEY_CHALLENGE_INTER_DELAY</string>
 
     <string-array name="face_capture_mode_values">
+        <item>TRACK_FACE_DEFAULT</item>
         <item>TRACK_FACE_CHALLENGE_VERY_LOW</item>
         <item>TRACK_FACE_CHALLENGE_LOW</item>
         <item>TRACK_FACE_CHALLENGE_MEDIUM</item>
@@ -29,6 +30,9 @@
         <item>TRACK_FACE_LIVENESS_LOW</item>
         <item>TRACK_FACE_LIVENESS_MEDIUM</item>
         <item>TRACK_FACE_LIVENESS_HIGH</item>
+        <!--<item>TRACK_FACE_CR2D_LOW</item>
+        <item>TRACK_FACE_CR2D_MEDIUM</item>
+        <item>TRACK_FACE_CR2D_HIGH</item>-->
     </string-array>
 
     <string-array name="fingers_capture_mode_values">

@@ -15,6 +15,7 @@ class MatchPersonToPersonDataFragment: Fragment(){
     lateinit var mView: View
     val adapter = RecyclerViewAdapter()
     var candidates: ArrayList<Candidate> = arrayListOf()
+    var noHitRank = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,15 +39,16 @@ class MatchPersonToPersonDataFragment: Fragment(){
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(mView.context)
         if (candidates.size > 0 ){
-            bind(candidates, 0)
+            bind(candidates, this.noHitRank)
         }
     }
 
     fun bind(candidates: List<Candidate>, noHitRank: Int){
+        this.noHitRank = noHitRank
         this.candidates = candidates as ArrayList<Candidate>
         adapter.canditates.clear()
         adapter.canditates.addAll(candidates)
         adapter.notifyDataSetChanged()
-        text_view_no_hit_rank?.text = getString(R.string.person_to_person_data_fragment_no_hit_rank, noHitRank)
+        text_view_no_hit_rank?.text = getString(R.string.person_to_person_data_fragment_no_hit_rank, this.noHitRank)
     }
 }

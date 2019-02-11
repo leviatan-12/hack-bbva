@@ -45,14 +45,14 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
                 goToNextScene(EnrolmentModels.Operation.CAPTURE_FINGERS)
             }
         }
-        addObservables()
     }
     //endregion
 
     //region ANDROID - onResume()
     override fun onResume() {
         super.onResume()
-        addObservables()
+        DisposableManager.clear()       // Dispose all
+        addObservables()                // Add observables
 
         // TODO: Create a use case "retrieve selfie"
         AppCache.facePhoto?.let { photo ->
@@ -137,7 +137,9 @@ class EnrolmentActivity : BaseActivity(), EnrolmentDisplayLogic {
 
     private fun isDataValid(): Boolean {
         val dataInfoValid = (isUsernameValid && isLastNameValid && isSecondLastNameValid && isUsernameValid && isNameValid)
-        return (dataInfoValid && (AppCache.facePhoto != null)) || (dataInfoValid && (AppCache.imageListLeft!=null)) || (dataInfoValid && (AppCache.imageListRight!=null))
+        return (dataInfoValid && (AppCache.facePhoto != null)) ||
+                (dataInfoValid && (AppCache.imageListLeft!=null)) ||
+                (dataInfoValid && (AppCache.imageListRight!=null))
     }
     //endregion
 }

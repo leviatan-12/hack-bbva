@@ -83,7 +83,11 @@
 
     <!-- Face Capture -->
     <string name="face_capture_please_wait_for_next_challenge">Waiting for next challenge&#8230;</string>
-    <string name="face_capture_face_capture_scan_id_completed">Face Capture Scan ID Completed</string>
+    <string name="face_capture_face_capture_scan_id_completed">Face capture scan ID completed successfully</string>
+    <string name="face_capture_failed_due">Face capture failed due %1$s</string>
+
+    <!-- Fingers Capture Scene -->
+    <string name="fingers_capture_failed_due">Fingers capture failed due %1$s</string>
 
     <!-- General Labels -->
     <string name="label_NA">N/A</string>
@@ -105,6 +109,7 @@
     <string name="label_no">No</string>
     <string name="label_face_capture">Face Capture</string>
     <string name="label_fingers_capture">Fingers Capture</string>
+    <string name="label_capture_failed_due">Capture failed due %1$s</string>
     <string name="label_dont_show_again">Don\'t show again</string>
     <string name="label_capture_finished">Capture Finished</string>
     <string name="label_error">ERROR: %1$s</string>

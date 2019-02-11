@@ -1,10 +1,8 @@
 package com.idemia.biosmart.scenes.capture_face
 
 import android.graphics.BitmapFactory
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.HandlerThread
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -13,6 +11,7 @@ import android.widget.ImageView
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.face.FaceCaptureActivity
+import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.utils.AppCache
 import kotlinx.android.synthetic.main.activity_capture_face.*
 
@@ -84,10 +83,10 @@ class FaceCaptureActivity : FaceCaptureActivity() {
     override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
         if(viewModel.hasMessage) {
             showToast("Capture Failed due: ${viewModel.message}")
-            tv_feedback_info.text = "Capture Failed due: ${viewModel.message}"
+            tv_feedback_info.text = getString(R.string.label_capture_failed_due, viewModel.message)
         } else{
             showToast("Capture failed due: ${viewModel.captureError?.name}")
-            tv_feedback_info.text = "Capture failed due: ${viewModel.captureError?.name}"
+            tv_feedback_info.text = getString(R.string.label_capture_failed_due, viewModel.captureError?.name)
         }
         errorUi()
     }
@@ -169,8 +168,8 @@ class FaceCaptureActivity : FaceCaptureActivity() {
         runOnUiThread {
             iv_selfie.visibility = View.VISIBLE
             switch_torch.visibility = View.GONE
-            tv_feedback_info.text = getString(R.string.face_capture_face_capture_scan_id_completed)
             tv_feedback_info.visibility = View.VISIBLE
+            tv_feedback_info.text = getString(R.string.face_capture_face_capture_scan_id_completed)
             face_id_mask.visibility = View.INVISIBLE
             button_restart.show()
             button_finish.show()

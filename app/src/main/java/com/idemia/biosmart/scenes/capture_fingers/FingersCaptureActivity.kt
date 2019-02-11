@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.fingers.FingersActivity
+import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.utils.AppCache
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.activity_capture_fingers.*
@@ -42,6 +43,7 @@ class FingersCaptureActivity : FingersActivity() {
         stopCountdown()
     }
     //endregion
+
 
     //region CAPTURE - Ready for capture
     /** When SDK is ready for capture, this method will be executed */
