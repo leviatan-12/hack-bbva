@@ -22,15 +22,21 @@ class UserInfoWorker {
         return IdemiaApiService.create(url)
     }
 
+    //region Authenticate user
     fun authenticateUser(request: UserInfoModels.AuthenticateUser.Request): Observable<Response<AuthenticationResponse>> {
         return apiService(request.activity).authenticate(AppCache.userBiometrics!!)
     }
+    //endregion
 
+    //region Identify user
     fun identifyUser(request: UserInfoModels.IdentifyUser.Request): Observable<Response<IdentifyResponse>>{
         return apiService(request.activity).identify(AppCache.userBiometrics!!)
     }
+    //endregion
 
+    //region Search
     fun search(request: UserInfoModels.Search.Request): Observable<Response<UserInfoModels.Search.Response>> {
         return apiService(request.activity).search(request.searchPersonRequest)
     }
+    //endregion
 }

@@ -14,10 +14,12 @@ class AuthenticateInteractor : AuthenticateBusinessLogic {
         this.presenter = presenter
     }
 
+    //region Go to next scene
     override fun goToNextScene(request: AuthenticateModels.GoToNextScene.Request) {
         val response = AuthenticateModels.GoToNextScene.Response(request.operation)
         presenter.presentGoToNextScene(response)
     }
+    //endregion
 }
 
 

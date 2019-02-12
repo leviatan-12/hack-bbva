@@ -19,6 +19,7 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
         val TAG = "WelcomeInteractor"
     }
 
+    //region Generate license
     override fun generateLicense(request: WelcomeModels.GenerateLicense.Request) {
         // Call WS to generate license file bin (Service Provider)
         worker.generateLicense(request.serviceProviderUrl)?.let { observable ->
@@ -40,7 +41,9 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
             presenter.presentGenerateLicense(response)
         }
     }
+    //endregion
 
+    //region Create LKMS License
     override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
         val disposable = worker.createLKMSLicense(request)
             .subscribeOn(Schedulers.computation())
@@ -55,16 +58,21 @@ class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLo
             })
         DisposableManager.add(disposable)
     }
+    //endregion
 
+    //region Activate LKMS License on device
     override fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request) {
         val response = worker.activateLkmsLicenseOnDevice(request)
         presenter.presentActivateLkmsLicenseOnDevice(response)
     }
+    //endregion
 
+    //region Start Process
     override fun startProcess(request: WelcomeModels.StartEnrollment.Request) {
         val response = WelcomeModels.StartEnrollment.Response(request.operation)
         presenter.presentStartProcess(response)
     }
+    //endregion
 }
 
 

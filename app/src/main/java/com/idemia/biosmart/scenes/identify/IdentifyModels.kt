@@ -21,10 +21,11 @@ class IdentifyModels {
         START_PROCESS
     }
 
-    // Go to next scene
+    //region Go to next scene
     class GoToNextScene {
         class Request(val operation: Operation)
         class Response(val operation: Operation)
         class ViewModel(val operation: Operation)
     }
+    //endregion
 }

@@ -14,28 +14,36 @@ class FingersInfoInteractor : FingersInfoBusinessLogic {
         this.presenter = presenter
     }
 
+    //region Set display this tutorial
     override fun setDisplayThisTutorial(request: FingersInfoModels.SetDisplayThisTutorial.Request) {
         worker.setDisplayThisTutorial(request)
         val response = FingersInfoModels.SetDisplayThisTutorial.Response(request.doNotShowTutorial)
         presenter.presentSetDisplayThisTutorial(response)
     }
+    //endregion
 
+    //region Set capture hands
     override fun setCaptureHands(request: FingersInfoModels.SetCaptureHands.Request) {
         worker.setCaptureHands(request)
         val response = FingersInfoModels.SetCaptureHands.Response(request.captureLeftHand, request.captureRightHand)
         presenter.presentSetCaptureHands(response)
     }
+    //endregion
 
+    //region Display this tutorial
     override fun displayThisTutorial(request: FingersInfoModels.DisplayThisTutorial.Request) {
         val flag = worker.shouldDisplayTutorial(request)
         val response = FingersInfoModels.DisplayThisTutorial.Response(flag)
         presenter.presentDisplayThisTutorial(response)
     }
+    //endregion
 
+    //region Go to next scene
     override fun goToNextScene(request: FingersInfoModels.GoToNextScene.Request) {
         val response = FingersInfoModels.GoToNextScene.Response()
         presenter.presentGoToNextScene(response)
     }
+    //endregion
 }
 
 

@@ -12,17 +12,26 @@ import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
  */
 class WelcomeModels {
 
+    enum class Operation {
+        ENROLMENT,
+        AUTHENTICATION,
+        IDENTIFY,
+        SETTINGS,
+        LICENSE_DETAILS
+    }
+
     class CardMenu(val title: String, val actionTitle: String, val image: Int, val description: String = "",
                    var listener: View.OnClickListener? = null)
 
-    // Generate License use case
+    //region Generate License use case
     class GenerateLicense {
         data class Request(val serviceProviderUrl: String)
         data class Response(var generated: Boolean, var activationData: ByteArray? = null, val throwable: Throwable?= null)
         data class ViewModel(var generated: Boolean = false, var activationData: ByteArray? = null, var message: String = "General Error")
     }
+    //endregion
 
-    // Activate Bin File License to LKMS
+    //region Activate Bin File License to LKMS
     class ActivateBinFileLicenseToLkms {
         /**
          * @param activationData The activation data retrieved from server
@@ -35,26 +44,21 @@ class WelcomeModels {
         data class Response(var activated: Boolean, val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
         data class ViewModel(var activated: Boolean,  val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
     }
+    //endregion
 
-    // Activate Lkms License On Device
+    //region Activate Lkms License On Device
     class ActivateLkmsLicenseOnDevice {
         class Request(val applicationContext: Context)
         data class Response(var isLicenseValid: Boolean, val lkmsLicense: ILkmsLicense? = null)
         data class ViewModel(var isLicenseValid: Boolean, val lkmsLicense: ILkmsLicense? = null)
     }
+    //endregion
 
-    // Start enrolment usecase
+    //region Start enrolment usecase
     class StartEnrollment {
         data class Request(val operation: Operation)
         class Response(val operation: Operation)
         class ViewModel(val operation: Operation)
     }
-
-    enum class Operation{
-        ENROLMENT,
-        AUTHENTICATION,
-        IDENTIFY,
-        SETTINGS,
-        LICENSE_DETAILS
-    }
+    //endregion
 }

@@ -131,7 +131,6 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     }
     //endregion
 
-
     //region USE CASE - Retrieve user data
     private fun retrieveUserData(){
         val request = EnrolmentDetailsModels.RetrieveUserData.Request()

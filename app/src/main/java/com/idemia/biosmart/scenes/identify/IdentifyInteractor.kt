@@ -14,10 +14,12 @@ class IdentifyInteractor : IdentifyBusinessLogic {
         this.presenter = presenter
     }
 
+    //region Go to next scene
     override fun goToNextScene(request: IdentifyModels.GoToNextScene.Request) {
         val response = IdentifyModels.GoToNextScene.Response(request.operation)
         presenter.presentGoToNextScene(response)
     }
+    //endregion
 }
 
 

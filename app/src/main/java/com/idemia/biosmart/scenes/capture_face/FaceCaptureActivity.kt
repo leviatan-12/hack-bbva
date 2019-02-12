@@ -11,7 +11,6 @@ import android.widget.ImageView
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.face.FaceCaptureActivity
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.utils.AppCache
 import kotlinx.android.synthetic.main.activity_capture_face.*
 

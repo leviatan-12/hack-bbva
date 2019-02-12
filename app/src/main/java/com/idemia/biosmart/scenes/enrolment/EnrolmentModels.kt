@@ -14,11 +14,6 @@ class EnrolmentModels {
         REQUEST_CODE_HAND_RIGHT(0x12C)
     }
 
-    enum class HandPosition {
-        LEFT_HAND,
-        RIGHT_HAND
-    }
-
     enum class Operation{
         CAPTURE_FINGERS,
         CAPTURE_FINGERS_CONTACTLESS,
@@ -26,17 +21,19 @@ class EnrolmentModels {
         START_PROCESS
     }
 
-    // Save User Info
+    //region Save User Info
     class SaveUserInfo {
         data class Request(val username: String, val name: String, val lastName: String, val secondLastName: String)
         class Response
         class ViewModel
     }
+    //endregion
 
-    // Go to next scene
+    //region Go to next scene
     class GoToNextScene {
         data class Request(val operation: EnrolmentModels.Operation)
         class Response(val operation: EnrolmentModels.Operation)
         class ViewModel(val operation: EnrolmentModels.Operation)
     }
+    //endregion
 }

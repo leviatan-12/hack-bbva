@@ -16,21 +16,23 @@ class UserInfoModels {
     class SearchPersonDb(val code: Int, val message: String, val user: User?)
     class SearchPersonRequest(val username:String, val os_type: Int, val encrypted: Boolean = false)
 
-    // Authenticate user
+    //region Authenticate user
     class AuthenticateUser {
         class Request(val activity: BaseActivity)
         class Response(val authenticationResponse: AuthenticationResponse)
         class ViewModel(val authenticationResponse: AuthenticationResponse)
     }
+    //endregion
 
-    // Identify user
+    //region Identify user
     class IdentifyUser {
         class Request(val activity: BaseActivity)
         class Response(val identifyResponse: IdentifyResponse)
         class ViewModel(val identifyResponse: IdentifyResponse)
     }
+    //endregion
 
-    // Get Person
+    //region Get Person
     class Search {
         data class Request(val activity: BaseActivity, val searchPersonRequest: SearchPersonRequest)
 
@@ -42,9 +44,12 @@ class UserInfoModels {
 
         class ViewModel(val userFound: Boolean, val user: User? = null)
     }
+    //endregion
 
+    //region Error
     class Error {
         class Response(val throwable: Throwable, val errorCode: Int = -1)
         class ViewModel(val throwable: Throwable, val errorCode: Int = -1)
     }
+    //endregion
 }

@@ -6,10 +6,4 @@ package com.idemia.biosmart.scenes.authenticate;
  *  Created by alfredo on 12/17/18.
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
-class AuthenticateWorker {
-    /**
-     * Make your WS calls here
-     */
-    fun doSomething() {
-    }
-}
+class AuthenticateWorker

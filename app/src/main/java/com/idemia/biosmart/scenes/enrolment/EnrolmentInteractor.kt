@@ -14,16 +14,20 @@ class EnrolmentInteractor : EnrolmentBusinessLogic {
         this.presenter = presenter
     }
 
+    //region Save User Info
     override fun saveUserInfo(request: EnrolmentModels.SaveUserInfo.Request) {
         worker.saveUserInfo(request)
         val response = EnrolmentModels.SaveUserInfo.Response()
         presenter.presentSaveUserInfo(response)
     }
+    //endregion
 
+    //region Go to next scene
     override fun goToNextScene(request: EnrolmentModels.GoToNextScene.Request) {
         val response = EnrolmentModels.GoToNextScene.Response(request.operation)
         presenter.presentGoToNextScene(response)
     }
+    //endregion
 }
 
 

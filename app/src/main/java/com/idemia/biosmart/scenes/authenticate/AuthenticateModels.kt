@@ -21,10 +21,12 @@ class AuthenticateModels {
         START_PROCESS
     }
 
-    // Go to next scene
+    //region Go to next scene
+    //
     class GoToNextScene {
         data class Request(val operation: AuthenticateModels.Operation)
         class Response(val operation: AuthenticateModels.Operation)
         class ViewModel(val operation: AuthenticateModels.Operation)
     }
+    //endregion
 }

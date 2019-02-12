@@ -26,6 +26,7 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
+    //region ANDROID - onResume
     override fun onResume() {
         super.onResume()
 
@@ -36,7 +37,9 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
             image_view_selfie.setImageBitmap(bmp)
         }
     }
+    //endregion
 
+    //region BASE ACTIVITY - onLoadActivity()
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         float_button_selfie.setOnClickListener { goToNextScene(IdentifyModels.Operation.CAPTURE_FACE) }
         button_start_process.setOnClickListener {
@@ -53,7 +56,9 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
                 goToNextScene(IdentifyModels.Operation.CAPTURE_FINGERS)
         }
     }
+    //endregion
 
+    //region BASE ACTIVITY - A "dependency injection"
     override fun inject() {
         val activity = this
         this.interactor = IdentifyInteractor()
@@ -63,6 +68,7 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
         presenter.setActivity(activity)
         (router as IdentifyRouter).setActivity(this)
     }
+    //endregion
 
     //region USECASE - Go to next scene
     private fun goToNextScene(operation: IdentifyModels.Operation){
@@ -80,9 +86,11 @@ class IdentifyActivity : BaseActivity(), IdentifyDisplayLogic {
     }
     //endregion
 
+    //region UI - Is data valid
     private fun isDataValid(): Boolean {
         return (AppCache.facePhoto != null || AppCache.imageListLeft!=null || AppCache.imageListRight!=null)
     }
+    //endregion
 }
 
 /**

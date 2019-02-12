@@ -15,44 +15,50 @@ import com.idemia.biosmart.models.UserData
  */
 class EnrolmentDetailsModels {
 
-    // Retrieve User Info
+    //region Retrieve User Info
     class RetrieveUserInfo{
         class Request
         data class Response(val userBiometrics: UserBiometrics)
         data class ViewModel(val userBiometrics: UserBiometrics)
     }
+    //endregion
 
-    // Display User Info
+    //region Display User Info
     class DisplayUserPhoto {
         class Request
         data class Response(val photoAvailable: Boolean, val image: ByteArray? = null)
         data class ViewModel(val photoAvailable: Boolean, val bitmap: Bitmap? = null)
     }
+    //endregion
 
-    // Enrol Person
+    //region Enrol Person
     class EnrolPerson {
         data class Request(val activity: BaseActivity, val userBiometrics: UserBiometrics)
         data class Response(val enrolmentResponse: EnrolmentResponse)
         data class ViewModel(val enrolmentResponse: EnrolmentResponse)
     }
+    //endregion
 
-    // Retrieve User Data
+    //region Retrieve User Data
     class RetrieveUserData{
         class Request
         data class Response(val userData: UserData)
         data class ViewModel(val userData: UserData)
     }
+    //endregion
 
-    // Create Person
+    //region Create Person
     class CreatePerson {
         data class Request(val activity: BaseActivity, val userData: UserData)
         class Response(val createPersonResponse: CreatePersonResponse)
         class ViewModel(val createPersonResponse: CreatePersonResponse)
     }
+    //endregion
 
-    // Error
+    //region Error
     class Error {
         class Response(val throwable: Throwable, val errorCode: Int = -1)
         class ViewModel(val throwable: Throwable, val errorCode: Int = -1)
     }
+    //endregion
 }

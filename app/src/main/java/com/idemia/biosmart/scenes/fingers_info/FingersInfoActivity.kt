@@ -24,6 +24,7 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
     override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
+    //region BASE ACTIVITY - onLoadActivity()
     override fun onLoadActivity(savedInstanceState: Bundle?) {
         button_start_process.setOnClickListener { goToNextScene() }
         switch_dont_show_again.setOnCheckedChangeListener { _, isChecked ->
@@ -33,6 +34,7 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
         }
         shouldDisplayThisTutorial()
     }
+    //endregion
 
     //region BASE ACTIVITY - A "dependency injection"
     override fun inject() {
@@ -83,7 +85,6 @@ class FingersInfoActivity : BaseActivity(), FingersInfoDisplayLogic {
         finish()
     }
     //endregion
-
 
     //region USECASE - Set Capture Hands
     private fun setCaptureHands(){

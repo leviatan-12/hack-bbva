@@ -9,24 +9,28 @@ import com.idemia.biosmart.base.android.BaseActivity
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 class FaceInfoModels {
-    // Go Next Scene
+
+    //region Go Next Scene
     class GoToNextScene {
         class Request
         class Response
         class ViewModel
     }
+    //endregion
 
-    // Display This Tutorial
+    //region Display This Tutorial
     class DisplayThisTutorial {
         data class Request(val activity: BaseActivity)
         data class Response(val doNotShowAgain: Boolean)
         data class ViewModel(val doNotShowAgain: Boolean)
     }
+    //endregion
 
-    // Set Display This Tutorial
+    //region Set Display This Tutorial
     class SetDisplayThisTutorial{
         data class Request(val activity: BaseActivity, val doNotShowTutorial: Boolean)
         class Response(val doNotShowAgain: Boolean)
         class ViewModel(val doNotShowAgain: Boolean)
     }
+    //endregion
 }

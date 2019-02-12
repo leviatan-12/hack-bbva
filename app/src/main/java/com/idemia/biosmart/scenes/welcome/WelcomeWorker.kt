@@ -22,12 +22,13 @@ import java.lang.Exception
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class WelcomeWorker {
+
     companion object {
         val TAG = "WelcomeWorker"
         var throwable: Throwable? = null
     }
 
-    /** Generate license */
+    //region Generate License
     fun generateLicense(url: String): Observable<ResponseBody>?{
         try {
             val apiService = SDKApiService.create(url)
@@ -40,8 +41,9 @@ class WelcomeWorker {
             return null
         }
     }
+    //endregion
 
-    /** Create LKMS License */
+    //region Create LKMS License
     fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request): Single<ILkmsLicense>{
         val licenseManager = BioSdk.createLicenseManager(request.applicationContext)
         return Single.create<ILkmsLicense> { emitter ->
@@ -65,7 +67,9 @@ class WelcomeWorker {
                 })
         }
     }
+    //endregion
 
+    //region Activate LKMS License on device
     fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request): WelcomeModels.ActivateLkmsLicenseOnDevice.Response{
         val licenseManager = BioSdk.createLicenseManager(request.applicationContext)
         try{
@@ -78,8 +82,10 @@ class WelcomeWorker {
         }
         return WelcomeModels.ActivateLkmsLicenseOnDevice.Response(false)
     }
+    //endregion
 
-    private fun networkSettings(): NetworkSettings{
+    //region Network Settings
+    private fun networkSettings(): NetworkSettings {
         val networkSettings = NetworkSettings()
         networkSettings.timeoutInSeconds = 60
         networkSettings.sslSocketFactory = null
@@ -87,4 +93,5 @@ class WelcomeWorker {
         networkSettings.hostNameVerifier = null
         return networkSettings
     }
+    //endregion
 }

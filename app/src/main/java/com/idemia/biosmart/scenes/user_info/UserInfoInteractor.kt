@@ -24,6 +24,7 @@ class UserInfoInteractor : UserInfoBusinessLogic {
         this.presenter = presenter
     }
 
+    //region Authenticate user
     override fun authenticateUser(request: UserInfoModels.AuthenticateUser.Request) {
         DisposableManager.add(
             worker.authenticateUser(request)
@@ -39,7 +40,9 @@ class UserInfoInteractor : UserInfoBusinessLogic {
                     }
                 })
     }
+    //endregion
 
+    //region Identify user
     override fun identifyUser(request: UserInfoModels.IdentifyUser.Request) {
         DisposableManager.add(
             worker.identifyUser(request)
@@ -56,7 +59,9 @@ class UserInfoInteractor : UserInfoBusinessLogic {
                 }
         )
     }
+    //endregion
 
+    //region Search
     override fun search(request: UserInfoModels.Search.Request) {
         DisposableManager.add(worker.search(request).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
@@ -65,6 +70,7 @@ class UserInfoInteractor : UserInfoBusinessLogic {
                 presenter.presentError(UserInfoModels.Error.Response(throwable))
             }))
     }
+    //endregion
 }
 
 /**

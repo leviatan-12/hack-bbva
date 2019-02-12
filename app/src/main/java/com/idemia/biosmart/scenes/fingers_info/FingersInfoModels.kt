@@ -9,31 +9,36 @@ import com.idemia.biosmart.base.android.BaseActivity
  *  Copyright (c) 2019 Alfredo. All rights reserved.
  */
 class FingersInfoModels {
-    // Go To next Scene
+
+    //region Go To next Scene
     class GoToNextScene {
         class Request
         class Response
         class ViewModel
     }
+    //endregion
 
-    // Display This Tutorial
+    //region Display This Tutorial
     class DisplayThisTutorial {
         data class Request(val activity: BaseActivity)
         data class Response(val doNotShowAgain: Boolean)
         data class ViewModel(val doNotShowAgain: Boolean)
     }
+    //endregion
 
-    // Set Display This Tutorial
+    //region Set Display This Tutorial
     class SetDisplayThisTutorial{
         data class Request(val activity: BaseActivity, val doNotShowTutorial: Boolean)
         class Response(val doNotShowAgain: Boolean)
         class ViewModel(val doNotShowAgain: Boolean)
     }
+    //endregion
 
-    // Set Capture Hands
+    //region Set Capture Hands
     class SetCaptureHands {
         data class Request(val activity: BaseActivity, val captureLeftHand: Boolean, val captureRightHand: Boolean)
         data class Response(val captureLeftHand: Boolean, val captureRightHand: Boolean)
         data class ViewModel(val captureLeftHand: Boolean, val captureRightHand: Boolean)
     }
+    //endregion
 }

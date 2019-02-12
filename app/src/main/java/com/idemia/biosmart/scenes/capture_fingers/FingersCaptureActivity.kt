@@ -44,7 +44,6 @@ class FingersCaptureActivity : FingersActivity() {
     }
     //endregion
 
-
     //region CAPTURE - Ready for capture
     /** When SDK is ready for capture, this method will be executed */
     override fun readyForCapture() {
