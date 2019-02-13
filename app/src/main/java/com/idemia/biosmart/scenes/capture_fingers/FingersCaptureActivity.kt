@@ -10,6 +10,7 @@ import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.fingers.FingersActivity
 import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.scenes.capture_fingers.view.fragments.FingersFragment
 import com.idemia.biosmart.utils.AppCache
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.activity_capture_fingers.*
@@ -86,7 +87,7 @@ class FingersCaptureActivity : FingersActivity() {
                     (AppCache.imageListLeft as ArrayList).add(imageList[2])
                     (AppCache.imageListLeft as ArrayList).add(imageList[3])
                     leftHandTaken = true
-                    startCountdown()    // FIX FOR NOW...
+                    showFingersCaptured(AppCache.imageListLeft)
                 }else{
                     AppCache.imageListLeft = null
                 }
@@ -98,7 +99,7 @@ class FingersCaptureActivity : FingersActivity() {
                     (AppCache.imageListRight as ArrayList).add(imageList[2])
                     (AppCache.imageListRight as ArrayList).add(imageList[3])
                     rightHandTaken = true
-                    startCountdown()    // FIX FOR NOW...
+                    showFingersCaptured(AppCache.imageListRight)
                 }else{
                     AppCache.imageListRight = null
                 }
@@ -148,12 +149,14 @@ class FingersCaptureActivity : FingersActivity() {
         switch_torch.setOnCheckedChangeListener { _ , _ ->
             useTorch()
         }
+        // fragment_fingers.view?.visibility = View.GONE
     }
     //endregion
 
     //region UI - Ui on success
     private fun uiOnSuccess(){
         text_view_feedback_info.visibility = View.GONE
+        fragment_fingers.view?.visibility = View.VISIBLE
         button_finish.show()
         setResult(Activity.RESULT_OK)
     }
@@ -198,6 +201,15 @@ class FingersCaptureActivity : FingersActivity() {
         }
     }
     //endregion
+
+    private fun showFingersCaptured(imageList: List<MorphoImage>?){
+        // TODO: Display image list on screen
+        imageList?.let { images ->
+            // fragment_fingers.bind(ArrayList(images))
+            // fragment_fingers.view?.visibility = View.VISIBLE
+        }
+        // TODO: Add action button to continue capture
+    }
 
     //region UI - Stop Countdown
     private fun stopCountdown(){
