@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.idemia.biosmart.R
 import com.idemia.biosmart.scenes.capture_fingers.view.adapters.FingersListAdapter
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
-import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.fingers_fragment.*
 
 class FingersFragment : Fragment() {
@@ -24,7 +23,6 @@ class FingersFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        addBlurEffect(container)
         mView  = inflater.inflate(R.layout.fingers_fragment, container, false)
         return mView
     }
@@ -32,18 +30,6 @@ class FingersFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         onLoadFragment()
-    }
-
-    private fun addBlurEffect(view: ViewGroup?){
-        view?.let {
-            Blurry.with(context)
-                .radius(10)
-                .sampling(8)
-                .color(Color.argb(66, 255, 255, 0))
-                .async()
-                .animate(500)
-                .onto(it)
-        }
     }
 
     private fun onLoadFragment(){

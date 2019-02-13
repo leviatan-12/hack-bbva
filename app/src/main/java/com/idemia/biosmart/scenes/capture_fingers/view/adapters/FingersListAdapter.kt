@@ -22,17 +22,31 @@ class FingersListAdapter: RecyclerView.Adapter<FingersListAdapter.ViewHolder>(){
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = 4 //imageList.size
+    override fun getItemCount(): Int = imageList.size
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        //val bitmap = BitmapHelper.byteArrayToBitmap(imageList[position].jpegImage)
-        //viewHolder.fingerImage.setImageBitmap(bitmap)
-        //viewHolder.fingerName.text = imageList[0].biometricLocation.name
-        viewHolder.fingerName.text = "Finger name example"
+        val bitmap = BitmapHelper.byteArrayToBitmap(imageList[position].jpegImage)
+        viewHolder.fingerImage.setImageBitmap(bitmap)
+        viewHolder.fingerName.text = fingerName(imageList[position])
     }
 
     class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
         val fingerImage = itemView.iv_finger
         val fingerName =  itemView.tv_finger_name
+    }
+
+    private fun fingerName(image: MorphoImage): String {
+        when(image.biometricLocation.name){
+            "FINGER_LEFT_INDEX" -> return "Left Index"
+            "FINGER_LEFT_MIDDLE" -> return "Left Middle"
+            "FINGER_LEFT_RING" -> return "Left Ring"
+            "FINGER_LEFT_LITTLE" -> return "Left Little"
+
+            "FINGER_RIGHT_INDEX" -> return "Right Index"
+            "FINGER_RIGHT_MIDDLE" -> return "Right Middle"
+            "FINGER_RIGHT_RING" -> return "Right Ring"
+            "FINGER_RIGHT_LITTLE" -> return "Right Little"
+            else -> return image.biometricLocation.name
+        }
     }
 }

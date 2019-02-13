@@ -1,6 +1,5 @@
 package com.idemia.biosmart.scenes.capture_fingers
 
-import android.app.Activity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -9,7 +8,6 @@ import android.widget.Toast
 import com.idemia.biosmart.R
 import com.idemia.biosmart.base.bio_smart.capture.CaptureModels
 import com.idemia.biosmart.base.bio_smart.fingers.FingersActivity
-import com.idemia.biosmart.base.utils.DisposableManager
 import com.idemia.biosmart.scenes.capture_fingers.view.fragments.FingersFragment
 import com.idemia.biosmart.utils.AppCache
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
@@ -25,6 +23,8 @@ class FingersCaptureActivity : FingersActivity() {
     override fun surfaceViewLayout(): Int = R.id.morpho_surface_view
 
     private var countDownTimer: CountDownTimer? = null
+    private var fingersFragment = FingersFragment()
+    private val fragmentManager = supportFragmentManager
 
     private var leftHandTaken = false
     private var rightHandTaken = false
@@ -36,6 +36,8 @@ class FingersCaptureActivity : FingersActivity() {
         super.onLoadActivity(savedInstanceState)
         whichHandsToCapture()   // Load which hands to capture?
         initUi()                // init ui
+        addOnClickListeners()   // Add on click listeners
+        addFingersFragment()   // Add fingers fragment
     }
 
     //region ANDROID - OnPause
@@ -88,7 +90,7 @@ class FingersCaptureActivity : FingersActivity() {
                     (AppCache.imageListLeft as ArrayList).add(imageList[3])
                     leftHandTaken = true
                     showFingersCaptured(AppCache.imageListLeft)
-                }else{
+                }else {
                     AppCache.imageListLeft = null
                 }
             }else if(!capturingLeftHand) {
@@ -100,11 +102,12 @@ class FingersCaptureActivity : FingersActivity() {
                     (AppCache.imageListRight as ArrayList).add(imageList[3])
                     rightHandTaken = true
                     showFingersCaptured(AppCache.imageListRight)
-                }else{
+                }else {
                     AppCache.imageListRight = null
                 }
             }else {
                 Log.e(TAG, "No left/right hand to retrieve images")
+                finish()
             }
         }
     }
@@ -114,7 +117,9 @@ class FingersCaptureActivity : FingersActivity() {
     override fun displayCaptureFailure(viewModel: CaptureModels.CaptureFailure.ViewModel) {
         Log.e(TAG, "${viewModel.captureError?.name} - Error code: ${viewModel.captureError?.ordinal}")
         viewModel.captureError?.let { error ->
-            Toast.makeText(applicationContext, getString(R.string.label_error, error.name), Toast.LENGTH_LONG).show()
+            if(error.ordinal != 4){ // CAPTURE TIME OUT
+                Toast.makeText(applicationContext, getString(R.string.label_error, error.name), Toast.LENGTH_LONG).show()
+            }
         }
     }
     //endregion
@@ -141,43 +146,46 @@ class FingersCaptureActivity : FingersActivity() {
     //region UI - Init Ui
     private fun initUi(){
         tv_countdown.visibility = View.GONE
+        ll_buttons.visibility = View.GONE
+        fragment_container.visibility = View.GONE
         text_view_feedback_info.visibility = View.VISIBLE
-        button_finish.hide()
+        hideFingersFragment()
+    }
+    //endregion
+
+    //region UI - Add on click listeners
+    private fun addOnClickListeners() {
         button_finish.setOnClickListener {
-            finish()
+            initUi()
+            startCountdown()
         }
-        switch_torch.setOnCheckedChangeListener { _ , _ ->
-            useTorch()
-        }
-        // fragment_fingers.view?.visibility = View.GONE
+        button_restart.setOnClickListener {  restartCapture() }
+        switch_torch.setOnCheckedChangeListener { _ , _ -> useTorch() }
     }
     //endregion
 
     //region UI - Ui on success
     private fun uiOnSuccess(){
         text_view_feedback_info.visibility = View.GONE
-        fragment_fingers.view?.visibility = View.VISIBLE
-        button_finish.show()
-        setResult(Activity.RESULT_OK)
+        ll_buttons.visibility = View.VISIBLE
     }
     //endregion
 
     //region UI - Ui on error
     private fun uiOnError(){
         text_view_feedback_info.visibility = View.GONE
-        button_finish.show()
-        setResult(Activity.RESULT_CANCELED)
+        ll_buttons.visibility = View.VISIBLE
     }
     //endregion
 
     //region UI - Start Countdown
     private fun startCountdown(){
         Log.i(TAG, "startCountdown()")
+        tv_countdown.visibility = View.VISIBLE
         val startAt = (timeBeforeStartCapture * 1000).toLong()
         if(!leftHandTaken){
             Log.i(TAG, "startCountdown: Capture Left Hand")
             capturingLeftHand = true
-            tv_countdown.visibility = View.VISIBLE
             countDownTimer = createCountdownTimer(startAt,1000, { tick ->
                 runOnUiThread { tv_countdown.text = "${tick}s to capture left hand" }
             } ,{
@@ -188,7 +196,6 @@ class FingersCaptureActivity : FingersActivity() {
         }else if(!rightHandTaken){
             Log.i(TAG, "startCountdown: Capture Right Hand")
             capturingLeftHand = false
-            tv_countdown.visibility = View.VISIBLE
             countDownTimer = createCountdownTimer(startAt,1000, { tick ->
                 runOnUiThread { tv_countdown.text = "${tick}s to capture right hand" }
             } ,{
@@ -198,18 +205,12 @@ class FingersCaptureActivity : FingersActivity() {
             countDownTimer?.start()
         }else {
             Log.i(TAG, "No hands to capture")
+            tv_countdown.visibility = View.GONE
+            showToast("Fingers capture finished successfully")
+            finish()
         }
     }
     //endregion
-
-    private fun showFingersCaptured(imageList: List<MorphoImage>?){
-        // TODO: Display image list on screen
-        imageList?.let { images ->
-            // fragment_fingers.bind(ArrayList(images))
-            // fragment_fingers.view?.visibility = View.VISIBLE
-        }
-        // TODO: Add action button to continue capture
-    }
 
     //region UI - Stop Countdown
     private fun stopCountdown(){
@@ -218,6 +219,39 @@ class FingersCaptureActivity : FingersActivity() {
         countDownTimer?.cancel()
     }
     //endregion
+
+    private fun showFingersCaptured(imageList: List<MorphoImage>?){
+        imageList?.let { images ->
+            showFingersFragment(images)
+        }
+    }
+
+    private fun showFingersFragment(imageList: List<MorphoImage>){
+        fingersFragment.bind(ArrayList(imageList))
+        fragment_container.visibility = View.VISIBLE
+    }
+
+    private fun hideFingersFragment(){
+        fragment_container.visibility = View.GONE
+    }
+
+    private fun addFingersFragment(){
+        val transaction = fragmentManager.beginTransaction()
+        transaction.add(R.id.fragment_container, fingersFragment)
+        transaction.commit()
+    }
+
+    private fun restartCapture() {
+        if(capturingLeftHand){
+            AppCache.imageListLeft = null
+            leftHandTaken = false
+        } else {
+            AppCache.imageListRight = null
+            rightHandTaken = false
+        }
+        initUi()
+        startCountdown()
+    }
 
     //region UI - Display torch enabled
     /**
