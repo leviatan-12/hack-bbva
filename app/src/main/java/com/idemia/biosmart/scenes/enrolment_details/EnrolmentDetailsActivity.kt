@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics
 import com.idemia.biosmart.models.UserData
 import com.idemia.biosmart.scenes.enrolment_details.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonToPersonDataFragment
 import com.idemia.biosmart.scenes.enrolment_details.view.fragments.PersonDataFragment
-import com.idemia.biosmart.utils.IDMProgress
+import com.idemia.morphobiosmart.utils.IDMProgress
 import kotlinx.android.synthetic.main.activity_enrolment_details.*
 
 /**
@@ -91,7 +91,11 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
     private fun enrolPerson() {
         Log.i(TAG, "enrolPerson()")
         userBiometrics?.let { biometryInfo ->
-            loader = IDMProgress(this, getString(R.string.enrolment_details_trying_enroll_new_user), getString(R.string.label_please_wait)).kProgress
+            loader = IDMProgress(
+                this,
+                getString(R.string.enrolment_details_trying_enroll_new_user),
+                getString(R.string.label_please_wait)
+            ).kProgress
             loader?.show()
             val request = EnrolmentDetailsModels.EnrolPerson.Request(this@EnrolmentDetailsActivity, biometryInfo)
             interactor.enrolPerson(request)
@@ -145,7 +149,11 @@ class EnrolmentDetailsActivity : BaseActivity(), EnrolmentDetailsDisplayLogic {
 
     //region USE CASE - Create Person
     private fun createPerson(){
-        loader = IDMProgress(this, getString(R.string.enrolment_details_trying_enroll_in_db), getString(R.string.label_please_wait)).kProgress
+        loader = IDMProgress(
+            this,
+            getString(R.string.enrolment_details_trying_enroll_in_db),
+            getString(R.string.label_please_wait)
+        ).kProgress
         loader?.show()
         retrieveUserData()  // Retrieve user data from app cache
         Log.i(TAG, "createPerson()")

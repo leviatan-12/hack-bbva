@@ -3,7 +3,7 @@ package com.idemia.biosmart.scenes.identify
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.scenes.user_info.UserInfoActivity
 import com.idemia.biosmart.utils.AppCache
 import kotlinx.android.synthetic.main.activity_identify.*

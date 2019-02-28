@@ -1,10 +1,11 @@
 package com.idemia.biosmart.scenes.user_info
 
 import android.util.Log
-import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.biosmart.models.AppErrorCodes
+import com.idemia.morphobiosmart.utils.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.ConnectException
 
 /**
  *  UserInfo Interactor
@@ -30,7 +31,7 @@ class UserInfoInteractor : UserInfoBusinessLogic {
             worker.authenticateUser(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ onNext ->
+                .subscribe({ onNext ->
                     if(onNext.isSuccessful){
                         presenter.authenticateUser(UserInfoModels.AuthenticateUser.Response(onNext.body()!!))
                     }else {
@@ -38,7 +39,10 @@ class UserInfoInteractor : UserInfoBusinessLogic {
                         val response = UserInfoModels.Error.Response(Throwable("Communication Error"), onNext.code())
                         presenter.presentError(response)
                     }
-                })
+                },{ t ->
+                    val response = UserInfoModels.Error.Response(t)
+                    presenter.presentError(response)
+                }))
     }
     //endregion
 
@@ -48,7 +52,7 @@ class UserInfoInteractor : UserInfoBusinessLogic {
             worker.identifyUser(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ onNext ->
+                .subscribe({ onNext ->
                     if(onNext.isSuccessful){
                         presenter.identifyUser(UserInfoModels.IdentifyUser.Response(onNext.body()!!))
                     }else {
@@ -56,7 +60,15 @@ class UserInfoInteractor : UserInfoBusinessLogic {
                         val response = UserInfoModels.Error.Response(Throwable("Communication Error"), onNext.code())
                         presenter.presentError(response)
                     }
-                }
+                }, { t ->
+                    if(t is ConnectException){
+                        val response = UserInfoModels.Error.Response(t, AppErrorCodes.NETWORK_CONNECTION_ERROR.code)
+                        presenter.presentError(response)
+                    }else{
+                        val response = UserInfoModels.Error.Response(t, AppErrorCodes.UNHANDLED_ERROR.code)
+                        presenter.presentError(response)
+                    }
+                })
         )
     }
     //endregion

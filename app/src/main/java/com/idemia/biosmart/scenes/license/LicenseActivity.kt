@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.utils.AppCache
-import kotlinx.android.synthetic.main.activity_license.*
 import android.widget.ArrayAdapter
-import com.idemia.biosmart.utils.TimeConverter
+import com.idemia.morphobiosmart.utils.TimeConverter
+import kotlinx.android.synthetic.main.activity_license.*
 
 /**
  *  License Activity

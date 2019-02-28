@@ -1,5 +1,7 @@
 package com.idemia.biosmart.scenes.user_info
 
+import com.idemia.biosmart.models.AppErrorCodes
+
 /**
  *  UserInfo Presenter
  *  BioSmart
@@ -38,12 +40,16 @@ class UserInfoPresenter : UserInfoPresentationLogic {
 
     override fun presentError(response: UserInfoModels.Error.Response) {
         when(response.errorCode){
-            -1 -> {
-                val viewModel = UserInfoModels.Error.ViewModel(Throwable("[FATAL] Unknown App Error"))
+            AppErrorCodes.UNHANDLED_ERROR.code -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable(AppErrorCodes.UNHANDLED_ERROR.description))
                 activity!!.displayError(viewModel)
             }
-            404 -> {
-                val viewModel = UserInfoModels.Error.ViewModel(Throwable("[WS Connection] Middleware URL cannot be reached!"))
+            AppErrorCodes.MIDDLEWARE_URL_CANNOT_BE_REACHED.code -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable(AppErrorCodes.MIDDLEWARE_URL_CANNOT_BE_REACHED.description))
+                activity!!.displayError(viewModel)
+            }
+            AppErrorCodes.NETWORK_CONNECTION_ERROR.code -> {
+                val viewModel = UserInfoModels.Error.ViewModel(Throwable(AppErrorCodes.MIDDLEWARE_URL_CANNOT_BE_REACHED.description))
                 activity!!.displayError(viewModel)
             }else -> {
                 val viewModel = UserInfoModels.Error.ViewModel(Throwable("[WS Connection] Error code ${response.errorCode}"))

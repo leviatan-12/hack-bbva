@@ -1,7 +1,7 @@
 package com.idemia.biosmart.scenes.user_info;
 
 import com.idemia.biosmart.api.IdemiaApiService
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.models.AuthenticationResponse
 import com.idemia.biosmart.models.IdentifyResponse
 import com.idemia.biosmart.utils.ApiUrlManager

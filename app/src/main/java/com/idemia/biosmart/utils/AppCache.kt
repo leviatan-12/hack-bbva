@@ -2,6 +2,7 @@ package com.idemia.biosmart.utils
 
 import android.util.Log
 import com.idemia.biosmart.models.UserBiometrics
+import com.idemia.morphobiosmart.utils.Base64
 import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 

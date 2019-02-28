@@ -1,6 +1,6 @@
 package com.idemia.biosmart.utils
 
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 
 /**
  * Api Url Manager

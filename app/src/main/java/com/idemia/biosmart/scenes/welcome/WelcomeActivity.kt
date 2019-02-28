@@ -11,11 +11,11 @@ import android.view.View
 import android.widget.Toast
 import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.AppCache
-import com.idemia.biosmart.utils.IDMProgress
+import com.idemia.morphobiosmart.utils.IDMProgress
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference
@@ -136,7 +136,11 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         val lkmsUrlSelected = preferenceManager.getString( lkmsUrlKey , defaultLkmsUrl)
         val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData, applicationContext, lkmsUrlSelected!!)
         Log.i(TAG, "createLKMSLicense: LKMS Server URL - $lkmsUrlSelected")
-        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
+        loader = IDMProgress(
+            this,
+            "Activating License on LKMS Server",
+            "Please Wait..."
+        ).kProgress
         loader?.show()
         interactor.createLKMSLicense(request)
     }

@@ -1,10 +1,10 @@
 package com.idemia.biosmart.scenes.enrolment_details
 
 import android.util.Log
-import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.morphobiosmart.utils.DisposableManager
 import com.idemia.biosmart.models.UserData
 import com.idemia.biosmart.utils.AppCache
-import com.idemia.biosmart.utils.Base64
+import com.idemia.morphobiosmart.utils.Base64
 
 /**
  *  EnrolmentDetails Interactor
@@ -48,7 +48,7 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
     //region Enrol Person
     override fun enrolPerson(request: EnrolmentDetailsModels.EnrolPerson.Request) {
         Log.i(TAG, "enrolPerson()")
-        DisposableManager.add(worker.enrolPerson(request).subscribe{ responseFromService ->
+        DisposableManager.add(worker.enrolPerson(request).subscribe({ responseFromService ->
             if(responseFromService.isSuccessful){
                 Log.i(TAG, "enrolPerson: Success")
                 val response = EnrolmentDetailsModels.EnrolPerson.Response(responseFromService.body()!!)
@@ -58,7 +58,10 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
                 val response = EnrolmentDetailsModels.Error.Response(Throwable("Communication Error"), responseFromService.code())
                 presenter.presentError(response)
             }
-        })
+        },{ t ->
+            val response = EnrolmentDetailsModels.Error.Response(t)
+            presenter.presentError(response)
+        }))
     }
     //endregion
 
@@ -82,7 +85,7 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
     //region Create Person
     override fun createPerson(request: EnrolmentDetailsModels.CreatePerson.Request) {
         Log.i(TAG, "createPerson()")
-        DisposableManager.add(worker.createPerson(request).subscribe { responseFromService ->
+        DisposableManager.add(worker.createPerson(request).subscribe({ responseFromService ->
             if(responseFromService.isSuccessful){
                 Log.i(TAG, "createPerson: Success")
                 val response = EnrolmentDetailsModels.CreatePerson.Response(responseFromService.body()!!)
@@ -92,7 +95,10 @@ class EnrolmentDetailsInteractor : EnrolmentDetailsBusinessLogic {
                 val response = EnrolmentDetailsModels.Error.Response(Throwable("Communication Error"), responseFromService.code())
                 presenter.presentError(response)
             }
-        })
+        },{ t ->
+            val response = EnrolmentDetailsModels.Error.Response(t)
+            presenter.presentError(response)
+        }))
     }
     //endregion
 }
