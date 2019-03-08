@@ -56,7 +56,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
     override fun createCaptureHandler(request: CaptureModels.CreateCaptureHandler.Request) {
         handlerType = request.handlerType
         val disposable = worker.createBioCaptureHandler(request)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({ mCaptureHandler ->
             when (handlerType){
@@ -71,10 +71,11 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             val response = CaptureModels.CreateCaptureHandler.Response()
             presenter.presentCreateCaptureHandler(response)
         }, { throwable ->
+                Log.e(TAG, "createCaptureHandler", throwable)
             val response = CaptureModels.Error.Response(throwable)
             presenter.presentError(response)
         })
-        DisposableManager.add(disposable)
+        // DisposableManager.add(disposable)
     }
 
     private fun createFaceCaptureHandler(mCaptureHandler: ICaptureHandler): FaceCaptureHandler {

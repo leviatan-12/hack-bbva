@@ -87,8 +87,11 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     private val listener = object : MultiplePermissionsListener {
         override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
             Log.i(TAG, "onPermissionGranted")
-            // 1.- Request for capturing Options
-            requestCaptureOptions()
+            if(report!!.areAllPermissionsGranted()){
+                Log.i(TAG, "areAllPermissionsGranted: [YES]")
+                // 1.- Request for capturing Options
+                requestCaptureOptions()
+            }
         }
 
         override fun onPermissionRationaleShouldBeShown(

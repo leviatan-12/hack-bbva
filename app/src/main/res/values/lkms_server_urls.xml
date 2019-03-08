@@ -2,7 +2,7 @@
 <resources>
     <!-- IDEMIA Middleware MX -->
     <string name="default_middleware_ip_address" translatable="false">200.66.76.220</string>
-    <string name="default_middleware_port" translatable="false">8081</string>
+    <string name="default_middleware_port" translatable="false">8082</string>
     <string name="default_middleware_name" translatable="false">idemia</string>
 
     <!-- LKMS Server -->

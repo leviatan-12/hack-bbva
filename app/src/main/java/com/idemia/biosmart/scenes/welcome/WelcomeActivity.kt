@@ -149,8 +149,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         AppCache.license = viewModel.lkmsLicense
         loader?.dismiss()
         if(viewModel.activated){
+            text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
+            activateLkmsLicenseOnDevice() // Try to activate license
         }else{
             text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
             text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDanger))

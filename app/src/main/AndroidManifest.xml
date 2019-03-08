@@ -5,9 +5,13 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <!-- Bio Smart SDK -->
     <permission
@@ -22,6 +26,23 @@
     <permission
             android:name="com.idemia.biosmart.NEW_WRITE_MPH_BIO_SDK_PROVIDER"
             android:protectionLevel="signature"/>
+
+
+    <!--Remove old permissions-->
+    <permission
+            android:name="com.morpho.mph_bio_sdk.android.sdk.content_provider.BioStoreProvider.READ_MPH_BIO_SDK_PROVIDER"
+            tools:node="remove" />
+    <permission
+            android:name="com.morpho.mph_bio_sdk.android.sdk.content_provider.BioStoreProvider.WRITE_MPH_BIO_SDK_PROVIDER"
+            tools:node="remove" />
+    <permission
+            android:name="com.morpho.lkms.android.sdk.lkms_core.content_provider.LkmsStoreProvider.WRITE_LKMS_LICENSE_PROVIDER"
+            tools:node="remove"
+    />
+    <permission
+            android:name="com.morpho.lkms.android.sdk.lkms_core.content_provider.LkmsStoreProvider.READ_LKMS_LICENSE_PROVIDER"
+            tools:node="remove"
+    />
 
     <application
             android:name=".BioSmartApplication"
