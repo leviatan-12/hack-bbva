@@ -35,6 +35,9 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
      */
     protected var timeBeforeStartCapture = 5
 
+    // To prevent start capture several times
+    private var captureStarted = false
+
     //region BASE ACTIVITY - A "Dependency Injection"
     override fun inject() {
         val activity = this
@@ -87,8 +90,9 @@ abstract class CaptureActivity : BaseActivity(), CaptureDisplayLogic {
     private val listener = object : MultiplePermissionsListener {
         override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
             Log.i(TAG, "onPermissionGranted")
-            if(report!!.areAllPermissionsGranted()){
+            if(report!!.areAllPermissionsGranted() && !captureStarted){
                 Log.i(TAG, "areAllPermissionsGranted: [YES]")
+                captureStarted = true
                 // 1.- Request for capturing Options
                 requestCaptureOptions()
             }

@@ -75,7 +75,7 @@ class CaptureInteractor : CaptureBusinessLogic, BioCaptureFeedbackListener, BioC
             val response = CaptureModels.Error.Response(throwable)
             presenter.presentError(response)
         })
-        // DisposableManager.add(disposable)
+        DisposableManager.add(disposable)
     }
 
     private fun createFaceCaptureHandler(mCaptureHandler: ICaptureHandler): FaceCaptureHandler {
