@@ -51,7 +51,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, "")
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
         val sdkInfo = BioSdk.getInfo(applicationContext)
-        text_view_sdk_version.text = sdkInfo.version
+        text_view_sdk_version.text = "v${sdkInfo.version}"
+        text_view_app_version.text = applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName
 
         // Linear Layout
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)

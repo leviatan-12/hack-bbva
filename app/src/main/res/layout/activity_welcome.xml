@@ -9,80 +9,114 @@
 
     <LinearLayout
             android:orientation="vertical"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_weight="0.2"
-                    android:src="@drawable/ic_square_logo"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"/>
-
-            <TextView
-                    android:layout_gravity="center"
-                    android:text="@string/app_name"
-                    android:layout_weight="0.8"
-                    android:id="@+id/text_view_app_name"
+            <!--region App Logo -->
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="40sp"
-                    android:layout_marginStart="16dp"/>
-        </LinearLayout>
+                    android:layout_margin="16dp">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginStart="16dp"
-                      android:layout_marginEnd="16dp"
-                      android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_weight="0.2"
+                        android:src="@drawable/ic_square_logo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"/>
 
-            <TextView
-                    android:text="@string/welcome_label_license_status"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <TextView
+                        android:layout_gravity="center"
+                        android:text="@string/app_name"
+                        android:layout_weight="0.8"
+                        android:textStyle="bold"
+                        android:id="@+id/text_view_app_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="40sp"
+                        android:layout_marginStart="16dp"/>
+            </LinearLayout>
+            <!--endregion-->
 
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:textColor="@color/colorSuccess"
-                      android:layout_marginStart="2dp"
-                      android:layout_gravity="end"
-                      android:id="@+id/text_view_license_status"
-                      tools:text="License Activated Successfully"/>
+            <!--region License Status -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                        android:text="@string/welcome_label_license_status"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginStart="16dp"
-                      android:layout_marginEnd="16dp"
-                      android:paddingBottom="4dp"
-                      android:orientation="horizontal">
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textColor="@color/colorSuccess"
+                          android:layout_marginStart="2dp"
+                          android:layout_gravity="end"
+                          android:id="@+id/text_view_license_status"
+                          tools:text="License Activated Successfully"/>
 
-            <TextView
-                    android:text="@string/welcome_label_sdk_version"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <!--endregion-->
 
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginStart="8dp"
-                      android:id="@+id/text_view_sdk_version"
-                      tools:text="v4.13.0"/>
+            <!--region SDK Version -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:paddingBottom="4dp"
+                          android:orientation="horizontal">
 
+                <TextView
+                        android:text="@string/welcome_label_sdk_version"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="8dp"
+                          android:id="@+id/text_view_sdk_version"
+                          tools:text="v4.13.0"/>
+
+            </LinearLayout>
+            <!--endregion-->
+
+            <!--region App Version -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:paddingBottom="4dp"
+                          android:orientation="horizontal">
+
+                <TextView
+                        android:text="@string/welcome_label_app_version"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="8dp"
+                          android:id="@+id/text_view_app_version"
+                          tools:text="v2.0.0"/>
+
+            </LinearLayout>
+            <!--endregion-->
         </LinearLayout>
 
         <View android:layout_width="match_parent"

@@ -5,6 +5,7 @@
     <string name="welcome_message_generate_license">Generate License</string>
     <string name="welcome_label_license_status">License Status:</string>
     <string name="welcome_label_sdk_version">SDK Version:</string>
+    <string name="welcome_label_app_version">App Version:</string>
     <string name="welcome_message_license_activated">License activated successfully</string>
     <string name="welcome_message_license_not_activated">License not activated: %1$s</string>
     <string name="welcome_message_license_is_not_active">License is not active, a new one will be generated</string>
