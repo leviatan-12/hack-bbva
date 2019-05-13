@@ -4,8 +4,8 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.base.utils.DisposableManager
+import com.idemia.morphobiosmart.android.BaseActivity
+import com.idemia.morphobiosmart.utils.DisposableManager
 import com.idemia.biosmart.utils.AppCache
 import com.idemia.biosmart.utils.Validator
 import com.jakewharton.rxbinding2.widget.textChanges

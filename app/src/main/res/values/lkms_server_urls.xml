@@ -2,12 +2,12 @@
 <resources>
     <!-- IDEMIA Middleware MX -->
     <string name="default_middleware_ip_address" translatable="false">200.66.76.220</string>
-    <string name="default_middleware_port" translatable="false">8081</string>
+    <string name="default_middleware_port" translatable="false">8082</string>
     <string name="default_middleware_name" translatable="false">idemia</string>
 
     <!-- LKMS Server -->
     <string name="default_lkms_server_url" translatable="false">https://service-intg.dictao.com/lkms-server-app</string>
 
     <!-- Mexico default service provider server example -->
-    <string name="default_service_provider_url" translatable="false">http://200.66.76.220:8081/ServiceProviderLicense/</string>
+    <string name="default_service_provider_url" translatable="false">http://200.66.76.220:8081/ServiceProviderBAC/</string>
 </resources>

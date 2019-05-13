@@ -2,9 +2,8 @@ package com.idemia.biosmart.scenes.user_info
 
 import android.widget.Toast
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
-import com.idemia.biosmart.utils.Base64
-import kotlinx.android.synthetic.main.activity_userinfo.*
+import com.idemia.morphobiosmart.android.BaseActivity
+import com.idemia.morphobiosmart.utils.Base64
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +11,8 @@ import com.idemia.biosmart.scenes.enrolment_details.view.fragments.MatchPersonTo
 import com.idemia.biosmart.scenes.user_info.view.adapters.ViewPageUserInfoAdapter
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoDataFragment
 import com.idemia.biosmart.scenes.user_info.view.fragments.UserInfoTechnicalDetailsFragment
-import com.idemia.biosmart.utils.IDMProgress
+import com.idemia.morphobiosmart.utils.IDMProgress
+import kotlinx.android.synthetic.main.activity_userinfo.*
 
 /**
  *  UserInfo Activity
@@ -65,7 +65,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region USE CASE - Authenticate user
     private fun authenticateUser(){
-        loader = IDMProgress(this, "Authenticating Person", getString(R.string.label_please_wait)).kProgress
+        loader = IDMProgress(
+            this,
+            "Authenticating Person",
+            getString(R.string.label_please_wait)
+        ).kProgress
         loader?.show()
         Log.i(TAG, "authenticateUser")
         val request = UserInfoModels.AuthenticateUser.Request(this@UserInfoActivity)
@@ -109,7 +113,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region USE CASE - Identify User
     private fun identifyUser(){
-        loader = IDMProgress(this, "Identifying Person", getString(R.string.label_please_wait)).kProgress
+        loader = IDMProgress(
+            this,
+            "Identifying Person",
+            getString(R.string.label_please_wait)
+        ).kProgress
         loader?.show()
         Log.i(TAG, "identifyUser")
         val request = UserInfoModels.IdentifyUser.Request(this@UserInfoActivity)
@@ -156,7 +164,11 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
      * Search User in DB
      */
     private fun search(username: String) {
-        loader = IDMProgress(this, "Getting User Info", getString(R.string.label_please_wait)).kProgress
+        loader = IDMProgress(
+            this,
+            "Getting User Info",
+            getString(R.string.label_please_wait)
+        ).kProgress
         loader?.show()
         val searchPersonRequest = UserInfoModels.SearchPersonRequest(username, 1)
         val request = UserInfoModels.Search.Request(this@UserInfoActivity, searchPersonRequest)
@@ -198,6 +210,7 @@ class UserInfoActivity : BaseActivity(), UserInfoDisplayLogic {
 
     //region USE CASE - Display Error
     override fun displayError(viewModel: UserInfoModels.Error.ViewModel) {
+        Log.e(TAG, "ERROR: ${viewModel.throwable.message} with code ${viewModel.errorCode}", viewModel.throwable)
         val message = viewModel.throwable.localizedMessage
         tv_message_response.text = message
         Toast.makeText(applicationContext, message , Toast.LENGTH_LONG).show()

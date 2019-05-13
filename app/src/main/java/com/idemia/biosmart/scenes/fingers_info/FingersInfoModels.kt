@@ -1,6 +1,6 @@
 package com.idemia.biosmart.scenes.fingers_info;
 
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 
 /**
  *  FingersInfo Models

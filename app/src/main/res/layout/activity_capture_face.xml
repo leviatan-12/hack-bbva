@@ -29,15 +29,15 @@
             app:layout_constraintStart_toStartOf="parent"
             android:scaleType="centerCrop"/>
 
-    <com.idemia.biosmart.base.android.FaceIdMask android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 android:id="@+id/face_id_mask"
-                                                 app:layout_constraintEnd_toEndOf="parent"
-                                                 app:layout_constraintStart_toStartOf="parent"
-                                                 app:layout_constraintTop_toTopOf="parent"
-                                                 app:layout_constraintBottom_toBottomOf="parent"
-                                                 app:layout_constraintHorizontal_bias="0.0"
-                                                 app:layout_constraintVertical_bias="1.0"
+    <com.idemia.morphobiosmart.android.FaceIdMask android:layout_width="match_parent"
+                                                  android:layout_height="match_parent"
+                                                  android:id="@+id/face_id_mask"
+                                                  app:layout_constraintEnd_toEndOf="parent"
+                                                  app:layout_constraintStart_toStartOf="parent"
+                                                  app:layout_constraintTop_toTopOf="parent"
+                                                  app:layout_constraintBottom_toBottomOf="parent"
+                                                  app:layout_constraintHorizontal_bias="0.0"
+                                                  app:layout_constraintVertical_bias="1.0"
     />
     <ImageView
             android:layout_width="0dp"

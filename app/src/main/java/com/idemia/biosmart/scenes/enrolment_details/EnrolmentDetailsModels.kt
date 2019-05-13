@@ -1,7 +1,7 @@
 package com.idemia.biosmart.scenes.enrolment_details;
 
 import android.graphics.Bitmap
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.models.CreatePersonResponse
 import com.idemia.biosmart.models.EnrolmentResponse
 import com.idemia.biosmart.models.UserBiometrics

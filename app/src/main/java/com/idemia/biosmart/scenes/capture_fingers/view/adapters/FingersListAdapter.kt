@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.idemia.biosmart.R
-import com.idemia.biosmart.utils.BitmapHelper
+import com.idemia.morphobiosmart.utils.BitmapHelper
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.layout_finger_item.view.*
 

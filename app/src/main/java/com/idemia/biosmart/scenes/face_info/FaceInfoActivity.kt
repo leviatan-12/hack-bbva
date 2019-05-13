@@ -3,7 +3,7 @@ package com.idemia.biosmart.scenes.face_info
 import android.os.Bundle
 import android.util.Log
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import kotlinx.android.synthetic.main.activity_face_info.*
 
 /**

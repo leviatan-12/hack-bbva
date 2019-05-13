@@ -11,11 +11,11 @@ import android.view.View
 import android.widget.Toast
 import com.idemia.biosmart.BioSmartApplication
 import com.idemia.biosmart.R
-import com.idemia.biosmart.base.android.BaseActivity
+import com.idemia.morphobiosmart.android.BaseActivity
 import com.idemia.biosmart.scenes.welcome.di.WelcomeModule
 import com.idemia.biosmart.scenes.welcome.views.CardsMenuAdapter
 import com.idemia.biosmart.utils.AppCache
-import com.idemia.biosmart.utils.IDMProgress
+import com.idemia.morphobiosmart.utils.IDMProgress
 import com.morpho.mph_bio_sdk.android.sdk.BioSdk
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.lang.ref.WeakReference
@@ -42,7 +42,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun resourceLayoutId(): Int = R.layout.activity_welcome
-    override fun hideActionBar(): Boolean = true
+    override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
     //region BASE - On load activity
@@ -51,7 +51,8 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, "")
         button_settings.setOnClickListener { startProcess(WelcomeModels.Operation.SETTINGS) }
         val sdkInfo = BioSdk.getInfo(applicationContext)
-        text_view_sdk_version.text = sdkInfo.version
+        text_view_sdk_version.text = "v${sdkInfo.version}"
+        text_view_app_version.text = applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName
 
         // Linear Layout
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
@@ -136,7 +137,11 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         val lkmsUrlSelected = preferenceManager.getString( lkmsUrlKey , defaultLkmsUrl)
         val request = WelcomeModels.ActivateBinFileLicenseToLkms.Request(activationData, applicationContext, lkmsUrlSelected!!)
         Log.i(TAG, "createLKMSLicense: LKMS Server URL - $lkmsUrlSelected")
-        loader = IDMProgress(this, "Activating License on LKMS Server", "Please Wait...").kProgress
+        loader = IDMProgress(
+            this,
+            "Activating License on LKMS Server",
+            "Please Wait..."
+        ).kProgress
         loader?.show()
         interactor.createLKMSLicense(request)
     }
@@ -145,8 +150,10 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
         AppCache.license = viewModel.lkmsLicense
         loader?.dismiss()
         if(viewModel.activated){
+            text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorSuccess))
             text_view_license_status.text = getString(R.string.welcome_message_license_activated)
             Toast.makeText(applicationContext, getString(R.string.welcome_message_license_activated), Toast.LENGTH_LONG).show()
+            activateLkmsLicenseOnDevice() // Try to activate license
         }else{
             text_view_license_status.text = getString(R.string.welcome_message_license_not_activated, viewModel.throwable?.message)
             text_view_license_status.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDanger))
