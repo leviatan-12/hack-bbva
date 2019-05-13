@@ -12,7 +12,7 @@ class SplashActivity : BaseActivity() {
 
     // Mandatory methods
     override fun resourceLayoutId(): Int = R.layout.activity_splash
-    override fun hideActionBar(): Boolean = true
+    override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = true
 
     override fun inject() {

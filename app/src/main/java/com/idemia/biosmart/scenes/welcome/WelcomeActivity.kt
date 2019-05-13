@@ -42,7 +42,7 @@ class WelcomeActivity : BaseActivity(), WelcomeDisplayLogic {
     }
 
     override fun resourceLayoutId(): Int = R.layout.activity_welcome
-    override fun hideActionBar(): Boolean = true
+    override fun hideActionBar(): Boolean = false
     override fun hideNavigationBar(): Boolean = false
 
     //region BASE - On load activity
