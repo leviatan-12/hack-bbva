@@ -1,5 +1,6 @@
 package com.idemia.biosmart.scenes.capture_face
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -12,7 +13,11 @@ import com.idemia.biosmart.R
 import com.idemia.morphobiosmart.bio_smart.capture.CaptureModels
 import com.idemia.morphobiosmart.bio_smart.face.FaceCaptureActivity
 import com.idemia.biosmart.utils.AppCache
+import com.idemia.biosmart.utils.FilesManager
+import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.activity_capture_face.*
+import java.io.File
+import java.io.FileOutputStream
 
 class FaceCaptureActivity : FaceCaptureActivity() {
     override fun hideActionBar(): Boolean = true
@@ -122,11 +127,14 @@ class FaceCaptureActivity : FaceCaptureActivity() {
 
     //region USE CASE - Show image captured
     private fun showImageCaptured(){
-        // TODO: Create a use case "retrieve selfie"
+        // TODO: Create a use case "retrieve selfie" and save file
         AppCache.facePhoto?.let { photo ->
             val data = photo.jpegImage
             val bmp = BitmapFactory.decodeByteArray(data, 0, data!!.size)
             iv_selfie.setImageBitmap(bmp)
+
+            // Save selfie in device
+            FilesManager.saveFile(applicationContext, "selfie.jpg", photo.jpegImage)
         }
     }
     //endregion

@@ -67,6 +67,13 @@
                     android:elevation="8dp"
                     android:orientation="vertical">
 
+                <ImageView
+                        android:layout_width="600px"
+                        android:layout_height="300px"
+                        app:srcCompat="@drawable/ic_biocatch"
+                        android:layout_gravity="center"
+                        android:id="@+id/imageView5"/>
+
                 <android.support.design.widget.TextInputLayout
                         android:id="@+id/textInputLayout"
                         android:layout_width="match_parent"

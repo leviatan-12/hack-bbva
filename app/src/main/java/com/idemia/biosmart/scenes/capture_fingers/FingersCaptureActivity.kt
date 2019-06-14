@@ -10,8 +10,12 @@ import com.idemia.morphobiosmart.bio_smart.capture.CaptureModels
 import com.idemia.morphobiosmart.bio_smart.fingers.FingersActivity
 import com.idemia.biosmart.scenes.capture_fingers.view.fragments.FingersFragment
 import com.idemia.biosmart.utils.AppCache
+import com.idemia.biosmart.utils.FilesManager
 import com.morpho.mph_bio_sdk.android.sdk.msc.data.results.MorphoImage
 import kotlinx.android.synthetic.main.activity_capture_fingers.*
+import com.morpho.mph_bio_sdk.android.sdk.utils.image.ImageUtils
+
+
 
 class FingersCaptureActivity : FingersActivity() {
 
@@ -85,9 +89,20 @@ class FingersCaptureActivity : FingersActivity() {
                 if(imageList.size == 4){
                     AppCache.imageListLeft = ArrayList()
                     (AppCache.imageListLeft as ArrayList).add(imageList[0])
+                    val lI = ImageUtils.toWSQ(imageList[0], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_left_index.wsq", lI.buffer)
+
                     (AppCache.imageListLeft as ArrayList).add(imageList[1])
+                    val lM = ImageUtils.toWSQ(imageList[1], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_left_middle.wsq", lM.buffer)
+
                     (AppCache.imageListLeft as ArrayList).add(imageList[2])
+                    val lR = ImageUtils.toWSQ(imageList[2], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_left_ring.wsq", lR.buffer)
+
                     (AppCache.imageListLeft as ArrayList).add(imageList[3])
+                    val lL = ImageUtils.toWSQ(imageList[3], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_left_little.wsq", lL.buffer)
                     leftHandTaken = true
                     showFingersCaptured(AppCache.imageListLeft)
                 }else {
@@ -96,10 +111,24 @@ class FingersCaptureActivity : FingersActivity() {
             }else if(!capturingLeftHand) {
                 if(imageList.size == 4) {
                     AppCache.imageListRight = ArrayList()
+
                     (AppCache.imageListRight as ArrayList).add(imageList[0])
+                    val rI = ImageUtils.toWSQ(imageList[0], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_right_index.wsq", rI.buffer)
+
                     (AppCache.imageListRight as ArrayList).add(imageList[1])
+                    val rM = ImageUtils.toWSQ(imageList[1], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_right_middle.wsq", rM.buffer)
+
+
                     (AppCache.imageListRight as ArrayList).add(imageList[2])
+                    val rR = ImageUtils.toWSQ(imageList[2], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_right_ring.wsq", rR.buffer)
+
+
                     (AppCache.imageListRight as ArrayList).add(imageList[3])
+                    val rL = ImageUtils.toWSQ(imageList[3], 15f, 0.toByte(), 0xff.toByte())
+                    FilesManager.saveFile(applicationContext, "finger_right_little.wsq", rL.buffer)
                     rightHandTaken = true
                     showFingersCaptured(AppCache.imageListRight)
                 }else {

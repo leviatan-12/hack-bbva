@@ -120,5 +120,12 @@
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/tv_countdown"/>
+    <ImageView
+            android:layout_width="214dp"
+            android:layout_height="53dp" app:srcCompat="@drawable/ic_biocatch"
+            android:id="@+id/imageView3" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/face_id_mask"/>
 
 </android.support.constraint.ConstraintLayout>

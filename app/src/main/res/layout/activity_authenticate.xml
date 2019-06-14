@@ -122,6 +122,13 @@
 
                 </LinearLayout>
 
+                <ImageView
+                        android:layout_width="600px"
+                        android:layout_height="300px"
+                        app:srcCompat="@drawable/ic_biocatch"
+                        android:layout_gravity="center"
+                        android:id="@+id/imageView5"/>
+
                 <android.support.design.button.MaterialButton
                         android:layout_margin="8dp"
                         app:cornerRadius="8dp"
