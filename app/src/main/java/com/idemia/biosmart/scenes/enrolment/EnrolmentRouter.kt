@@ -1,8 +1,12 @@
-package com.idemia.biosmart.scenes.enrolment;
+package com.idemia.biosmart.scenes.enrolment
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
+import android.content.Intent
+import com.idemia.biosmart.scenes.capture_face.FaceCaptureActivity
+import com.idemia.biosmart.scenes.capture_fingers.FingersCaptureActivity
+import com.idemia.biosmart.scenes.enrolment_details.EnrolmentDetailsActivity
+import com.idemia.biosmart.scenes.face_info.FaceInfoActivity
+import com.idemia.biosmart.scenes.fingers_info.FingersInfoActivity
+import java.lang.ref.WeakReference
 
 /**
  *  Enrolment Router
@@ -18,12 +22,28 @@ class EnrolmentRouter : EnrolmentRoutingLogic {
         this.activity = WeakReference(activity)
     }
 
-    override fun routeToNextScene(name: String) {
+    override fun routeToCaptureFingersScene() {
         if (activity?.get() != null) {
-            /*Intent intent = new Intent(activity.get().getApplicationContext(), NextSceneActivity.class);
-            intent.putExtra("user_name", name);
-            activity.get().startActivity(intent);
-            */
+            val intent = Intent(activity!!.get()!!.applicationContext, FingersInfoActivity::class.java)
+            activity!!.get()!!.startActivityForResult(intent, EnrolmentModels.RequestCode.REQUEST_CODE_HAND_LEFT.ordinal)
+        }
+    }
+
+    override fun routeToCaptureFingersMsoScene() {
+
+    }
+
+    override fun routeToCaptureFaceScene() {
+        if (activity?.get() != null){
+            val intent = Intent(activity!!.get()!!.applicationContext, FaceInfoActivity::class.java)
+            activity!!.get()!!.startActivityForResult(intent, EnrolmentModels.RequestCode.REQUEST_CODE_FACE.ordinal)
+        }
+    }
+
+    override fun routeToStartProcessScene() {
+        if (activity?.get() != null){
+            val intent = Intent(activity!!.get()!!.applicationContext, EnrolmentDetailsActivity::class.java)
+            activity!!.get()!!.startActivity(intent)
         }
     }
 }
@@ -36,7 +56,13 @@ class EnrolmentRouter : EnrolmentRoutingLogic {
  */
 interface EnrolmentRoutingLogic {
     /**
-     * Route to Next Scene
+     * Route to Capture Fingers Scene
      */
-    fun routeToNextScene(name: String)
+    fun routeToCaptureFingersScene()
+
+    fun routeToCaptureFingersMsoScene()
+
+    fun routeToCaptureFaceScene()
+
+    fun routeToStartProcessScene()
 }

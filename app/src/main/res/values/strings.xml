@@ -3,17 +3,186 @@
 
     <!-- Welcome Scene -->
     <string name="welcome_message_generate_license">Generate License</string>
-    <string name="welcome_label_license_status">License Status</string>
+    <string name="welcome_label_license_status">License Status:</string>
+    <string name="welcome_label_sdk_version">SDK Version:</string>
+    <string name="welcome_label_app_version">App Version:</string>
     <string name="welcome_message_license_activated">License activated successfully</string>
-    <string name="welcome_message_license_not_activated">License not activated</string>
+    <string name="welcome_message_license_not_activated">License not activated: %1$s</string>
+    <string name="welcome_message_license_is_not_active">License is not active, a new one will be generated</string>
+    <string name="welcome_message_license_bin_file_not_generated">License bin file from Service Provider not
+        generated!
+    </string>
+    <string name="welcome_message_license_bin_file_generated">License bin file from Service Provider generated
+        successfully!
+    </string>
     <string name="welcome_message_license_not_generated">License not generated from Service Provider</string>
+    <string name="welcome_label_description">
+        Enrolment process is used to store a new person in MBSS. It verifies if person already exists, if not, the
+        person will be stored in MBSS. Once the person is enrolled, you can perform and authentication or identification
+    </string>
 
     <!-- Enrolment Scene -->
-    <string name="label_name">Name</string>
+    <string name="enrolment_label_start_process">Start Enrolment Process</string>
+
+    <!-- Authenticate Scene -->
+    <string name="authenticate_label_start_process">Start Authentication Process</string>
+    <string name="authenticate_label_authenticate_person">Authenticate Person</string>
+    <string name="authenticate_label_description">
+        Authentication process will make a 1 to 1 process match operation (also know as Authentication) to find
+        a person in MBSS. You can use face, fingers or both. Username (person id) is required to perform this operation.
+    </string>
+    <string name="authenticate_label_capture_fingers">Capture Fingers</string>
+
+    <!-- Identify Scene -->
+    <string name="identify_label_start_process">Start Identification Process</string>
+    <string name="identify_label_authenticate_person">Identify Person</string>
+    <string name="identify_label_description">
+        Identification process will make a 1 to N process match operation (also know as Identification) to find
+        a person in MBSS. You can use face, fingers or both.
+    </string>
+    <string name="identify_label_capture_fingers">Capture Fingers</string>
+    <string name="identify_label_identify_person">Identify Person</string>
+
+    <!-- User Info Scene -->
+    <string name="user_info_label_enrolment_duration">Enrolment Duration</string>
+    <string name="user_info_label_encoding_duration">Encoding Duration</string>
+    <string name="user_info_label_match_person_to_person_duration">Match Person to Person Duration</string>
+    <string name="user_info_label_match_person_to_person_process">PtP</string>
+    <string name="user_info_label_technical_details">Technical Details</string>
+    <string name="user_info_label_user_info">User Info</string>
+
+    <!-- MSO Scene -->
+    <string name="mso_label_thumb">Thumb</string>
+    <string name="mso_label_index">Index</string>
+    <string name="mso_label_middle">Middle</string>
+    <string name="mso_label_ring">Ring</string>
+    <string name="mso_label_little">Little</string>
+
+    <!-- Face Capture Info Scene -->
+    <string name="face_info_label_face_capture_brief">Position your face in the center of the screen. Look straight.
+        Once the face capture starts, the camera will follow your face movements. Follow instructions which will appear
+        on the screen to accomplish the challenge (optimal head rotation us up to 20 degrees)
+    </string>
+
+
+    <!-- Fingers Capture Info Scene -->
+    <string name="fingers_info_label_fingers_capture_brief">
+        Position your hand in the center of the screen. You can capture left hand, right hand or both hands. Once the
+        capture start, the camera will follow your fingers.
+    </string>
+
+    <string name="fingers_info_label_fingers_capture_brief_2">
+        For making you capture hands, be careful with the environment lights. If your phone camera has not autofocus,
+        quality capture could be low.
+    </string>
+
+    <!-- Enrolment Details -->
+    <string name="enrolment_details_user_biometry_info_incomplete">User Biometry info incomplete!</string>
+    <string name="enrolment_details_trying_enroll_new_user">Trying to enrol as new user on MBSS</string>
+    <string name="enrolment_details_trying_enroll_in_db">Saving user info in DB</string>
+
+
+    <!-- Face Capture -->
+    <string name="face_capture_please_wait_for_next_challenge">Waiting for next challenge&#8230;</string>
+    <string name="face_capture_face_capture_scan_id_completed">Face capture scan ID completed successfully</string>
+    <string name="face_capture_failed_due">Face capture failed due %1$s</string>
+
+    <!-- Fingers Capture Scene -->
+    <string name="fingers_capture_failed_due">Fingers capture failed due %1$s</string>
+
+    <!-- General Labels -->
+    <string name="label_NA">N/A</string>
+    <string name="label_name">Name(s)</string>
     <string name="label_last_name">Last Name</string>
     <string name="label_m_last_name">Second Last Name</string>
     <string name="label_username">Username</string>
+    <string name="label_finish_process">Finish Process</string>
+    <string name="message_user_found">User found successfully</string>
+    <string name="message_user_not_found">User not found</string>
     <string name="label_use_contactless">Use Contactless?</string>
-    <string name="label_start_process">Start Enrolment Process</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="label_capture_fingers">Capture Fingers</string>
+    <string name="label_enrolment">Enrolment</string>
+    <string name="label_authentication">Authentication</string>
+    <string name="label_identify">Identify</string>
+    <string name="label_start_process">Start Process</string>
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="label_face_capture">Face Capture</string>
+    <string name="label_fingers_capture">Fingers Capture</string>
+    <string name="label_capture_failed_due">Capture failed due %1$s</string>
+    <string name="label_dont_show_again">Don\'t show again</string>
+    <string name="label_capture_finished">Capture Finished</string>
+    <string name="label_error">ERROR: %1$s</string>
+    <string name="label_please_wait">Please Wait</string>
+    <string name="label_duration">Duration</string>
+    <string name="label_error_code">Error Code</string>
+    <string name="label_message">Message</string>
+    <string name="label_ms">%1$d ms</string>
+    <string name="label_score">Score</string>
+    <string name="label_decision">Decision</string>
+    <string name="label_person_id">Person ID</string>
+    <string name="label_capture_left_hand">Capture Left Hand</string>
+    <string name="label_capture_right_hand">Capture Right Hand</string>
+    <string name="label_no_biometric_data">Biometric data has been not captured</string>
+    <string name="label_license_details">License Details</string>
+    <string name="label_countdown">%1$d s</string>
+    <string name="label_flash_on">Flash On</string>
+    <string name="label_error_due">Error due: %1$s</string>
 
+    <!-- Settings Scene -->
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_header_lkms_server">LKMS Server</string>
+    <string name="pref_title_lkms_url_server">LKMS Server URL</string>
+    <string name="pref_header_service_provider">Service Provider Server</string>
+    <string name="pref_title_service_provider">Service Provider URL</string>
+    <string name="pref_header_idemia_middleware">IDEMIA Middleware Settings</string>
+    <string name="pref_header_idemia_middleware_name">Middleware Endpoint Name</string>
+    <string name="pref_header_idemia_middleware_port">Port</string>
+    <string name="pref_header_idemia_middleware_ip_address">IP Address / URL</string>
+    <string name="pref_header_idemia_middlware_https">Use Https?</string>
+
+    <!-- Settings for Face and & Fingers -->
+    <string name="pref_header_facial_and_fingers_config">Face &amp; Fingers</string>
+    <string name="pref_header_general_capture_settings">General Capture Settings</string>
+    <string name="pref_title_use_torch">Use Torch</string>
+    <string name="pref_title_timeout">Timeout</string>
+    <string name="pref_title_use_camera_rear">Use Camera Rear</string>
+    <string name="pref_title_use_overlay">Use Overlay</string>
+    <string name="pref_title_do_not_show_fingers_tutorial">Do not show fingers tutorial</string>
+    <string name="pref_title_do_not_show_face_tutorial">Do not show face tutorial</string>
+    <string name="pref_title_capture_timeout">Capture Timeout</string>
+    <string name="pref_title_face_capture_mode">Face Capture Mode</string>
+    <string name="pref_title_finger_capture_mode">Finger Capture Mode</string>
+    <string name="pref_title_time_before_start_capture">Time before start capture (in seconds)</string>
+    <string name="pref_title_challenge_inter_delay">Challenge inter delay (in milliseconds)</string>
+
+
+    <!-- Fragment Person Data -->
+    <string name="person_data_fragment_label_general_user_info">General User Info</string>
+    <string name="person_data_fragment_label_enrol_person_process">Enrol Person Process</string>
+    <string name="person_data_fragment_label_encode_person_process">Encode Person Process</string>
+    <string name="person_data_fragment_label_match_person_to_person_process">Match Person to Person Details</string>
+
+    <!-- Fragment Person to Person match -->
+    <string name="person_to_person_data_fragment_no_hit_rank">No. Hit Rank: %1$d</string>
+
+    <!-- Fragment User info technical details -->
+    <string name="userinfo_technical_details_fragment_label_encode_person_process">Encode Person Process</string>
+    <string name="userinfo_technical_details_fragment_label_authenticate_person_process">Authenticate Person Process
+    </string>
+
+    <!-- License Details Scene -->
+    <string name="license_details_label_license_details">License Details</string>
+    <string name="license_details_label_license_id">License ID</string>
+    <string name="license_details_label_profile_id">Profile ID</string>
+    <string name="license_details_label_status">Status</string>
+    <string name="license_details_label_features">Features</string>
+
+    <!-- FATAL messages -->
+    <string name="fatal_invalid_operation">[FATAL] Invalid Operation to perform</string>
+    <string name="fatal_user_biometry_info_incomplete">[FATAL] User Biometry info incomplete!</string>
+    <string name="fatal_unknown_error">[FATAL] Unknown error: %1$s</string>
+    <string name="fatal_morpho_face_image_null">[FATAL] Morpho face image is null</string>
 </resources>

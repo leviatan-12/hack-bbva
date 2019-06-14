@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" xmlns:tool="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="2dp">
+
+        <TableLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:stretchColumns="1"
+                     android:layout_margin="8dp">
+            <TableRow>
+                <TextView android:layout_weight="0.5"
+                          android:textColor="@android:color/holo_purple"
+                          android:text="@string/label_person_id"/>
+
+                <TextView android:id="@+id/text_view_person_id"
+                          android:gravity="end"
+                          tool:text="AlfredoHernandez"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_weight="0.5"
+                          android:textColor="@android:color/holo_purple"
+                          android:text="@string/label_score"/>
+
+                <TextView android:id="@+id/text_view_score"
+                          android:gravity="end"
+                          tool:text="3500"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_weight="0.5"
+                          android:textColor="@android:color/holo_purple"
+                          android:text="@string/label_decision"/>
+
+                <TextView android:id="@+id/text_view_decision"
+                          android:gravity="end"
+                          tool:text="NO_HIT"/>
+            </TableRow>
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

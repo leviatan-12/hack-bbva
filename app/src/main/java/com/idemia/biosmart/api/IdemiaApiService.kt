@@ -1,13 +1,15 @@
 package com.idemia.biosmart.api
 
-import com.idemia.biosmart.scenes.welcome.WelcomeModels
 import io.reactivex.Observable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import com.google.gson.GsonBuilder
-
+import com.idemia.biosmart.models.*
+import com.idemia.biosmart.scenes.user_info.UserInfoModels
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 /**
  * IDEMIA API Service
@@ -15,11 +17,7 @@ import com.google.gson.GsonBuilder
  */
 interface IdemiaApiService {
 
-    // Web Service endpoints
-
-    @GET("api/users/")
-    fun helloWorld(): Observable<WelcomeModels.HelloWorld.Response>
-
+    //region IDEMIA API SERVICE OBJ
     companion object {
         /**
          * Create Idemia API Service
@@ -37,4 +35,22 @@ interface IdemiaApiService {
             return retrofit.create(IdemiaApiService::class.java)
         }
     }
+    //endregion
+
+    //region Web Service endpoints
+    @POST("api/users/search")
+    fun search(@Body request: UserInfoModels.SearchPersonRequest): Observable<Response<UserInfoModels.Search.Response>>
+
+    @POST("api/users/enrolment")
+    fun enrolment(@Body request: UserBiometrics): Observable<Response<EnrolmentResponse>>
+
+    @POST("api/users/authenticate")
+    fun authenticate(@Body request: UserBiometrics): Observable<Response<AuthenticationResponse>>
+
+    @POST("api/users/identify")
+    fun identify(@Body request: UserBiometrics): Observable<Response<IdentifyResponse>>
+
+    @POST("api/users/create")
+    fun create(@Body request: UserData): Observable<Response<CreatePersonResponse>>
+    //endregion
 }

@@ -1,0 +1,67 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <PreferenceCategory
+            android:title="@string/pref_header_lkms_server">
+
+        <EditTextPreference
+                android:key="@string/idemia_key_lkms_url"
+                android:title="@string/pref_title_lkms_url_server"
+                android:defaultValue="@string/default_lkms_server_url"
+                android:selectAllOnFocus="true"
+                android:inputType="text"
+                android:singleLine="true"
+                android:maxLines="1"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/pref_header_service_provider">
+        <EditTextPreference
+                android:key="@string/IDEMIA_KEY_SERVICE_PROVIDER_SERVER_URL"
+                android:title="@string/pref_title_service_provider"
+                android:defaultValue="@string/default_service_provider_url"
+                android:selectAllOnFocus="true"
+                android:inputType="text"
+                android:singleLine="true"
+                android:maxLines="1"/>
+    </PreferenceCategory>
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <PreferenceCategory android:title="@string/pref_header_idemia_middleware">
+        <EditTextPreference
+                android:key="@string/idemia_key_middleware_name"
+                android:title="@string/pref_header_idemia_middleware_name"
+                android:defaultValue="@string/default_middleware_name"
+                android:singleLine="true"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"/>
+
+        <EditTextPreference
+                android:key="@string/idemia_key_middleware_ip_address"
+                android:title="@string/pref_header_idemia_middleware_ip_address"
+                android:defaultValue="@string/default_middleware_ip_address"
+                android:singleLine="true"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"/>
+
+        <EditTextPreference
+                android:key="@string/idemia_key_middleware_port"
+                android:title="@string/pref_header_idemia_middleware_port"
+                android:defaultValue="@string/default_middleware_port"
+                android:singleLine="true"
+                android:inputType="number"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"/>
+
+        <SwitchPreference android:key="@string/idemia_key_middleware_https"
+                          android:title="@string/pref_header_idemia_middlware_https"
+                          android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

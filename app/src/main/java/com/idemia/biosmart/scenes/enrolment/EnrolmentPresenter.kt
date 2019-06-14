@@ -9,17 +9,22 @@ package com.idemia.biosmart.scenes.enrolment
 class EnrolmentPresenter : EnrolmentPresentationLogic {
     private var activity: EnrolmentDisplayLogic? = null
 
+    companion object {
+        private val TAG = "EnrolmentPresenter"
+    }
+
     fun setActivity(activity: EnrolmentDisplayLogic) {
         this.activity = activity
     }
 
-    override fun presentDoSomething(response: EnrolmentModels.DoSomething.Response) {
-        val viewModel = EnrolmentModels.DoSomething.ViewModel()
-        activity!!.displayDoSomething(viewModel)
+    override fun presentSaveUserInfo(response: EnrolmentModels.SaveUserInfo.Response) {
+        val viewModel = EnrolmentModels.SaveUserInfo.ViewModel()
+        activity!!.displaySaveUserInfo(viewModel)
     }
 
-    companion object {
-        private val TAG = "EnrolmentPresenter"
+    override fun presentGoToNextScene(response: EnrolmentModels.GoToNextScene.Response) {
+        val viewModel = EnrolmentModels.GoToNextScene.ViewModel(response.operation)
+        activity!!.displayGoToNextScene(viewModel)
     }
 }
 
@@ -31,5 +36,6 @@ class EnrolmentPresenter : EnrolmentPresentationLogic {
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 interface EnrolmentPresentationLogic {
-    fun presentDoSomething(response: EnrolmentModels.DoSomething.Response)
+    fun presentSaveUserInfo(response: EnrolmentModels.SaveUserInfo.Response)
+    fun presentGoToNextScene(response: EnrolmentModels.GoToNextScene.Response)
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="8dp"
+              android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.button.MaterialButton android:layout_width="50dp" android:layout_height="80dp"
+                                                  app:layout_constraintStart_toStartOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintTop_toTopOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintBottom_toBottomOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintVertical_bias="0.431"/>
+
+    <android.support.design.button.MaterialButton android:layout_width="50dp" android:layout_height="80dp"
+                                                  app:layout_constraintStart_toStartOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintTop_toTopOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintBottom_toBottomOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintVertical_bias="0.305"
+                                                  android:layout_marginStart="68dp"/>
+
+    <android.support.design.button.MaterialButton android:layout_width="50dp" android:layout_height="80dp"
+                                                  app:layout_constraintStart_toStartOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintTop_toTopOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintBottom_toBottomOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintVertical_bias="0.246"
+                                                  android:layout_marginStart="140dp"/>
+
+    <android.support.design.button.MaterialButton android:layout_width="50dp" android:layout_height="80dp"
+                                                  app:layout_constraintStart_toStartOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintTop_toTopOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintBottom_toBottomOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintVertical_bias="0.274"
+                                                  android:layout_marginStart="204dp"/>
+
+    <android.support.design.button.MaterialButton android:layout_width="50dp" android:layout_height="80dp"
+                                                  app:layout_constraintStart_toStartOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintTop_toTopOf="@+id/image_view_left_hand"
+                                                  app:layout_constraintBottom_toBottomOf="@+id/image_view_left_hand"
+                                                  android:layout_marginStart="328dp"/>
+
+
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:srcCompat="@drawable/ic_left_hand"
+            android:layout_gravity="center"
+            android:id="@+id/image_view_left_hand" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"/>
+
+
+</android.support.constraint.ConstraintLayout>

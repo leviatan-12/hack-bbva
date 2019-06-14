@@ -5,106 +5,141 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".scenes.splash.SplashActivity">
+        tools:context=".scenes.welcome.WelcomeActivity">
 
     <LinearLayout
             android:orientation="vertical"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_weight="0.2"
-                    android:src="@drawable/ic_square_logo"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"/>
-
-            <TextView
-                    android:layout_gravity="center"
-                    android:text="@string/app_name"
-                    android:layout_weight="0.8"
-                    android:id="@+id/text_view_app_name"
+            <!--region App Logo -->
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="32sp"
-                    android:layout_marginStart="16dp"/>
-        </LinearLayout>
+                    android:layout_margin="16dp">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_weight="0.2"
+                        android:src="@drawable/ic_square_logo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"/>
 
-            <TextView
-                    android:text="@string/welcome_label_license_status"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <TextView
+                        android:layout_gravity="center"
+                        android:text="@string/app_name"
+                        android:layout_weight="0.8"
+                        android:textStyle="bold"
+                        android:id="@+id/text_view_app_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="40sp"
+                        android:layout_marginStart="16dp"/>
+            </LinearLayout>
+            <!--endregion-->
 
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/text_view_license_status"
-                      tools:text="License Activated Successfully"/>
+            <!--region License Status -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:orientation="horizontal">
 
+                <TextView
+                        android:text="@string/welcome_label_license_status"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-            <TextView
-                    android:text="@string/welcome_label_license_status"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textColor="@color/colorSuccess"
+                          android:layout_marginStart="2dp"
+                          android:layout_gravity="end"
+                          android:id="@+id/text_view_license_status"
+                          tools:text="License Activated Successfully"/>
 
+            </LinearLayout>
+            <!--endregion-->
+
+            <!--region SDK Version -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:paddingBottom="4dp"
+                          android:orientation="horizontal">
+
+                <TextView
+                        android:text="@string/welcome_label_sdk_version"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="8dp"
+                          android:id="@+id/text_view_sdk_version"
+                          tools:text="v4.13.0"/>
+
+            </LinearLayout>
+            <!--endregion-->
+
+            <!--region App Version -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="16dp"
+                          android:layout_marginEnd="16dp"
+                          android:paddingBottom="4dp"
+                          android:orientation="horizontal">
+
+                <TextView
+                        android:text="@string/welcome_label_app_version"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="8dp"
+                          android:id="@+id/text_view_app_version"
+                          tools:text="v2.0.0"/>
+
+            </LinearLayout>
+            <!--endregion-->
         </LinearLayout>
 
         <View android:layout_width="match_parent"
               android:background="@android:color/darker_gray"
               android:layout_marginTop="8dp"
+              android:layout_marginStart="16dp"
+              android:layout_marginEnd="16dp"
               android:layout_marginBottom="8dp"
               android:layout_height="1dp"/>
 
-        <GridLayout
-                android:layout_marginBottom="65dp"
-                android:id="@+id/grid_layout"
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_view_menu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnCount="2"
-                android:rowCount="2">
-
-            <com.idemia.biosmart.components.MenuCardView
-                    android:id="@+id/menu_card_view_enrolment"
-                    app:cardActionTitle="Start"
-                    app:cardTitle="Enrolment"
-                    app:cardImage="@drawable/ic_user_96"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"/>
-
-
-            <com.idemia.biosmart.components.MenuCardView
-                    app:cardActionTitle="Start"
-                    app:cardTitle="Authenticate"
-                    app:cardImage="@drawable/ic_apply_96"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"/>
-
-            <com.idemia.biosmart.components.MenuCardView
-                    app:cardActionTitle="Start"
-                    app:cardTitle="Identify"
-                    app:cardImage="@drawable/ic_more_info_96"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"/>
-        </GridLayout>
+                android:layout_gravity="center_horizontal"
+                android:animationCache="true"
+                android:layout_marginBottom="65dp">
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="4dp"
@@ -117,7 +152,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="bottom"
+            android:theme="@style/ToolBarStyle"
             android:backgroundTint="@color/colorPrimaryDark"
-            app:fabAlignmentMode="center"/>
+            app:fabAlignmentMode="end"/>
 
 </android.support.design.widget.CoordinatorLayout>

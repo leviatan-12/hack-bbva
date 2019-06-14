@@ -1,5 +1,7 @@
 package com.idemia.biosmart.scenes.enrolment;
 
+import com.idemia.biosmart.utils.AppCache
+
 /**
  *  Enrolment Worker
  *  BioSmart
@@ -7,9 +9,12 @@ package com.idemia.biosmart.scenes.enrolment;
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class EnrolmentWorker {
-    /**
-     * Make your WS calls here
-     */
-    fun doSomething() {
+    //region Save user info
+    fun saveUserInfo(request: EnrolmentModels.SaveUserInfo.Request){
+        AppCache.username = request.username
+        AppCache.name = request.name
+        AppCache.lastName = request.lastName
+        AppCache.secondLastName = request.secondLastName
     }
+    //endregion
 }

@@ -1,8 +1,10 @@
 package com.idemia.biosmart.scenes.welcome
 
+import android.util.Log
+import com.idemia.morphobiosmart.utils.DisposableManager
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  *  Welcome Interactor
@@ -10,58 +12,96 @@ import io.reactivex.schedulers.Schedulers
  *  Created by alfredo on 12/11/18.
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
-class WelcomeInteractor : WelcomeBusinessLogic {
+class WelcomeInteractor @Inject constructor(var presenter: WelcomePresentationLogic) : WelcomeBusinessLogic {
     private val worker = WelcomeWorker()
-    private var presenter: WelcomePresentationLogic = WelcomePresenter()
-    private var disposable: Disposable? = null
 
-    fun setPresenter(presenter: WelcomePresentationLogic) {
-        this.presenter = presenter
+    companion object {
+        val TAG = "WelcomeInteractor"
     }
 
+    //region Generate license
     override fun generateLicense(request: WelcomeModels.GenerateLicense.Request) {
-        // TODO: Call WS to generate license file bin
-        val worker = WelcomeWorker()
-        worker.generateLicense()
-
-        val response = WelcomeModels.GenerateLicense.Response(true)
-        presenter.presentGenerateLicense(response)
-    }
-
-    override fun startEnrollment(request: WelcomeModels.StartEnrollment.Request) {
-        val response = WelcomeModels.StartEnrollment.Response()
-        presenter.presentStartEnrolment(response)
-    }
-
-    override fun helloWorld(request: WelcomeModels.HelloWorld.Request) {
-        disposable = worker.helloWorld().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe (
-                { response ->
-                    presenter.presentHelloWorld(response)
-                    disposable?.dispose()
-                },
-                { error ->
-                    presenter.presentHelloWorld(
-                        WelcomeModels.HelloWorld.Response(false, "Web Services Error connection: ${error.localizedMessage}"))
-                    disposable?.dispose()
+        // Call WS to generate license file bin (Service Provider)
+        worker.generateLicense(request.serviceProviderUrl)?.let { observable ->
+            DisposableManager.add(
+                observable.subscribe({ response ->
+                    val activationData = response.bytes()
+                    val mResponse = WelcomeModels.GenerateLicense.Response(true, activationData)
+                    presenter.presentGenerateLicense(mResponse)
+                },{ throwable ->
+                    val response = WelcomeModels.GenerateLicense.Response(false)
+                    Log.e(TAG,"Error generating BIN File License due: ", throwable)
+                    presenter.presentGenerateLicense(response)
                 })
+            )
+        } ?: run {
+            val throwable = WelcomeWorker.throwable
+            val response = WelcomeModels.GenerateLicense.Response(false, null, throwable)
+            Log.e(TAG,"Error generating BIN File License due: ", throwable)
+            presenter.presentGenerateLicense(response)
+        }
     }
+    //endregion
+
+    //region Create LKMS License
+    override fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request) {
+        val disposable = worker.createLKMSLicense(request)
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ lkmsLicense ->
+                val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(true, lkmsLicense)
+                presenter.presentCreateLKMSLicense(response)
+            },{ throwable ->
+                Log.e(TAG, "License not activated due: ", throwable)
+                val response = WelcomeModels.ActivateBinFileLicenseToLkms.Response(false, null, throwable)
+                presenter.presentCreateLKMSLicense(response)
+            })
+        DisposableManager.add(disposable)
+    }
+    //endregion
+
+    //region Activate LKMS License on device
+    override fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request) {
+        val response = worker.activateLkmsLicenseOnDevice(request)
+        presenter.presentActivateLkmsLicenseOnDevice(response)
+    }
+    //endregion
+
+    //region Start Process
+    override fun startProcess(request: WelcomeModels.StartEnrollment.Request) {
+        val response = WelcomeModels.StartEnrollment.Response(request.operation)
+        presenter.presentStartProcess(response)
+    }
+    //endregion
 }
 
 
 /**
- *  Welcome Bussines Logic
+ *  Welcome Business Logic
  *  BioSmart
  *  Created by alfredo on 12/11/18.
  *  Copyright (c) 2018 requestAlfredo. All rights reserved.
  */
 interface WelcomeBusinessLogic {
     /**
-     * Generate License
+     * Generate License from Service Provider
      * @param requuest A GenerateLicense Request to send
-     */
+     * */
     fun generateLicense(request: WelcomeModels.GenerateLicense.Request)
-    fun startEnrollment(request: WelcomeModels.StartEnrollment.Request)
-    fun helloWorld(request: WelcomeModels.HelloWorld.Request)
+
+    /**
+     * Create LKMS License
+     * @param  request A [WelcomeModels.ActivateBinFileLicenseToLkms.Request] request
+     */
+    fun createLKMSLicense(request: WelcomeModels.ActivateBinFileLicenseToLkms.Request)
+
+    /**
+     * Activate LKMS Licese on device
+     */
+    fun activateLkmsLicenseOnDevice(request: WelcomeModels.ActivateLkmsLicenseOnDevice.Request)
+
+    /**
+     * Start next process
+     */
+    fun startProcess(request: WelcomeModels.StartEnrollment.Request)
 }

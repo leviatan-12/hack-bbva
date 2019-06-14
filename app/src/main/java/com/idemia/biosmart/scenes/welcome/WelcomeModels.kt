@@ -1,5 +1,9 @@
 package com.idemia.biosmart.scenes.welcome;
 
+import android.content.Context
+import android.view.View
+import com.morpho.lkms.android.sdk.lkms_core.license.ILkmsLicense
+
 /**
  *  Welcome Models
  *  BioSmart
@@ -7,24 +11,54 @@ package com.idemia.biosmart.scenes.welcome;
  *  Copyright (c) 2018 Alfredo. All rights reserved.
  */
 class WelcomeModels {
-    // Generate License use case
+
+    enum class Operation {
+        ENROLMENT,
+        AUTHENTICATION,
+        IDENTIFY,
+        SETTINGS,
+        LICENSE_DETAILS
+    }
+
+    class CardMenu(val title: String, val actionTitle: String, val image: Int, val description: String = "",
+                   var listener: View.OnClickListener? = null)
+
+    //region Generate License use case
     class GenerateLicense {
-        class Request
-        data class Response(var generated: Boolean)
-        data class ViewModel(var generated: Boolean = false)
+        data class Request(val serviceProviderUrl: String)
+        data class Response(var generated: Boolean, var activationData: ByteArray? = null, val throwable: Throwable?= null)
+        data class ViewModel(var generated: Boolean = false, var activationData: ByteArray? = null, var message: String = "General Error")
     }
+    //endregion
 
-    // Start enrolment usecase
+    //region Activate Bin File License to LKMS
+    class ActivateBinFileLicenseToLkms {
+        /**
+         * @param activationData The activation data retrieved from server
+         * @param applicationContext [Context] Application Context
+         * @param lkmsUrl The LKMS server URL
+         * */
+        data class Request(val activationData: ByteArray,
+                           val applicationContext: Context,
+                           val lkmsUrl: String = "https://service-intg.dictao.com/lkms-server-app")
+        data class Response(var activated: Boolean, val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
+        data class ViewModel(var activated: Boolean,  val lkmsLicense: ILkmsLicense? = null, val throwable: Throwable?= null)
+    }
+    //endregion
+
+    //region Activate Lkms License On Device
+    class ActivateLkmsLicenseOnDevice {
+        class Request(val applicationContext: Context)
+        data class Response(var isLicenseValid: Boolean, val lkmsLicense: ILkmsLicense? = null)
+        data class ViewModel(var isLicenseValid: Boolean, val lkmsLicense: ILkmsLicense? = null)
+    }
+    //endregion
+
+    //region Start enrolment usecase
     class StartEnrollment {
-        class Request
-        class Response
-        class ViewModel
+        data class Request(val operation: Operation)
+        class Response(val operation: Operation)
+        class ViewModel(val operation: Operation)
     }
-
-    // Hello World use case
-    object HelloWorld {
-        class Request
-        data class Response(val success: Boolean = true, val message:String)
-        data class ViewModel(val available: Boolean, val message: String)
-    }
+    //endregion
 }

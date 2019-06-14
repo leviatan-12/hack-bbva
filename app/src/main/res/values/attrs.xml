@@ -3,6 +3,7 @@
     <declare-styleable name="MenuCardView">
         <attr name="cardTitle" format="string" />
         <attr name="cardActionTitle" format="string" />
+        <attr name="cardDescription" format="string"/>
         <attr name="cardImage" format="reference" />
     </declare-styleable>
 </resources>
